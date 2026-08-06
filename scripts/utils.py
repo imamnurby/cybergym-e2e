@@ -299,6 +299,7 @@ def call_llm(
     prompt,
     model_provider="anthropic",
     litellm_model_id=None,
+    openai_model_id=None,
     bedrock_model_id=None,
     anthropic_model_id=None,
     aws_region="us-west-2",
@@ -330,18 +331,19 @@ def call_llm(
                 messages=[{"role": "user", "content": prompt}],
             )
             return response.content[0].text
-        else:
-            # OpenAI
+        elif model_provider in {"litellm", "openai"}:
             import openai
 
             client = openai.OpenAI()
             response = client.chat.completions.create(
-                model=litellm_model_id,
+                model=openai_model_id if model_provider == "openai" else litellm_model_id,
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=max_tokens,
                 temperature=0.0,
             )
             return response.choices[0].message.content
+        else:
+            raise ValueError(f"Unknown model provider: {model_provider}")
     except Exception as e:
         print(f"LLM call failed: {e}")
         return None
@@ -350,17 +352,20 @@ def call_llm(
 def get_llm_env(
     model_provider,
     litellm_model_id=None,
+    openai_model_id=None,
     bedrock_model_id=None,
     anthropic_model_id=None,
     aws_region="us-west-2",
     aws_profile=None,
+    max_budget_per_task=10.0,
 ):
     """
     Get LLM environment variables for OpenHands.
 
     Args:
-        model_provider: "bedrock", "anthropic", or "litellm"
+        model_provider: "bedrock", "anthropic", "litellm", or "openai"
         litellm_model_id: LiteLLM model ID (required if model_provider="litellm")
+        openai_model_id: Model ID (required if model_provider="openai")
         bedrock_model_id: Bedrock model ID (required if model_provider="bedrock")
         anthropic_model_id: Anthropic model ID (required if model_provider="anthropic")
         aws_region: AWS region for Bedrock
@@ -385,7 +390,27 @@ def get_llm_env(
         "LLM_RETRY_MULTIPLIER": "2",
     }
 
-    if model_provider == "bedrock":
+    if model_provider == "openai":
+        if not openai_model_id:
+            raise ValueError("openai_model_id is required for the openai provider")
+        openai_api_key = os.getenv("OPENAI_API_KEY", "")
+        llm_model = f"openai/{openai_model_id}"
+        env = {
+            **base_env,
+            "LLM_MODEL": llm_model,
+            "LLM_API_KEY": openai_api_key,
+            "OPENAI_API_KEY": openai_api_key,
+            "MAX_BUDGET_PER_TASK": str(max_budget_per_task),
+            "LLM_INPUT_COST_PER_TOKEN": "5e-06",
+            "LLM_OUTPUT_COST_PER_TOKEN": "3e-05",
+            "LLM_REASONING_EFFORT": "none",
+            "LLM_DISABLE_STOP_WORD": "true",
+            "LLM_DROP_PARAMS": "true",
+        }
+        if os.getenv("OPENAI_BASE_URL"):
+            env["OPENAI_BASE_URL"] = os.getenv("OPENAI_BASE_URL")
+        return env, llm_model
+    elif model_provider == "bedrock":
         try:
             session = boto3.Session(profile_name=aws_profile)
             credentials = session.get_credentials()
@@ -426,7 +451,7 @@ def get_llm_env(
             "ANTHROPIC_API_KEY": anthropic_api_key,
         }
         return env, llm_model
-    else:
+    elif model_provider == "litellm":
         llm_model = litellm_model_id
         llm_api_key = os.getenv("OPENAI_API_KEY")
         env = {
@@ -441,6 +466,8 @@ def get_llm_env(
         if os.getenv("GOOGLE_GEMINI_BASE_URL"):
             env["GOOGLE_GEMINI_BASE_URL"] = os.getenv("GOOGLE_GEMINI_BASE_URL")
         return env, llm_model
+    else:
+        raise ValueError(f"Unknown model provider: {model_provider}")
 
 
 def litellm_generate_api_key(max_budget: float, key_alias: str) -> str:

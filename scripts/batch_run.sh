@@ -9,8 +9,10 @@
 #   MODE=e2e|patch-only            Mode (default: e2e)
 #   MAX_PARALLEL=N                 Parallel jobs (default: 4)
 #   MAX_ATTEMPTS=N                 Retry attempts (default: 1)
-#   MODEL_PROVIDER=anthropic|bedrock|litellm  Model provider (default: anthropic)
+#   MODEL_PROVIDER=anthropic|bedrock|litellm|openai  Model provider (default: anthropic)
 #   LITELLM_MODEL_ID=...           LiteLLM Model ID
+#   OPENAI_MODEL_ID=...            Direct OpenAI-compatible model ID
+#   MAX_BUDGET_PER_TASK=N          OpenHands cost limit; 0 disables it
 #   BEDROCK_MODEL_ID=...           Bedrock Model ID
 #   ANTHROPIC_MODEL_ID=...         Anthropic model ID (used with MODEL_PROVIDER=anthropic)
 #   AWS_PROFILE=...                AWS profile
@@ -57,6 +59,8 @@ MAX_PARALLEL="${2:-${MAX_PARALLEL:-4}}"
 MAX_ATTEMPTS="${3:-${MAX_ATTEMPTS:-1}}"
 MODEL_PROVIDER="${MODEL_PROVIDER:-anthropic}"
 LITELLM_MODEL_ID="${LITELLM_MODEL_ID:-openai/gpt-5.2-codex}"
+OPENAI_MODEL_ID="${OPENAI_MODEL_ID:-gpt-5.6-sol}"
+MAX_BUDGET_PER_TASK="${MAX_BUDGET_PER_TASK:-10}"
 BEDROCK_MODEL_ID="${BEDROCK_MODEL_ID:-us.anthropic.claude-sonnet-4-5-20250929-v1:0}"
 ANTHROPIC_MODEL_ID="${ANTHROPIC_MODEL_ID:-claude-sonnet-4-5}"
 MODE="${MODE:-e2e}"
@@ -124,6 +128,8 @@ echo "Max attempts: $MAX_ATTEMPTS"
 echo "Timeout: ${TIMEOUT}s ($((TIMEOUT/60))m)"
 echo "Model Provider: $MODEL_PROVIDER"
 echo "LiteLLM Model: $LITELLM_MODEL_ID"
+echo "OpenAI-compatible Model: $OPENAI_MODEL_ID"
+echo "Max budget per task: $MAX_BUDGET_PER_TASK"
 echo "Bedrock Model: $BEDROCK_MODEL_ID"
 echo "Anthropic Model: $ANTHROPIC_MODEL_ID"
 echo "Mode: $MODE"
@@ -151,6 +157,8 @@ run_task() {
         --timeout "$TIMEOUT" \
         --model-provider "$MODEL_PROVIDER" \
         --litellm-model-id "$LITELLM_MODEL_ID" \
+        --openai-model-id "$OPENAI_MODEL_ID" \
+        --max-budget-per-task "$MAX_BUDGET_PER_TASK" \
         --bedrock-model-id "$BEDROCK_MODEL_ID" \
         --anthropic-model-id "$ANTHROPIC_MODEL_ID" \
         --aws-profile "$AWS_PROFILE" \
@@ -173,7 +181,7 @@ run_task() {
 }
 
 export -f run_task
-export SCRIPT_DIR AGENT_OUTPUT_DIR MODE MAX_ATTEMPTS AWS_PROFILE AWS_REGION LITELLM_MODEL_ID BEDROCK_MODEL_ID ANTHROPIC_MODEL_ID AGENT PROMPT_STYLE TIMEOUT MODEL_PROVIDER ANTHROPIC_API_KEY
+export SCRIPT_DIR AGENT_OUTPUT_DIR MODE MAX_ATTEMPTS AWS_PROFILE AWS_REGION LITELLM_MODEL_ID OPENAI_MODEL_ID MAX_BUDGET_PER_TASK BEDROCK_MODEL_ID ANTHROPIC_MODEL_ID AGENT PROMPT_STYLE TIMEOUT MODEL_PROVIDER ANTHROPIC_API_KEY OPENAI_API_KEY OPENAI_BASE_URL
 
 # Run tasks in parallel
 echo "Starting parallel execution..."
