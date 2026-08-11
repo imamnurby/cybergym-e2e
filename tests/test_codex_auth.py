@@ -1,3 +1,5 @@
+from contextlib import redirect_stdout
+import io
 import json
 from pathlib import Path
 import sys
@@ -56,6 +58,7 @@ class CodexSubscriptionAuthTests(unittest.TestCase):
                 patch.object(run_agent, "exec_run", side_effect=fake_exec),
                 patch.object(run_agent, "copy_to_container") as copy_auth,
                 patch.object(run_agent, "_persist_codex_auth") as persist_auth,
+                patch.object(run_agent, "_stream_codex_exec", return_value=0) as stream_exec,
             ):
                 result = run_agent._execute_codex(
                     "container-id",
@@ -70,13 +73,56 @@ class CodexSubscriptionAuthTests(unittest.TestCase):
             )
             persist_auth.assert_called_once_with("container-id", auth_file.resolve())
 
-            run_call = next(call for call in exec_calls if call[1] == "Running agent")
-            self.assertEqual(run_call[2]["env"], {})
+            self.assertEqual(stream_exec.call_args.args[-1], {})
             all_commands = "\n".join(call[0] for call in exec_calls)
             self.assertNotIn("OPENAI_API_KEY", all_commands)
             self.assertNotIn("model_provider =", all_commands)
             self.assertIn('forced_login_method = "chatgpt"', all_commands)
-            self.assertIn("--model gpt-5.4", run_call[0])
+            self.assertIn("--model gpt-5.4", stream_exec.call_args.args[1])
+
+    def test_codex_output_is_valid_live_jsonl_with_separate_stderr(self) -> None:
+        class FakeProcess:
+            def __init__(self):
+                self.stdout = io.StringIO(
+                    '{"type":"turn.started"}\nnot-json-but-preserved\n'
+                )
+
+            def wait(self, timeout=None):
+                return 0
+
+            def kill(self):
+                pass
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output_file = Path(temp_dir) / "attempt_1.jsonl"
+            stderr_file = Path(temp_dir) / "attempt_1.stderr.log"
+
+            def fake_popen(command, **kwargs):
+                kwargs["stderr"].write("diagnostic only\n")
+                return FakeProcess()
+
+            console = io.StringIO()
+            with (
+                patch.object(run_agent.subprocess, "Popen", side_effect=fake_popen),
+                redirect_stdout(console),
+            ):
+                result = run_agent._stream_codex_exec(
+                    "container-id",
+                    "codex exec --json task",
+                    output_file,
+                    stderr_file,
+                    30,
+                    {},
+                )
+
+            events = [json.loads(line) for line in output_file.read_text().splitlines()]
+            self.assertEqual(result, 0)
+            self.assertEqual(events[0]["type"], "turn.started")
+            self.assertEqual(events[1]["type"], "runner.output")
+            self.assertIn("elapsed_seconds", events[0]["_cybergym"])
+            self.assertEqual(stderr_file.read_text(), "diagnostic only\n")
+            self.assertNotIn("diagnostic only", output_file.read_text())
+            self.assertEqual(len(console.getvalue().splitlines()), 2)
 
     def test_refreshed_auth_is_replaced_atomically_with_private_mode(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

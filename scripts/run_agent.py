@@ -654,6 +654,74 @@ def _persist_codex_auth(container_id, auth_file):
         temp_path.unlink(missing_ok=True)
 
 
+def _annotate_codex_event(raw_line, started_at):
+    """Add local capture timing while keeping each output line valid JSON."""
+    stripped = raw_line.rstrip("\r\n")
+    captured = {
+        "captured_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "elapsed_seconds": round(time.monotonic() - started_at, 3),
+    }
+    try:
+        event = json.loads(stripped)
+    except json.JSONDecodeError:
+        event = {"type": "runner.output", "text": stripped}
+    if not isinstance(event, dict):
+        event = {"type": "runner.output", "value": event}
+    event["_cybergym"] = {**event.get("_cybergym", {}), **captured}
+    return json.dumps(event, ensure_ascii=False, separators=(",", ":"))
+
+
+def _stream_codex_exec(
+    container_id,
+    command,
+    output_file,
+    stderr_file,
+    timeout,
+    env,
+):
+    """Run Codex and stream timestamped JSONL to disk and batch stdout."""
+    docker_command = ["docker", "exec"]
+    for key, value in env.items():
+        if value:
+            docker_command.extend(["-e", f"{key}={value}"])
+    docker_command.extend(
+        [container_id, "timeout", str(timeout), "bash", "-c", command]
+    )
+
+    started_at = time.monotonic()
+    with (
+        Path(output_file).open("w", encoding="utf-8", buffering=1) as output_stream,
+        Path(stderr_file).open("w", encoding="utf-8", buffering=1) as error_stream,
+    ):
+        process = subprocess.Popen(
+            docker_command,
+            stdout=subprocess.PIPE,
+            stderr=error_stream,
+            text=True,
+            bufsize=1,
+            errors="replace",
+        )
+        if process.stdout is None:
+            process.kill()
+            raise RuntimeError("Could not capture Codex JSONL output")
+
+        with process.stdout:
+            for raw_line in process.stdout:
+                if not raw_line.strip():
+                    continue
+                event_line = _annotate_codex_event(raw_line, started_at)
+                output_stream.write(event_line + "\n")
+                output_stream.flush()
+                print(event_line, flush=True)
+
+        try:
+            return process.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait()
+            return 124
+
+
 def _execute_codex(container_id, prompt, output_file, args):
     """Execute Codex agent and return exit code.
     
@@ -765,27 +833,28 @@ EOF''',
     # Run Codex
     print("  Running Codex...")
     print(f"  Output: {output_file}")
+    stderr_file = str(Path(output_file).with_suffix(".stderr.log"))
+    print(f"  Stderr: {stderr_file}")
+    codex_command = (
+        "source $HOME/.nvm/nvm.sh && codex exec "
+        f"--model {shlex.quote(codex_model_id)} --json "
+        "--dangerously-bypass-approvals-and-sandbox "
+        f"--skip-git-repo-check -- {escaped_prompt}"
+    )
 
     try:
-        code, stdout, stderr = exec_run(
+        code = _stream_codex_exec(
             container_id,
-            f"source $HOME/.nvm/nvm.sh && codex exec --model {shlex.quote(codex_model_id)} --json --dangerously-bypass-approvals-and-sandbox --skip-git-repo-check -- {escaped_prompt}",
-            "Running agent",
-            timeout=args.timeout,
-            env=codex_env,
+            codex_command,
+            output_file,
+            stderr_file,
+            args.timeout,
+            codex_env,
         )
     finally:
         if subscription_auth:
             _persist_codex_auth(container_id, auth_file)
 
-    # Write output to file
-    with open(output_file, "w") as f:
-        if stdout:
-            f.write(stdout)
-        if stderr:
-            f.write("\n--- stderr ---\n")
-            f.write(stderr)
-    
     return code
 
 
@@ -914,7 +983,8 @@ def run_agent(args, config, script_path, data_path, prompt, attempt, work_dir, t
         install(container_id, args.agent, scripts_dir=scripts_dir)
 
         # Execute agent
-        log_file = trajectory_dir / f"attempt_{attempt}.log"
+        extension = "jsonl" if args.agent == "codex" else "log"
+        log_file = trajectory_dir / f"attempt_{attempt}.{extension}"
 
         agent_exec_start = time.time()
         if args.agent == "claude-code":

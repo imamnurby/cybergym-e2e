@@ -90,6 +90,26 @@ class DiscoverLogsTests(unittest.TestCase):
         with self.assertRaisesRegex(FileNotFoundError, "Input does not exist"):
             discover_logs([Path("/definitely/missing/trajectory-input")])
 
+    def test_discovers_standalone_codex_jsonl_without_duplicate_batch_run(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            batch_task = root / "batch" / "sample_arvo_1"
+            batch_trajectory = batch_task / "run" / "trajectory"
+            batch_trajectory.mkdir(parents=True)
+            batch_log = batch_task.parent / "sample_arvo_1_run.log"
+            batch_log.write_text("Task: sample/arvo_1\n", encoding="utf-8")
+            covered_jsonl = batch_trajectory / "attempt_1.jsonl"
+            covered_jsonl.write_text('{"type":"turn.started"}\n', encoding="utf-8")
+
+            direct_trajectory = root / "direct" / "sample_arvo_2" / "run" / "trajectory"
+            direct_trajectory.mkdir(parents=True)
+            standalone_jsonl = direct_trajectory / "attempt_1.jsonl"
+            standalone_jsonl.write_text('{"type":"turn.started"}\n', encoding="utf-8")
+
+            result = discover_logs([root])
+
+        self.assertEqual(result, sorted([batch_log.resolve(), standalone_jsonl.resolve()]))
+
 
 class RenderHtmlTests(unittest.TestCase):
     def test_build_report_data_keeps_each_appended_session(self):
@@ -115,6 +135,7 @@ class RenderHtmlTests(unittest.TestCase):
 
         self.assertIn("<!doctype html>", html)
         self.assertIn("Test trajectories", html)
+        self.assertIn("Agent trajectory analysis", html)
         self.assertIn('id="status-filter"', html)
         self.assertIn('id="comparison-body"', html)
         self.assertIn("Hatched areas show idle gaps", html)

@@ -84,7 +84,7 @@ The task file defaults to `instance.txt`, and the worker count defaults to `2`.
 
 ### Trajectory Report
 
-Generate a self-contained HTML visualization from one or more OpenHands run logs or output directories:
+Generate a self-contained HTML visualization from one or more agent run logs or output directories:
 
 ```bash
 python scripts/trajectory_report.py \
@@ -96,6 +96,7 @@ python scripts/trajectory_report.py \
 The report shows high-level phases, validation results, idle gaps, notable termination events, and expandable log evidence.
 Each run also has a detailed action browser with phase and event-kind filters, timestamps, source lines, previews, and expandable full details.
 The report includes comparison, status filtering, and text search without external JavaScript or CSS dependencies.
+Codex runs store live newline-delimited JSON in `trajectory/attempt_N.jsonl` and store diagnostic stderr separately in `trajectory/attempt_N.stderr.log`.
 
 Use the same command with another output directory to inspect a different model run:
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a self-contained HTML report from OpenHands trajectory logs."""
+"""Generate a self-contained HTML report from agent trajectory logs."""
 
 from __future__ import annotations
 
@@ -31,7 +31,14 @@ def discover_logs(inputs: Iterable[Path]) -> list[Path]:
     for input_path in inputs:
         path = input_path.expanduser()
         if path.is_dir():
-            candidates = path.rglob("*_run.log")
+            run_logs = list(path.rglob("*_run.log"))
+            candidates = list(run_logs)
+            for jsonl_path in path.rglob("trajectory/attempt_*.jsonl"):
+                run_dir = jsonl_path.parent.parent
+                task_dir = run_dir.parent
+                batch_log = task_dir.parent / f"{task_dir.name}_run.log"
+                if not batch_log.is_file():
+                    candidates.append(jsonl_path)
         elif path.is_file():
             candidates = (path,)
         else:
@@ -291,7 +298,7 @@ def render_html(
   <main class="shell">
     <header class="hero">
       <div>
-        <p class="eyebrow">OpenHands trajectory analysis</p>
+        <p class="eyebrow">Agent trajectory analysis</p>
         <h1 id="report-title"></h1>
         <p class="subtitle">High-level phases, validation outcomes, idle periods, and supporting trajectory evidence.</p>
       </div>
@@ -691,7 +698,7 @@ def _html_text(value: str) -> str:
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Generate a self-contained HTML report from OpenHands run logs."
+        description="Generate a self-contained HTML report from agent run logs."
     )
     parser.add_argument(
         "inputs",

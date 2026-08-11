@@ -100,6 +100,78 @@ Status: SUCCESS
         patch_step = next(step for step in trajectory.steps if step.phase == "patch")
         self.assertRegex(patch_step.evidence_lines[0], r"^L\d+: git diff")
 
+    def test_parses_codex_jsonl_events_phases_and_artifacts(self):
+        trajectory = self.parse_text(
+            """Task: sample/arvo_codex
+Agent: codex
+Model: openai/gpt-5.4
+{"type":"thread.started","thread_id":"thread-1","_cybergym":{"captured_at":"2026-08-11T10:00:00Z","elapsed_seconds":0.0}}
+{"type":"turn.started","_cybergym":{"captured_at":"2026-08-11T10:00:01Z","elapsed_seconds":1.0}}
+{"type":"item.completed","item":{"id":"reason-1","type":"reasoning","text":"Inspect the fuzzer harness."},"_cybergym":{"captured_at":"2026-08-11T10:00:02Z","elapsed_seconds":2.0}}
+{"type":"item.started","item":{"id":"cmd-1","type":"command_execution","command":"python make_poc.py /output/poc.bin","aggregated_output":"","exit_code":null,"status":"in_progress"},"_cybergym":{"captured_at":"2026-08-11T10:00:03Z","elapsed_seconds":3.0}}
+{"type":"item.completed","item":{"id":"cmd-1","type":"command_execution","command":"python make_poc.py /output/poc.bin","aggregated_output":"wrote poc","exit_code":0,"status":"completed"},"_cybergym":{"captured_at":"2026-08-11T10:00:05Z","elapsed_seconds":5.0}}
+{"type":"item.completed","item":{"id":"patch-1","type":"file_change","changes":[{"path":"src/parser.c","kind":"update"}],"status":"completed"},"_cybergym":{"captured_at":"2026-08-11T10:00:07Z","elapsed_seconds":7.0}}
+{"type":"item.completed","item":{"id":"message-1","type":"agent_message","text":"Created /output/fix.patch."},"_cybergym":{"captured_at":"2026-08-11T10:00:09Z","elapsed_seconds":9.0}}
+{"type":"turn.completed","usage":{"input_tokens":100,"output_tokens":20},"_cybergym":{"captured_at":"2026-08-11T10:00:10Z","elapsed_seconds":10.0}}
+  Agent: 12.0s, exec: 10.0s, exit=0
+Status: SUCCESS
+"""
+        )
+
+        self.assertEqual(trajectory.agent, "codex")
+        self.assertEqual(len(trajectory.events), 5)
+        self.assertEqual(trajectory.events[1].action_type, "CommandExecution")
+        self.assertEqual(trajectory.events[2].kind, "observation")
+        self.assertEqual(trajectory.events[-1].offset_seconds, 9.0)
+        self.assertEqual(trajectory.artifacts, {"poc": True, "patch": True})
+        self.assertIn("poc", [step.phase for step in trajectory.steps])
+        self.assertIn("patch", [step.phase for step in trajectory.steps])
+
+    def test_standalone_codex_jsonl_uses_neighboring_summary_metadata(self):
+        with tempfile.TemporaryDirectory() as directory:
+            run_dir = Path(directory) / "sample_arvo_codex" / "run"
+            trajectory_dir = run_dir / "trajectory"
+            trajectory_dir.mkdir(parents=True)
+            path = trajectory_dir / "attempt_1.jsonl"
+            path.write_text(
+                '{"type":"item.completed","item":{"id":"message-1","type":"agent_message","text":"Done."}}\n',
+                encoding="utf-8",
+            )
+            (run_dir / "summary.json").write_text(
+                json.dumps(
+                    {
+                        "task": "sample/arvo_codex",
+                        "agent": "codex",
+                        "model": "openai/gpt-5.4",
+                        "prompt_style": "iterative",
+                        "status": "success",
+                        "timeout": 5400,
+                        "duration_seconds": 12.5,
+                        "attempts": [
+                            {
+                                "stage1": "passed",
+                                "stage2": "passed",
+                                "stage3": "passed",
+                                "stage4": "passed",
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            trajectory = parse_log(path)
+
+        self.assertEqual(trajectory.task, "sample/arvo_codex")
+        self.assertEqual(trajectory.agent, "codex")
+        self.assertEqual(trajectory.model, "openai/gpt-5.4")
+        self.assertEqual(trajectory.status, "SUCCESS")
+        self.assertEqual(trajectory.duration_seconds, 12.5)
+        self.assertEqual(
+            [outcome.status for outcome in trajectory.validation],
+            ["passed", "passed", "passed", "passed"],
+        )
+
     def test_steps_are_chronological_milestone_segments(self):
         trajectory = self.parse_text(
             """00:00:00 - ACTION

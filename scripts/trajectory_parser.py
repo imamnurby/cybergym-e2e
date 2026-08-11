@@ -1,7 +1,8 @@
-"""Parse OpenHands batch-run logs into renderer-friendly trajectory data."""
+"""Parse agent batch-run logs into renderer-friendly trajectory data."""
 
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
@@ -239,6 +240,158 @@ def _parse_events(lines: list[str]) -> list[TrajectoryEvent]:
     return events
 
 
+def _codex_event_title(item_type: str, item: dict[str, Any]) -> str:
+    if item_type == "command_execution":
+        command = str(item.get("command") or "Run command")
+        title = next(
+            (line.strip() for line in command.splitlines() if line.strip()),
+            "Run command",
+        )
+        return title[:140]
+    if item_type in {"agent_message", "reasoning"}:
+        text = str(item.get("text") or item_type.replace("_", " ").title())
+        title = next(
+            (line.strip() for line in text.splitlines() if line.strip()),
+            item_type,
+        )
+        return title[:140]
+    if item_type == "file_change":
+        changes = item.get("changes")
+        if isinstance(changes, list) and changes and isinstance(changes[0], dict):
+            path = changes[0].get("path")
+            if path:
+                return f"Change {path}"[:140]
+        return "Change files"
+    if item_type == "mcp_tool_call":
+        tool = item.get("tool") or item.get("name") or "MCP tool"
+        return f"Call {tool}"[:140]
+    if item_type == "web_search":
+        return f"Search: {item.get('query', '')}"[:140]
+    return item_type.replace("_", " ").title()[:140]
+
+
+def _codex_timestamp(metadata: dict[str, Any], offset: float) -> str:
+    captured_at = metadata.get("captured_at")
+    if isinstance(captured_at, str):
+        match = re.search(r"T(\d{2}:\d{2}:\d{2})", captured_at)
+        if match:
+            return match.group(1)
+    seconds = max(0, int(offset))
+    return f"{seconds // 3600:02d}:{seconds // 60 % 60:02d}:{seconds % 60:02d}"
+
+
+def _parse_codex_events(lines: list[str]) -> list[TrajectoryEvent]:
+    events: list[TrajectoryEvent] = []
+    started_items: set[str] = set()
+    active_phase = "investigation"
+
+    for line_number, line in enumerate(lines, 1):
+        try:
+            record = json.loads(line)
+        except (json.JSONDecodeError, TypeError):
+            continue
+        if not isinstance(record, dict):
+            continue
+
+        event_type = str(record.get("type") or "")
+        if event_type in {"error", "turn.failed"}:
+            metadata = record.get("_cybergym")
+            metadata = metadata if isinstance(metadata, dict) else {}
+            elapsed = metadata.get("elapsed_seconds")
+            offset = (
+                float(elapsed)
+                if isinstance(elapsed, (int, float))
+                else float(len(events))
+            )
+            error_detail = record.get("message") or record.get("error") or record
+            detail = (
+                error_detail
+                if isinstance(error_detail, str)
+                else json.dumps(error_detail, ensure_ascii=False, indent=2)
+            )
+            title = next(
+                (line.strip() for line in detail.splitlines() if line.strip()),
+                "Codex execution failed",
+            )
+            events.append(
+                TrajectoryEvent(
+                    timestamp=_codex_timestamp(metadata, offset),
+                    offset_seconds=offset,
+                    kind="observation",
+                    action_type="Error",
+                    title=title[:140],
+                    detail=detail,
+                    phase=active_phase,
+                    line=line_number,
+                )
+            )
+            continue
+
+        item = record.get("item")
+        if event_type not in {"item.started", "item.completed"} or not isinstance(
+            item, dict
+        ):
+            continue
+
+        item_type = str(item.get("type") or "item")
+        item_id = str(item.get("id") or "")
+        if event_type == "item.started":
+            if item_id:
+                started_items.add(item_id)
+            kind = "action"
+        elif item_type == "command_execution" and item_id in started_items:
+            kind = "observation"
+        else:
+            kind = "action"
+
+        action_types = {
+            "agent_message": "AgentMessage",
+            "command_execution": "CommandExecution",
+            "file_change": "FileChange",
+            "mcp_tool_call": "McpToolCall",
+            "reasoning": "Reasoning",
+            "web_search": "WebSearch",
+        }
+        action_type = action_types.get(
+            item_type,
+            "".join(part.title() for part in item_type.split("_")) or "Item",
+        )
+        title = _codex_event_title(item_type, item)
+        detail = json.dumps(item, ensure_ascii=False, indent=2, sort_keys=True)
+        if kind == "action":
+            if item_type == "file_change":
+                active_phase = "patch"
+            elif item_type == "agent_message" and events:
+                active_phase = _phase_for_action(action_type, title, detail)
+                if active_phase == "investigation":
+                    active_phase = events[-1].phase
+            else:
+                active_phase = _phase_for_action(action_type, title, detail)
+
+        metadata = record.get("_cybergym")
+        metadata = metadata if isinstance(metadata, dict) else {}
+        elapsed = metadata.get("elapsed_seconds")
+        offset = (
+            float(elapsed)
+            if isinstance(elapsed, (int, float))
+            else float(len(events))
+        )
+        events.append(
+            TrajectoryEvent(
+                timestamp=_codex_timestamp(metadata, offset),
+                offset_seconds=offset,
+                kind=kind,
+                action_type=action_type,
+                title=title,
+                detail=detail,
+                phase=active_phase,
+                line=line_number,
+            )
+        )
+
+    return events
+
+
 def _build_steps(
     events: list[TrajectoryEvent], duration_seconds: float | None
 ) -> list[TrajectoryStep]:
@@ -431,8 +584,12 @@ def _validation(lines: list[str]) -> list[ValidationOutcome]:
     return [outcomes[stage] for stage in sorted(outcomes)]
 
 
-def _artifact_flags(events: list[TrajectoryEvent], lines: list[str], validation: list[ValidationOutcome]) -> dict[str, bool]:
-    action_text = "\n".join(event.detail.lower() for event in events if event.kind == "action")
+def _artifact_flags(
+    events: list[TrajectoryEvent],
+    lines: list[str],
+    validation: list[ValidationOutcome],
+) -> dict[str, bool]:
+    action_text = "\n".join(event.detail.lower() for event in events)
     poc = "/output/poc.bin" in action_text
     patch = "/output/fix.patch" in action_text
     all_text = "\n".join(lines).lower()
@@ -448,6 +605,42 @@ def _artifact_flags(events: list[TrajectoryEvent], lines: list[str], validation:
     return {"poc": poc, "patch": patch}
 
 
+def _summary_context(source: Path) -> dict[str, Any]:
+    if source.suffix != ".jsonl":
+        return {}
+    summary_path = source.parent.parent / "summary.json"
+    if not summary_path.is_file():
+        return {}
+    try:
+        summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return summary if isinstance(summary, dict) else {}
+
+
+def _summary_validation(summary: dict[str, Any]) -> list[ValidationOutcome]:
+    attempts = summary.get("attempts")
+    if (
+        not isinstance(attempts, list)
+        or not attempts
+        or not isinstance(attempts[-1], dict)
+    ):
+        return []
+    outcomes: list[ValidationOutcome] = []
+    for stage in range(1, 5):
+        status = attempts[-1].get(f"stage{stage}")
+        if isinstance(status, str):
+            outcomes.append(
+                ValidationOutcome(
+                    stage=stage,
+                    status=status,
+                    detail=f"Runner result for stage {stage}",
+                    line=0,
+                )
+            )
+    return outcomes
+
+
 def _parse_trajectory_lines(
     source: Path,
     lines: list[str],
@@ -455,29 +648,42 @@ def _parse_trajectory_lines(
     line_offset: int = 0,
 ) -> Trajectory:
     """Parse the lines for one runner session."""
-    task = _first_match(lines, r"^Task:\s*(.+)$")
-    agent = _first_match(lines, r"^Agent:\s*(.+)$")
-    model = _first_match(lines, r"^Model:\s*(.+)$")
-    prompt_style = _first_match(lines, r"^Prompt style:\s*(.+)$")
+    summary = _summary_context(source)
+    task = _first_match(lines, r"^Task:\s*(.+)$") or summary.get("task")
+    agent = _first_match(lines, r"^Agent:\s*(.+)$") or summary.get("agent")
+    model = _first_match(lines, r"^Model:\s*(.+)$") or summary.get("model")
+    prompt_style = _first_match(lines, r"^Prompt style:\s*(.+)$") or summary.get(
+        "prompt_style"
+    )
     status_matches = [
         match.group(1).upper()
         for line in lines
         if (match := re.match(r"^Status:\s*(\S+)", line))
     ]
-    status = status_matches[-1] if status_matches else "UNKNOWN"
+    summary_status = summary.get("status")
+    status = (
+        status_matches[-1]
+        if status_matches
+        else str(summary_status or "UNKNOWN").upper()
+    )
 
     timeout_text = _first_match(lines, r"^Timeout:\s*([0-9.]+)s")
-    timeout_seconds = float(timeout_text) if timeout_text else None
+    timeout_seconds = float(timeout_text) if timeout_text else summary.get("timeout")
     timing_matches = [
         match
         for line in lines
         if (match := re.search(r"Agent:\s*([0-9.]+)s.*?exit=(-?\d+)", line))
     ]
-    duration_seconds = float(timing_matches[-1].group(1)) if timing_matches else None
+    duration_seconds = (
+        float(timing_matches[-1].group(1))
+        if timing_matches
+        else summary.get("duration_seconds")
+    )
     exit_code = int(timing_matches[-1].group(2)) if timing_matches else None
 
-    events = _parse_events(lines)
-    validation = _validation(lines)
+    codex_events = _parse_codex_events(lines)
+    events = codex_events if agent == "codex" or codex_events else _parse_events(lines)
+    validation = _validation(lines) or _summary_validation(summary)
     trajectory = Trajectory(
         source=str(source),
         task=task,
@@ -542,7 +748,7 @@ def _session_starts(lines: list[str]) -> list[int]:
 def parse_trajectories(
     path: Path | str, idle_gap_seconds: float = 60.0
 ) -> list[Trajectory]:
-    """Parse every OpenHands runner session in one ``*_run.log`` file.
+    """Parse every runner session in one log or Codex JSONL file.
 
     Batch output can append a new session to an existing log. Each returned
     trajectory has metadata, events, timing, and validation from only its own
