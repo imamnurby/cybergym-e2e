@@ -15,6 +15,7 @@ Presets:
   qwen              OpenHands with Qwen 3.6 27B
   openhands-gpt55   OpenHands with GPT-5.5
   codex-gpt55       Codex with GPT-5.5
+  codex-gpt54-sub   Codex with GPT-5.4 and ChatGPT subscription auth
   deepseek          OpenHands with DeepSeek V4 Pro
   opus45            OpenHands with Claude Opus 4.5
   opus46            OpenHands with Claude Opus 4.6
@@ -27,6 +28,7 @@ Defaults:
 Environment overrides:
   AGENT_OUTPUT_DIR, MAX_ATTEMPTS, MAX_BUDGET_PER_TASK, TIMEOUT
   OPENAI_BASE_URL, OPENAI_API_KEY, OPENAI_MODEL_ID
+  CODEX_AUTH_FILE
   DEEPSEEK_BASE_URL, DEEPSEEK_API_KEY, DEEPSEEK_MODEL_ID
   ANTHROPIC_BASE_URL, ANTHROPIC_API_KEY, ANTHROPIC_MODEL_ID
   PREFLIGHT_ONLY=1 checks access without starting an experiment.
@@ -34,7 +36,7 @@ EOF
 }
 
 list_presets() {
-    printf '%s\n' qwen openhands-gpt55 codex-gpt55 deepseek opus45 opus46 sonnet5
+    printf '%s\n' qwen openhands-gpt55 codex-gpt55 codex-gpt54-sub deepseek opus45 opus46 sonnet5
 }
 
 if [[ $# -eq 0 ]]; then
@@ -105,6 +107,18 @@ case "$PRESET" in
         export MAX_BUDGET_PER_TASK="${MAX_BUDGET_PER_TASK:-10}"
         export AGENT_OUTPUT_DIR="${AGENT_OUTPUT_DIR:-agent_output_codex_gpt55}"
         PREFLIGHT_KIND=openai
+        ;;
+    codex-gpt54-sub)
+        PRESET_NAME="Codex with GPT-5.4 and ChatGPT subscription auth"
+        export AGENT=codex
+        export MODEL_PROVIDER=openai
+        export OPENAI_MODEL_ID="${OPENAI_MODEL_ID:-gpt-5.4}"
+        export CODEX_AUTH_MODE=chatgpt
+        export CODEX_AUTH_FILE="${CODEX_AUTH_FILE:-$HOME/.codex/auth.json}"
+        export MAX_BUDGET_PER_TASK="${MAX_BUDGET_PER_TASK:-0}"
+        export AGENT_OUTPUT_DIR="${AGENT_OUTPUT_DIR:-agent_output_codex_gpt54_sub}"
+        unset OPENAI_API_KEY OPENAI_BASE_URL
+        PREFLIGHT_KIND=codex_chatgpt
         ;;
     deepseek)
         PRESET_NAME="OpenHands with DeepSeek V4 Pro"
@@ -196,6 +210,19 @@ case "$PREFLIGHT_KIND" in
         fi
         MODEL_ID="$OPENAI_MODEL_ID"
         ENDPOINT="$OPENAI_BASE_URL"
+        ;;
+    codex_chatgpt)
+        if [[ "$MAX_PARALLEL" != "1" ]]; then
+            echo "ERROR: ChatGPT subscription auth currently requires max_parallel=1 to avoid credential refresh races." >&2
+            exit 1
+        fi
+        if [[ ! -s "$CODEX_AUTH_FILE" ]]; then
+            echo "ERROR: Codex auth file does not exist or is empty: $CODEX_AUTH_FILE" >&2
+            echo "Run 'codex login' with ChatGPT, then try again." >&2
+            exit 1
+        fi
+        MODEL_ID="$OPENAI_MODEL_ID"
+        ENDPOINT="ChatGPT subscription"
         ;;
     deepseek)
         if [[ -z "${DEEPSEEK_API_KEY:-}" ]]; then

@@ -618,6 +618,42 @@ def _copy_openhands_trajectories(container_id, trajectory_dir):
     return True
 
 
+def _persist_codex_auth(container_id, auth_file):
+    """Persist refreshed file-based Codex credentials without exposing them."""
+    auth_file = Path(auth_file).expanduser().resolve()
+    temp_fd, temp_name = tempfile.mkstemp(
+        prefix=".codex-auth-",
+        dir=str(auth_file.parent),
+    )
+    os.close(temp_fd)
+    temp_path = Path(temp_name)
+
+    try:
+        result = subprocess.run(
+            [
+                "docker",
+                "cp",
+                f"{container_id}:/root/.codex/auth.json",
+                str(temp_path),
+            ],
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode != 0:
+            detail = result.stderr.strip() or "unknown Docker copy error"
+            raise RuntimeError(f"Could not persist refreshed Codex credentials: {detail}")
+
+        with temp_path.open() as auth_stream:
+            refreshed_auth = json.load(auth_stream)
+        if not isinstance(refreshed_auth, dict) or not refreshed_auth:
+            raise RuntimeError("Refreshed Codex credentials are not a non-empty JSON object")
+
+        temp_path.chmod(0o600)
+        os.replace(temp_path, auth_file)
+    finally:
+        temp_path.unlink(missing_ok=True)
+
+
 def _execute_codex(container_id, prompt, output_file, args):
     """Execute Codex agent and return exit code.
     
@@ -656,23 +692,55 @@ def _execute_codex(container_id, prompt, output_file, args):
         else llm_model
     )
 
-    # prepare auth.json
-    print("Preparing Codex auth in container")
-    openai_key = env["OPENAI_API_KEY"]
-    exec_run(
-        container_id,
-        f'''cat <<EOF >"$HOME/.codex/auth.json"
+    subscription_auth = args.codex_auth_mode == "chatgpt"
+    if subscription_auth:
+        auth_file = Path(args.codex_auth_file).expanduser().resolve()
+        if not auth_file.is_file() or auth_file.stat().st_size == 0:
+            raise RuntimeError(
+                f"Codex auth file does not exist or is empty: {auth_file}"
+            )
+
+        print("Preparing ChatGPT subscription auth in container")
+        exec_run(
+            container_id,
+            'mkdir -p "$HOME/.codex"',
+            "Preparing Codex auth directory",
+            check=True,
+        )
+        copy_to_container(container_id, auth_file, "/root/.codex/auth.json")
+        exec_run(
+            container_id,
+            '''chmod 600 "$HOME/.codex/auth.json"
+cat <<'EOF' >>"$HOME/.codex/config.toml"
+web_search = "disabled"
+cli_auth_credentials_store = "file"
+forced_login_method = "chatgpt"
+EOF''',
+            "Configuring ChatGPT subscription auth",
+            check=True,
+        )
+        codex_env = {
+            key: value
+            for key, value in env.items()
+            if key not in {"OPENAI_API_KEY", "OPENAI_BASE_URL"}
+        }
+    else:
+        print("Preparing Codex API key auth in container")
+        openai_key = env["OPENAI_API_KEY"]
+        exec_run(
+            container_id,
+            f'''cat <<EOF >"$HOME/.codex/auth.json"
 {{
   "OPENAI_API_KEY": "{openai_key}"
 }}
 EOF''',
-        "Creating auth.json"
-    )
-    if env.get("OPENAI_BASE_URL"):
-        openai_base_url = env["OPENAI_BASE_URL"]
-        exec_run(
-            container_id,
-            f'''cat <<EOF >>"$HOME/.codex/config.toml"
+            "Creating auth.json",
+        )
+        if env.get("OPENAI_BASE_URL"):
+            openai_base_url = env["OPENAI_BASE_URL"]
+            exec_run(
+                container_id,
+                f'''cat <<EOF >>"$HOME/.codex/config.toml"
 openai_base_url = "{openai_base_url}"
 web_search = "disabled"
 model_provider = "openai_http"
@@ -682,28 +750,33 @@ name = "OpenAI HTTP"
 base_url = "{openai_base_url}"
 supports_websockets = false
 EOF''',
-            "Adding OPENAI_BASE_URL to config.toml"
-        )
-    else:
-        exec_run(
-            container_id,
-            f'''cat <<EOF >>"$HOME/.codex/config.toml"
+                "Adding OPENAI_BASE_URL to config.toml",
+            )
+        else:
+            exec_run(
+                container_id,
+                '''cat <<EOF >>"$HOME/.codex/config.toml"
 web_search = "disabled"
 EOF''',
-            "Adding OPENAI_BASE_URL to config.toml"
-        )
+                "Configuring Codex",
+            )
+        codex_env = env
 
     # Run Codex
     print("  Running Codex...")
     print(f"  Output: {output_file}")
 
-    code, stdout, stderr = exec_run(
-        container_id,
-        f"source $HOME/.nvm/nvm.sh && codex exec --model {shlex.quote(codex_model_id)} --json --dangerously-bypass-approvals-and-sandbox --skip-git-repo-check -- {escaped_prompt}",
-        "Running agent",
-        timeout=args.timeout,
-        env=env,
-    )
+    try:
+        code, stdout, stderr = exec_run(
+            container_id,
+            f"source $HOME/.nvm/nvm.sh && codex exec --model {shlex.quote(codex_model_id)} --json --dangerously-bypass-approvals-and-sandbox --skip-git-repo-check -- {escaped_prompt}",
+            "Running agent",
+            timeout=args.timeout,
+            env=codex_env,
+        )
+    finally:
+        if subscription_auth:
+            _persist_codex_auth(container_id, auth_file)
 
     # Write output to file
     with open(output_file, "w") as f:
@@ -1107,6 +1180,10 @@ Examples:
     parser.add_argument("--litellm-model-id", default="openai/gpt-5.2-codex")
     parser.add_argument("--openai-model-id", default="gpt-5.6-sol",
                         help="Model ID used with --model-provider openai")
+    parser.add_argument("--codex-auth-mode", choices=["api-key", "chatgpt"], default="api-key",
+                        help="Codex authentication method (default: api-key)")
+    parser.add_argument("--codex-auth-file", default="",
+                        help="File-based Codex credentials used with --codex-auth-mode chatgpt")
     parser.add_argument("--deepseek-model-id", default="deepseek-v4-pro",
                         help="Model ID used with --model-provider deepseek")
     parser.add_argument("--max-budget-per-task", type=float, default=10.0,

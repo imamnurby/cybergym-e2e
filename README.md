@@ -64,12 +64,19 @@ Use the unified runner to select an agent and model preset:
 # Run Claude Opus 4.6 on instance.txt with two workers
 ./run_e2e.sh opus46 instance.txt 2
 
+# Run Codex with GPT-5.4 and ChatGPT subscription auth
+./run_e2e.sh codex-gpt54-sub succesful_instance.txt 1
+
 # Run DeepSeek V4 Pro with OpenHands
 export DEEPSEEK_API_KEY=...
 ./run_e2e.sh deepseek instance.txt 2
 ```
 
-Available presets are `qwen`, `openhands-gpt55`, `codex-gpt55`, `deepseek`, `opus45`, `opus46`, and `sonnet5`.
+Available presets are `qwen`, `openhands-gpt55`, `codex-gpt55`, `codex-gpt54-sub`, `deepseek`, `opus45`, `opus46`, and `sonnet5`.
+The `codex-gpt54-sub` preset reads file-based ChatGPT credentials from `~/.codex/auth.json` by default.
+Run `codex login` first, or set `CODEX_AUTH_FILE` to another file-based credential cache.
+The subscription preset requires one worker so refreshed credentials can be persisted safely between tasks.
+Treat the credential file like a password and never add it to the repository.
 The DeepSeek preset uses `deepseek-v4-pro` and `https://api.deepseek.com` by default.
 Set `DEEPSEEK_MODEL_ID` or `DEEPSEEK_BASE_URL` to override either value.
 Run `./run_e2e.sh --help` for configuration options.

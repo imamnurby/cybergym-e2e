@@ -12,6 +12,6 @@ source "$HOME/.nvm/nvm.sh"
 nvm install 22
 npm -v
 
-npm install -g @openai/codex@0.118.0
+npm install -g @openai/codex@0.147.0
 
 mkdir -p "$HOME/.codex"
