@@ -300,6 +300,7 @@ def call_llm(
     model_provider="anthropic",
     litellm_model_id=None,
     openai_model_id=None,
+    deepseek_model_id=None,
     bedrock_model_id=None,
     anthropic_model_id=None,
     aws_region="us-west-2",
@@ -331,12 +332,30 @@ def call_llm(
                 messages=[{"role": "user", "content": prompt}],
             )
             return response.content[0].text
-        elif model_provider in {"litellm", "openai"}:
+        elif model_provider in {"litellm", "openai", "deepseek"}:
             import openai
 
-            client = openai.OpenAI()
+            if model_provider == "deepseek":
+                if not deepseek_model_id:
+                    raise ValueError(
+                        "deepseek_model_id is required for the deepseek provider"
+                    )
+                client = openai.OpenAI(
+                    api_key=os.getenv("DEEPSEEK_API_KEY", ""),
+                    base_url=os.getenv(
+                        "DEEPSEEK_BASE_URL", "https://api.deepseek.com"
+                    ),
+                )
+                model_id = deepseek_model_id
+            else:
+                client = openai.OpenAI()
+                model_id = (
+                    openai_model_id
+                    if model_provider == "openai"
+                    else litellm_model_id
+                )
             response = client.chat.completions.create(
-                model=openai_model_id if model_provider == "openai" else litellm_model_id,
+                model=model_id,
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=max_tokens,
                 temperature=0.0,
@@ -353,6 +372,7 @@ def get_llm_env(
     model_provider,
     litellm_model_id=None,
     openai_model_id=None,
+    deepseek_model_id=None,
     bedrock_model_id=None,
     anthropic_model_id=None,
     aws_region="us-west-2",
@@ -363,9 +383,11 @@ def get_llm_env(
     Get LLM environment variables for OpenHands.
 
     Args:
-        model_provider: "bedrock", "anthropic", "litellm", or "openai"
+        model_provider: "bedrock", "anthropic", "litellm", "openai", or
+            "deepseek"
         litellm_model_id: LiteLLM model ID (required if model_provider="litellm")
         openai_model_id: Model ID (required if model_provider="openai")
+        deepseek_model_id: Model ID (required if model_provider="deepseek")
         bedrock_model_id: Bedrock model ID (required if model_provider="bedrock")
         anthropic_model_id: Anthropic model ID (required if model_provider="anthropic")
         aws_region: AWS region for Bedrock
@@ -409,6 +431,36 @@ def get_llm_env(
         }
         if os.getenv("OPENAI_BASE_URL"):
             env["OPENAI_BASE_URL"] = os.getenv("OPENAI_BASE_URL")
+        return env, llm_model
+    elif model_provider == "deepseek":
+        if not deepseek_model_id:
+            raise ValueError(
+                "deepseek_model_id is required for the deepseek provider"
+            )
+        deepseek_api_key = os.getenv("DEEPSEEK_API_KEY", "")
+        deepseek_base_url = os.getenv(
+            "DEEPSEEK_BASE_URL", "https://api.deepseek.com"
+        )
+        llm_model = f"deepseek/{deepseek_model_id}"
+        pricing = {
+            "deepseek-v4-flash": ("1.4e-7", "2.8e-7"),
+            "deepseek-v4-pro": ("4.35e-7", "8.7e-7"),
+        }
+        env = {
+            **base_env,
+            "LLM_MODEL": llm_model,
+            "LLM_API_KEY": deepseek_api_key,
+            "LLM_BASE_URL": deepseek_base_url,
+            "DEEPSEEK_API_KEY": deepseek_api_key,
+            "DEEPSEEK_BASE_URL": deepseek_base_url,
+            "MAX_BUDGET_PER_TASK": str(max_budget_per_task),
+            "LLM_REASONING_EFFORT": "high",
+            "LLM_DROP_PARAMS": "true",
+        }
+        if deepseek_model_id in pricing:
+            input_cost, output_cost = pricing[deepseek_model_id]
+            env["LLM_INPUT_COST_PER_TOKEN"] = input_cost
+            env["LLM_OUTPUT_COST_PER_TOKEN"] = output_cost
         return env, llm_model
     elif model_provider == "bedrock":
         try:

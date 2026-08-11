@@ -15,7 +15,8 @@ def _runner_env(tmp_path: Path) -> dict[str, str]:
         "#!/usr/bin/env bash\n"
         "printf '%s\\n' "
         "'{\"data\":[{\"id\":\"gpt-5.5\"},'"
-        "'{\"id\":\"Qwen/Qwen3.6-27B\"}],\"type\":\"model\"}'\n"
+        "'{\"id\":\"Qwen/Qwen3.6-27B\"},'"
+        "'{\"id\":\"deepseek-v4-pro\"}],\"type\":\"model\"}'\n"
     )
     fake_curl.chmod(0o755)
 
@@ -24,6 +25,8 @@ def _runner_env(tmp_path: Path) -> dict[str, str]:
         "AGENT_OUTPUT_DIR",
         "ANTHROPIC_BASE_URL",
         "ANTHROPIC_MODEL_ID",
+        "DEEPSEEK_BASE_URL",
+        "DEEPSEEK_MODEL_ID",
         "MAX_BUDGET_PER_TASK",
         "OPENAI_BASE_URL",
         "OPENAI_MODEL_ID",
@@ -32,6 +35,7 @@ def _runner_env(tmp_path: Path) -> dict[str, str]:
     env.update(
         {
             "ANTHROPIC_API_KEY": "test-anthropic-key",
+            "DEEPSEEK_API_KEY": "test-deepseek-key",
             "OPENAI_API_KEY": "test-openai-key",
             "PATH": f"{tmp_path}:{env['PATH']}",
             "PREFLIGHT_ONLY": "1",
@@ -64,6 +68,14 @@ class RunE2ETests(unittest.TestCase):
             "openai",
             "gpt-5.5",
             "agent_output_codex_gpt55",
+            "10",
+        ),
+        (
+            "deepseek",
+            "openhands",
+            "deepseek",
+            "deepseek-v4-pro",
+            "agent_output_openhands_deepseek",
             "10",
         ),
         (
@@ -132,6 +144,22 @@ class RunE2ETests(unittest.TestCase):
 
         self.assertEqual(result.returncode, 2)
         self.assertIn("ERROR: Unknown preset: unknown", result.stderr)
+
+    def test_deepseek_requires_api_key(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            env = _runner_env(Path(temp_dir))
+            env.pop("DEEPSEEK_API_KEY")
+            result = subprocess.run(
+                ["bash", str(RUNNER), "deepseek"],
+                cwd=REPO_ROOT,
+                env=env,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("ERROR: DEEPSEEK_API_KEY is not set.", result.stderr)
 
     def test_invalid_worker_count_is_rejected(self) -> None:
         for max_parallel in ("0", "two", "-1"):

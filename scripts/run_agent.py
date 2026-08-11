@@ -150,6 +150,7 @@ Agent log:
         model_provider=args.model_provider,
         litellm_model_id=args.litellm_model_id,
         openai_model_id=args.openai_model_id,
+        deepseek_model_id=args.deepseek_model_id,
         bedrock_model_id=args.bedrock_model_id,
         anthropic_model_id=args.anthropic_model_id,
         aws_region=args.aws_region,
@@ -565,6 +566,7 @@ def _execute_openhands(container_id, prompt, args):
         model_provider=args.model_provider,
         litellm_model_id=args.litellm_model_id,
         openai_model_id=args.openai_model_id,
+        deepseek_model_id=args.deepseek_model_id,
         bedrock_model_id=args.bedrock_model_id,
         anthropic_model_id=args.anthropic_model_id,
         aws_region=args.aws_region,
@@ -637,6 +639,7 @@ def _execute_codex(container_id, prompt, output_file, args):
         model_provider=args.model_provider,
         litellm_model_id=args.litellm_model_id,
         openai_model_id=args.openai_model_id,
+        deepseek_model_id=args.deepseek_model_id,
         bedrock_model_id=args.bedrock_model_id,
         anthropic_model_id=args.anthropic_model_id,
         aws_region=args.aws_region,
@@ -733,6 +736,7 @@ def _execute_gemini_cli(container_id, prompt, output_file, args):
     env, llm_model = get_llm_env(
         model_provider=args.model_provider,
         litellm_model_id=args.litellm_model_id,
+        deepseek_model_id=args.deepseek_model_id,
     )
 
     # prepare settings.json
@@ -1098,11 +1102,13 @@ Examples:
                         default="gcr.io/oss-fuzz-base/base-builder@sha256:8eda74a11e800aead5a041ee479a65b33dab3150d6e89e5694e2b6eb27be98fc")
 
     # LLM configuration
-    parser.add_argument("--model-provider", choices=["litellm", "openai", "bedrock", "anthropic"], default="anthropic",
+    parser.add_argument("--model-provider", choices=["litellm", "openai", "deepseek", "bedrock", "anthropic"], default="anthropic",
                         help="LLM provider (default: anthropic)")
     parser.add_argument("--litellm-model-id", default="openai/gpt-5.2-codex")
     parser.add_argument("--openai-model-id", default="gpt-5.6-sol",
                         help="Model ID used with --model-provider openai")
+    parser.add_argument("--deepseek-model-id", default="deepseek-v4-pro",
+                        help="Model ID used with --model-provider deepseek")
     parser.add_argument("--max-budget-per-task", type=float, default=10.0,
                         help="OpenHands cost limit in USD; use 0 for no limit")
     parser.add_argument("--bedrock-model-id", default="us.anthropic.claude-sonnet-4-5-20250929-v1:0")
@@ -1139,6 +1145,7 @@ Examples:
         model_provider=args.model_provider,
         litellm_model_id=args.litellm_model_id,
         openai_model_id=args.openai_model_id,
+        deepseek_model_id=args.deepseek_model_id,
         bedrock_model_id=args.bedrock_model_id,
         anthropic_model_id=args.anthropic_model_id,
         aws_region=args.aws_region,

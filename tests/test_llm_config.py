@@ -46,6 +46,41 @@ class GetLlmEnvTests(unittest.TestCase):
         self.assertEqual(env["ANTHROPIC_API_KEY"], "test-key")
         self.assertEqual(env["MAX_BUDGET_PER_TASK"], "10.0")
 
+    def test_deepseek_configuration_has_provider_model_and_budget(self):
+        deepseek_env = {
+            "DEEPSEEK_API_KEY": "test-key",
+            "DEEPSEEK_BASE_URL": "https://deepseek.example",
+        }
+        with patch.dict(os.environ, deepseek_env, clear=True):
+            env, model = get_llm_env(
+                model_provider="deepseek",
+                deepseek_model_id="deepseek-v4-pro",
+                max_budget_per_task=10.0,
+            )
+
+        self.assertEqual(model, "deepseek/deepseek-v4-pro")
+        self.assertEqual(env["LLM_MODEL"], "deepseek/deepseek-v4-pro")
+        self.assertEqual(env["LLM_API_KEY"], "test-key")
+        self.assertEqual(env["DEEPSEEK_API_KEY"], "test-key")
+        self.assertEqual(env["LLM_BASE_URL"], "https://deepseek.example")
+        self.assertEqual(env["DEEPSEEK_BASE_URL"], "https://deepseek.example")
+        self.assertEqual(env["MAX_BUDGET_PER_TASK"], "10.0")
+        self.assertEqual(env["LLM_REASONING_EFFORT"], "high")
+        self.assertEqual(env["LLM_INPUT_COST_PER_TOKEN"], "4.35e-7")
+        self.assertEqual(env["LLM_OUTPUT_COST_PER_TOKEN"], "8.7e-7")
+        self.assertEqual(env["LLM_DROP_PARAMS"], "true")
+
+    def test_deepseek_uses_official_default_base_url(self):
+        with patch.dict(os.environ, {"DEEPSEEK_API_KEY": "test-key"}, clear=True):
+            env, _ = get_llm_env(
+                model_provider="deepseek",
+                deepseek_model_id="deepseek-v4-flash",
+            )
+
+        self.assertEqual(env["LLM_BASE_URL"], "https://api.deepseek.com")
+        self.assertEqual(env["LLM_INPUT_COST_PER_TOKEN"], "1.4e-7")
+        self.assertEqual(env["LLM_OUTPUT_COST_PER_TOKEN"], "2.8e-7")
+
     def test_zero_budget_disables_openhands_limit(self):
         with patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"}, clear=True):
             env, _ = get_llm_env(

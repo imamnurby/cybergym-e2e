@@ -15,6 +15,7 @@ Presets:
   qwen              OpenHands with Qwen 3.6 27B
   openhands-gpt55   OpenHands with GPT-5.5
   codex-gpt55       Codex with GPT-5.5
+  deepseek          OpenHands with DeepSeek V4 Pro
   opus45            OpenHands with Claude Opus 4.5
   opus46            OpenHands with Claude Opus 4.6
   sonnet5           OpenHands with Claude Sonnet 5
@@ -26,13 +27,14 @@ Defaults:
 Environment overrides:
   AGENT_OUTPUT_DIR, MAX_ATTEMPTS, MAX_BUDGET_PER_TASK, TIMEOUT
   OPENAI_BASE_URL, OPENAI_API_KEY, OPENAI_MODEL_ID
+  DEEPSEEK_BASE_URL, DEEPSEEK_API_KEY, DEEPSEEK_MODEL_ID
   ANTHROPIC_BASE_URL, ANTHROPIC_API_KEY, ANTHROPIC_MODEL_ID
   PREFLIGHT_ONLY=1 checks access without starting an experiment.
 EOF
 }
 
 list_presets() {
-    printf '%s\n' qwen openhands-gpt55 codex-gpt55 opus45 opus46 sonnet5
+    printf '%s\n' qwen openhands-gpt55 codex-gpt55 deepseek opus45 opus46 sonnet5
 }
 
 if [[ $# -eq 0 ]]; then
@@ -103,6 +105,16 @@ case "$PRESET" in
         export MAX_BUDGET_PER_TASK="${MAX_BUDGET_PER_TASK:-10}"
         export AGENT_OUTPUT_DIR="${AGENT_OUTPUT_DIR:-agent_output_codex_gpt55}"
         PREFLIGHT_KIND=openai
+        ;;
+    deepseek)
+        PRESET_NAME="OpenHands with DeepSeek V4 Pro"
+        export AGENT=openhands
+        export MODEL_PROVIDER=deepseek
+        export DEEPSEEK_BASE_URL="${DEEPSEEK_BASE_URL:-https://api.deepseek.com}"
+        export DEEPSEEK_MODEL_ID="${DEEPSEEK_MODEL_ID:-deepseek-v4-pro}"
+        export MAX_BUDGET_PER_TASK="${MAX_BUDGET_PER_TASK:-10}"
+        export AGENT_OUTPUT_DIR="${AGENT_OUTPUT_DIR:-agent_output_openhands_deepseek}"
+        PREFLIGHT_KIND=deepseek
         ;;
     opus45)
         PRESET_NAME="OpenHands with Claude Opus 4.5"
@@ -184,6 +196,25 @@ case "$PREFLIGHT_KIND" in
         fi
         MODEL_ID="$OPENAI_MODEL_ID"
         ENDPOINT="$OPENAI_BASE_URL"
+        ;;
+    deepseek)
+        if [[ -z "${DEEPSEEK_API_KEY:-}" ]]; then
+            echo "ERROR: DEEPSEEK_API_KEY is not set." >&2
+            exit 1
+        fi
+        MODELS_URL="${DEEPSEEK_BASE_URL%/}/models"
+        MODEL_LIST="$(curl -fsS --max-time 30 \
+            -H "Authorization: Bearer $DEEPSEEK_API_KEY" \
+            "$MODELS_URL")" || {
+            echo "ERROR: Cannot query the DeepSeek models endpoint at $MODELS_URL" >&2
+            exit 1
+        }
+        if ! grep -Eq "\"id\"[[:space:]]*:[[:space:]]*\"$DEEPSEEK_MODEL_ID\"" <<<"$MODEL_LIST"; then
+            echo "ERROR: Model $DEEPSEEK_MODEL_ID is not available to this DeepSeek account." >&2
+            exit 1
+        fi
+        MODEL_ID="$DEEPSEEK_MODEL_ID"
+        ENDPOINT="$DEEPSEEK_BASE_URL"
         ;;
     anthropic)
         if [[ -z "${ANTHROPIC_API_KEY:-}" ]]; then

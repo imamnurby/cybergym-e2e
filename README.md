@@ -63,9 +63,15 @@ Use the unified runner to select an agent and model preset:
 
 # Run Claude Opus 4.6 on instance.txt with two workers
 ./run_e2e.sh opus46 instance.txt 2
+
+# Run DeepSeek V4 Pro with OpenHands
+export DEEPSEEK_API_KEY=...
+./run_e2e.sh deepseek instance.txt 2
 ```
 
-Available presets are `qwen`, `openhands-gpt55`, `codex-gpt55`, `opus45`, `opus46`, and `sonnet5`.
+Available presets are `qwen`, `openhands-gpt55`, `codex-gpt55`, `deepseek`, `opus45`, `opus46`, and `sonnet5`.
+The DeepSeek preset uses `deepseek-v4-pro` and `https://api.deepseek.com` by default.
+Set `DEEPSEEK_MODEL_ID` or `DEEPSEEK_BASE_URL` to override either value.
 Run `./run_e2e.sh --help` for configuration options.
 The task file defaults to `instance.txt`, and the worker count defaults to `2`.
 
