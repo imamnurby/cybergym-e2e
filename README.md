@@ -60,6 +60,30 @@ python scripts/run_agent.py curl/arvo_66012 --mode patch-only
 MODE=e2e MAX_PARALLEL=4 bash scripts/batch_run.sh scripts/tasks.txt
 ```
 
+### Trajectory Report
+
+Generate a self-contained HTML visualization from one or more OpenHands run logs or output directories:
+
+```bash
+python scripts/trajectory_report.py \
+  agent_output_openhands_qwen_test \
+  --output trajectory_report_qwen.html \
+  --title "Qwen trajectory report"
+```
+
+The report shows high-level phases, validation results, idle gaps, notable termination events, and expandable log evidence.
+Each run also has a detailed action browser with phase and event-kind filters, timestamps, source lines, previews, and expandable full details.
+The report includes comparison, status filtering, and text search without external JavaScript or CSS dependencies.
+
+Use the same command with another output directory to inspect a different model run:
+
+```bash
+python scripts/trajectory_report.py \
+  agent_output_openhands_opus_test \
+  --output trajectory_report_opus45.html \
+  --title "Claude Opus 4.5 trajectory report"
+```
+
 ## Citation
 
 If you use this project in your research, please cite:

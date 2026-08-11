@@ -10,7 +10,8 @@ apt-get install -y curl git build-essential tmux
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Add uv to PATH for current session
-source $HOME/.local/bin/env
+# shellcheck source=/dev/null
+source "$HOME/.local/bin/env"
 
 # Install Python 3.13 using uv
 uv python install 3.13
@@ -21,7 +22,8 @@ mkdir -p /opt
 uv venv $OPENHANDS_VENV --python 3.13
 
 # Activate the virtual environment and install OpenHands
-source $OPENHANDS_VENV/bin/activate
+# shellcheck source=/dev/null
+source "$OPENHANDS_VENV/bin/activate"
 
 # Set SKIP_VSCODE_BUILD to true to skip VSCode extension build for OpenHands
 export SKIP_VSCODE_BUILD=true
@@ -29,3 +31,29 @@ export SKIP_VSCODE_BUILD=true
 # Use 1.0.0 which has Claude Opus 4.5 fix
 # Staggered starts in batch_run.sh should avoid runtime contention issues
 uv pip install --prerelease=allow openhands-ai==1.0.0
+
+# OpenHands 1.0.0 predates Opus 4.6 and Sonnet 5 request constraints.
+python - <<'PY'
+from pathlib import Path
+
+path = Path('/opt/openhands-venv/lib/python3.13/site-packages/openhands/llm/llm.py')
+source = path.read_text()
+opus_old = "            or ('claude-opus-4-5' in _model_lower)\n"
+opus_new = opus_old + "            or ('claude-opus-4-6' in _model_lower)\n"
+if opus_old not in source:
+    raise RuntimeError(f'Cannot apply Opus 4.6 compatibility patch to {path}')
+source = source.replace(opus_old, opus_new, 1)
+
+completion_marker = "        # Add completion_kwargs if present\n"
+sonnet_patch = """        # Sonnet 5 rejects non-default sampling parameters.
+        if 'claude-sonnet-5' in _model_lower:
+            kwargs.pop('temperature', None)
+            kwargs.pop('top_p', None)
+            kwargs.pop('top_k', None)
+
+"""
+if completion_marker not in source:
+    raise RuntimeError(f'Cannot apply Sonnet 5 compatibility patch to {path}')
+source = source.replace(completion_marker, sonnet_patch + completion_marker, 1)
+path.write_text(source)
+PY

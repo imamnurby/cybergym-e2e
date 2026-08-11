@@ -449,6 +449,7 @@ def get_llm_env(
             "LLM_MODEL": llm_model,
             "LLM_API_KEY": anthropic_api_key,
             "ANTHROPIC_API_KEY": anthropic_api_key,
+            "MAX_BUDGET_PER_TASK": str(max_budget_per_task),
         }
         return env, llm_model
     elif model_provider == "litellm":

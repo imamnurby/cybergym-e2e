@@ -74,14 +74,37 @@ if [ -z "${AGENT_OUTPUT_DIR:-}" ]; then
     AGENT_OUTPUT_DIR="agent_output_${AGENT}"
 fi
 
-# Set prompt style based on agent
-if [ "$AGENT" = "openhands" ]; then
-    PROMPT_STYLE="no-test"
-else
-    PROMPT_STYLE="iterative"
+# Set prompt style based on agent unless explicitly overridden
+if [[ -z "${PROMPT_STYLE:-}" ]]; then
+    if [[ "$AGENT" = "openhands" ]]; then
+        PROMPT_STYLE="no-test"
+    else
+        PROMPT_STYLE="iterative"
+    fi
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_VENV_PYTHON="$SCRIPT_DIR/../.venv/bin/python"
+if [[ -z "${PYTHON_BIN:-}" ]]; then
+    if [[ -x "$PROJECT_VENV_PYTHON" ]]; then
+        PYTHON_BIN="$PROJECT_VENV_PYTHON"
+    else
+        PYTHON_BIN="$(command -v python3)"
+    fi
+fi
+
+# Print all descendants of a process. Restricting cleanup to this process tree
+# prevents Ctrl-C in one batch from terminating other concurrent batches.
+get_descendants() {
+    local parent="$1"
+    local child
+
+    while read -r child; do
+        [[ -n "$child" ]] || continue
+        echo "$child"
+        get_descendants "$child"
+    done < <(pgrep -P "$parent" 2>/dev/null || true)
+}
 
 # Cleanup function
 CLEANUP_DONE=0
@@ -94,14 +117,14 @@ cleanup() {
     echo ""
     echo "[$(date +%H:%M:%S)] Received shutdown signal, cleaning up..."
 
-    # Kill all child processes
-    pkill -P $$ 2>/dev/null || true
-
-    # Kill run_agent processes started by us
-    pkill -f "run_agent.py.*--aws-profile $AWS_PROFILE" 2>/dev/null || true
-
-    # Kill Docker containers FIXME: This may kill unrelated containers
-    docker ps -q --filter "name=claude-agent" 2>/dev/null | xargs -r docker kill 2>/dev/null || true
+    # Signal only processes belonging to this batch. The previous process-name
+    # match also selected run_agent.py processes from unrelated Qwen/Opus runs.
+    local -a descendants=()
+    mapfile -t descendants < <(get_descendants $$)
+    if (( ${#descendants[@]} > 0 )); then
+        # SIGINT lets run_agent.py execute its container cleanup in finally blocks.
+        kill -INT "${descendants[@]}" 2>/dev/null || true
+    fi
 
     echo "[$(date +%H:%M:%S)] Cleanup complete"
     exit 130
@@ -127,18 +150,21 @@ echo "Max parallel: $MAX_PARALLEL"
 echo "Max attempts: $MAX_ATTEMPTS"
 echo "Timeout: ${TIMEOUT}s ($((TIMEOUT/60))m)"
 echo "Model Provider: $MODEL_PROVIDER"
-echo "LiteLLM Model: $LITELLM_MODEL_ID"
-echo "OpenAI-compatible Model: $OPENAI_MODEL_ID"
+case "$MODEL_PROVIDER" in
+    anthropic) echo "Model: $ANTHROPIC_MODEL_ID" ;;
+    bedrock)   echo "Model: $BEDROCK_MODEL_ID" ;;
+    litellm)   echo "Model: $LITELLM_MODEL_ID" ;;
+    openai)    echo "Model: $OPENAI_MODEL_ID" ;;
+esac
 echo "Max budget per task: $MAX_BUDGET_PER_TASK"
-echo "Bedrock Model: $BEDROCK_MODEL_ID"
-echo "Anthropic Model: $ANTHROPIC_MODEL_ID"
+echo "Python: $PYTHON_BIN"
 echo "Mode: $MODE"
 echo "AWS Profile: $AWS_PROFILE"
 echo "Output dir: $AGENT_OUTPUT_DIR"
 echo "=========================================="
 echo ""
 
-mkdir -p $AGENT_OUTPUT_DIR
+mkdir -p "$AGENT_OUTPUT_DIR"
 
 # Function to run a single task
 run_task() {
@@ -149,7 +175,7 @@ run_task() {
 
     # Run agent and redirect output directly to log file
     local log_file="$AGENT_OUTPUT_DIR/${task_safe}_run.log"
-    python3 "$SCRIPT_DIR/run_agent.py" "$task" \
+    "$PYTHON_BIN" "$SCRIPT_DIR/run_agent.py" "$task" \
         --agent "$AGENT" \
         --prompt-style "$PROMPT_STYLE" \
         --mode "$MODE" \
@@ -181,7 +207,7 @@ run_task() {
 }
 
 export -f run_task
-export SCRIPT_DIR AGENT_OUTPUT_DIR MODE MAX_ATTEMPTS AWS_PROFILE AWS_REGION LITELLM_MODEL_ID OPENAI_MODEL_ID MAX_BUDGET_PER_TASK BEDROCK_MODEL_ID ANTHROPIC_MODEL_ID AGENT PROMPT_STYLE TIMEOUT MODEL_PROVIDER ANTHROPIC_API_KEY OPENAI_API_KEY OPENAI_BASE_URL
+export SCRIPT_DIR PYTHON_BIN AGENT_OUTPUT_DIR MODE MAX_ATTEMPTS AWS_PROFILE AWS_REGION LITELLM_MODEL_ID OPENAI_MODEL_ID MAX_BUDGET_PER_TASK BEDROCK_MODEL_ID ANTHROPIC_MODEL_ID AGENT PROMPT_STYLE TIMEOUT MODEL_PROVIDER ANTHROPIC_API_KEY OPENAI_API_KEY OPENAI_BASE_URL
 
 # Run tasks in parallel
 echo "Starting parallel execution..."
@@ -189,7 +215,7 @@ echo ""
 
 START_TIME=$(date +%s)
 
-cat "$TASKS_FILE" | xargs -P "$MAX_PARALLEL" -I {} bash -c 'run_task "$@"' _ {}
+xargs -P "$MAX_PARALLEL" -I {} bash -c 'run_task "$@"' _ {} < "$TASKS_FILE"
 
 END_TIME=$(date +%s)
 DURATION=$((END_TIME - START_TIME))
@@ -200,7 +226,7 @@ echo "Batch complete! (${DURATION}s / $((DURATION/60))m)"
 echo "=========================================="
 
 # Summarize results
-python3 -c "
+"$PYTHON_BIN" -c "
 import json
 import os
 

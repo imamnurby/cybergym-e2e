@@ -590,6 +590,32 @@ def _execute_openhands(container_id, prompt, args):
     return code, stdout, stderr
 
 
+def _write_openhands_log(output_file, stdout, stderr):
+    """Write the OpenHands process output to the per-attempt log."""
+    with open(output_file, "w") as f:
+        if stdout:
+            f.write(stdout)
+        if stderr:
+            if stdout:
+                f.write("\n")
+            f.write("--- stderr ---\n")
+            f.write(stderr)
+
+
+def _copy_openhands_trajectories(container_id, trajectory_dir):
+    """Copy OpenHands JSON trajectories from the agent container."""
+    result = subprocess.run(
+        ["docker", "cp", f"{container_id}:/agent_trajectory/.", str(trajectory_dir)],
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip() or "unknown error"
+        print(f"  Warning: Could not copy OpenHands JSON trajectories: {detail}")
+        return False
+    return True
+
+
 def _execute_codex(container_id, prompt, output_file, args):
     """Execute Codex agent and return exit code.
     
@@ -610,6 +636,21 @@ def _execute_codex(container_id, prompt, output_file, args):
     env, llm_model = get_llm_env(
         model_provider=args.model_provider,
         litellm_model_id=args.litellm_model_id,
+        openai_model_id=args.openai_model_id,
+        bedrock_model_id=args.bedrock_model_id,
+        anthropic_model_id=args.anthropic_model_id,
+        aws_region=args.aws_region,
+        aws_profile=args.aws_profile,
+        max_budget_per_task=args.max_budget_per_task,
+    )
+
+    # get_llm_env uses LiteLLM's provider/model notation. The Codex CLI sends
+    # the model value directly to the configured provider, so direct OpenAI
+    # requests must use the raw OpenAI model ID.
+    codex_model_id = (
+        args.openai_model_id
+        if args.model_provider == "openai"
+        else llm_model
     )
 
     # prepare auth.json
@@ -655,7 +696,7 @@ EOF''',
 
     code, stdout, stderr = exec_run(
         container_id,
-        f"source $HOME/.nvm/nvm.sh && codex exec --model {llm_model} --json --dangerously-bypass-approvals-and-sandbox --skip-git-repo-check -- {escaped_prompt}",
+        f"source $HOME/.nvm/nvm.sh && codex exec --model {shlex.quote(codex_model_id)} --json --dangerously-bypass-approvals-and-sandbox --skip-git-repo-check -- {escaped_prompt}",
         "Running agent",
         timeout=args.timeout,
         env=env,
@@ -806,12 +847,20 @@ def run_agent(args, config, script_path, data_path, prompt, attempt, work_dir, t
         elif args.agent == "gemini-cli":
             exit_code = _execute_gemini_cli(container_id, prompt, str(log_file), args)
         else:  # openhands
-            exit_code, stdout, stderr = _execute_openhands(container_id, prompt, args)
-            # OpenHands may have separate trajectory files
-            subprocess.run(
-                ["docker", "cp", f"{container_id}:/agent_trajectory/.", str(trajectory_dir)],
-                capture_output=True
+            # OpenHands uses os.path.isdir() to distinguish a directory from a
+            # single trajectory file, so this directory must exist before launch.
+            exec_run(
+                container_id,
+                "mkdir -p /agent_trajectory",
+                "Preparing trajectory directory",
+                verbose=False,
+                check=True,
             )
+            exit_code, stdout, stderr = _execute_openhands(container_id, prompt, args)
+            # Keep a readable process log even if OpenHands does not emit a JSON
+            # trajectory, such as when setup or the first model request fails.
+            _write_openhands_log(log_file, stdout, stderr)
+            _copy_openhands_trajectories(container_id, trajectory_dir)
         agent_exec_time = time.time() - agent_exec_start
 
         # Copy output files from container
