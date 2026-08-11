@@ -55,10 +55,19 @@ python scripts/run_agent.py curl/arvo_66012 --mode patch-only
 
 ### Batch Run
 
+Use the unified runner to select an agent and model preset:
+
 ```bash
-# Run all tasks in a task file
-MODE=e2e MAX_PARALLEL=4 bash scripts/batch_run.sh scripts/tasks.txt
+# Run Qwen on the tasks in easy_instance.txt with one worker
+./run_e2e.sh qwen easy_instance.txt 1
+
+# Run Claude Opus 4.6 on instance.txt with two workers
+./run_e2e.sh opus46 instance.txt 2
 ```
+
+Available presets are `qwen`, `openhands-gpt55`, `codex-gpt55`, `opus45`, `opus46`, and `sonnet5`.
+Run `./run_e2e.sh --help` for configuration options.
+The task file defaults to `instance.txt`, and the worker count defaults to `2`.
 
 ### Trajectory Report
 
