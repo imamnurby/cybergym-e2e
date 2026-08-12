@@ -23,6 +23,7 @@
 #   AWS_PROFILE=...                AWS profile
 #   AWS_REGION=...                 AWS region (default: us-west-2)
 #   AGENT_OUTPUT_DIR=...           Output directory
+#   BATCH_RUN_ID=...               Run directory name (default: timestamp and process ID)
 #   TIMEOUT=N                      Agent timeout in seconds (default: 5400)
 #
 # Examples:
@@ -83,6 +84,12 @@ TIMEOUT="${TIMEOUT:-5400}"
 if [ -z "${AGENT_OUTPUT_DIR:-}" ]; then
     AGENT_OUTPUT_DIR="agent_output_${AGENT}"
 fi
+
+# Keep every batch isolated so reruns cannot overwrite task logs or results.
+# The process ID prevents collisions when two batches start in the same second.
+AGENT_OUTPUT_ROOT="$AGENT_OUTPUT_DIR"
+BATCH_RUN_ID="${BATCH_RUN_ID:-$(date +%Y%m%d_%H%M%S)_$$}"
+AGENT_OUTPUT_DIR="$AGENT_OUTPUT_ROOT/$BATCH_RUN_ID"
 
 # Set prompt style based on agent unless explicitly overridden
 if [[ -z "${PROMPT_STYLE:-}" ]]; then
