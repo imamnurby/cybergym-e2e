@@ -14,8 +14,8 @@ sys.path.insert(0, str(SCRIPTS_DIR))
 import run_agent
 
 
-def _codex_args(auth_file: Path) -> SimpleNamespace:
-    return SimpleNamespace(
+def _codex_args(auth_file: Path, **overrides) -> SimpleNamespace:
+    values = dict(
         model_provider="openai",
         litellm_model_id="openai/gpt-5.2-codex",
         openai_model_id="gpt-5.4",
@@ -27,11 +27,65 @@ def _codex_args(auth_file: Path) -> SimpleNamespace:
         max_budget_per_task=0,
         codex_auth_mode="chatgpt",
         codex_auth_file=str(auth_file),
+        codex_reasoning_effort="",
+        codex_supports_reasoning_summaries="auto",
         timeout=30,
     )
+    values.update(overrides)
+    return SimpleNamespace(**values)
 
 
 class CodexSubscriptionAuthTests(unittest.TestCase):
+    def test_qwen_api_configuration_sets_responses_and_reasoning(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output_file = Path(temp_dir) / "trajectory.jsonl"
+            exec_calls = []
+
+            def fake_exec(container_id, command, description=None, **kwargs):
+                exec_calls.append((command, description, kwargs))
+                return 0, "", ""
+
+            qwen_env = {
+                "OPENAI_API_KEY": "EMPTY",
+                "OPENAI_BASE_URL": "http://172.17.0.1:8100/v1",
+            }
+            args = _codex_args(
+                Path(temp_dir) / "unused-auth.json",
+                openai_model_id="Qwen/Qwen3.6-27B",
+                codex_auth_mode="api-key",
+                codex_reasoning_effort="medium",
+                codex_supports_reasoning_summaries="false",
+            )
+
+            with (
+                patch.object(
+                    run_agent,
+                    "get_llm_env",
+                    return_value=(qwen_env, "openai/Qwen/Qwen3.6-27B"),
+                ),
+                patch.object(run_agent, "exec_run", side_effect=fake_exec),
+                patch.object(
+                    run_agent, "_stream_codex_exec", return_value=0
+                ) as stream_exec,
+            ):
+                result = run_agent._execute_codex(
+                    "container-id",
+                    "find and fix the bug",
+                    output_file,
+                    args,
+                )
+
+            self.assertEqual(result, 0)
+            all_commands = "\n".join(call[0] for call in exec_calls)
+            self.assertIn('model_reasoning_effort = "medium"', all_commands)
+            self.assertIn(
+                "model_supports_reasoning_summaries = false", all_commands
+            )
+            self.assertIn('wire_api = "responses"', all_commands)
+            self.assertIn(
+                "--model Qwen/Qwen3.6-27B", stream_exec.call_args.args[1]
+            )
+
     def test_subscription_auth_does_not_pass_api_credentials(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             auth_file = Path(temp_dir) / "auth.json"

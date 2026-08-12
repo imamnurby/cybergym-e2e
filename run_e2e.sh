@@ -13,6 +13,7 @@ Usage:
 
 Presets:
   qwen              OpenHands with Qwen 3.6 27B
+  codex-qwen        Codex with Qwen 3.6 27B
   openhands-gpt55   OpenHands with GPT-5.5
   codex-gpt55       Codex with GPT-5.5
   codex-gpt54-sub   Codex with GPT-5.4 and ChatGPT subscription auth
@@ -28,6 +29,7 @@ Defaults:
 Environment overrides:
   AGENT_OUTPUT_DIR, MAX_ATTEMPTS, MAX_BUDGET_PER_TASK, TIMEOUT
   OPENAI_BASE_URL, OPENAI_API_KEY, OPENAI_MODEL_ID
+  CODEX_REASONING_EFFORT, CODEX_SUPPORTS_REASONING_SUMMARIES
   CODEX_AUTH_FILE
   DEEPSEEK_BASE_URL, DEEPSEEK_API_KEY, DEEPSEEK_MODEL_ID
   ANTHROPIC_BASE_URL, ANTHROPIC_API_KEY, ANTHROPIC_MODEL_ID
@@ -36,7 +38,7 @@ EOF
 }
 
 list_presets() {
-    printf '%s\n' qwen openhands-gpt55 codex-gpt55 codex-gpt54-sub deepseek opus45 opus46 sonnet5
+    printf '%s\n' qwen codex-qwen openhands-gpt55 codex-gpt55 codex-gpt54-sub deepseek opus45 opus46 sonnet5
 }
 
 if [[ $# -eq 0 ]]; then
@@ -86,6 +88,19 @@ case "$PRESET" in
         export OPENAI_MODEL_ID="${OPENAI_MODEL_ID:-Qwen/Qwen3.6-27B}"
         export MAX_BUDGET_PER_TASK="${MAX_BUDGET_PER_TASK:-0}"
         export AGENT_OUTPUT_DIR="${AGENT_OUTPUT_DIR:-agent_output_openhands_qwen}"
+        PREFLIGHT_KIND=qwen
+        ;;
+    codex-qwen)
+        PRESET_NAME="Codex with Qwen 3.6 27B"
+        export AGENT=codex
+        export MODEL_PROVIDER=openai
+        export OPENAI_BASE_URL="${OPENAI_BASE_URL:-http://172.17.0.1:8100/v1}"
+        export OPENAI_API_KEY="${OPENAI_API_KEY:-EMPTY}"
+        export OPENAI_MODEL_ID="${OPENAI_MODEL_ID:-Qwen/Qwen3.6-27B}"
+        export CODEX_REASONING_EFFORT="${CODEX_REASONING_EFFORT:-medium}"
+        export CODEX_SUPPORTS_REASONING_SUMMARIES="${CODEX_SUPPORTS_REASONING_SUMMARIES:-false}"
+        export MAX_BUDGET_PER_TASK="${MAX_BUDGET_PER_TASK:-0}"
+        export AGENT_OUTPUT_DIR="${AGENT_OUTPUT_DIR:-agent_output_codex_qwen}"
         PREFLIGHT_KIND=qwen
         ;;
     openhands-gpt55)
@@ -273,6 +288,9 @@ echo "Model: $MODEL_ID"
 echo "Tasks: $TASKS_FILE"
 echo "Parallel tasks: $MAX_PARALLEL"
 echo "Maximum budget per task: $MAX_BUDGET_PER_TASK"
+if [[ "$AGENT" == "codex" && -n "${CODEX_REASONING_EFFORT:-}" ]]; then
+    echo "Codex reasoning effort: $CODEX_REASONING_EFFORT"
+fi
 echo "Output: $AGENT_OUTPUT_DIR"
 
 if [[ "${PREFLIGHT_ONLY:-0}" == "1" ]]; then

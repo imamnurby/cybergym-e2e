@@ -760,6 +760,18 @@ def _execute_codex(container_id, prompt, output_file, args):
         else llm_model
     )
 
+    codex_config_lines = []
+    if args.codex_reasoning_effort:
+        codex_config_lines.append(
+            f'model_reasoning_effort = "{args.codex_reasoning_effort}"'
+        )
+    if args.codex_supports_reasoning_summaries != "auto":
+        codex_config_lines.append(
+            "model_supports_reasoning_summaries = "
+            + args.codex_supports_reasoning_summaries
+        )
+    codex_config_overrides = "\n".join(codex_config_lines)
+
     subscription_auth = args.codex_auth_mode == "chatgpt"
     if subscription_auth:
         auth_file = Path(args.codex_auth_file).expanduser().resolve()
@@ -778,11 +790,12 @@ def _execute_codex(container_id, prompt, output_file, args):
         copy_to_container(container_id, auth_file, "/root/.codex/auth.json")
         exec_run(
             container_id,
-            '''chmod 600 "$HOME/.codex/auth.json"
+            f'''chmod 600 "$HOME/.codex/auth.json"
 cat <<'EOF' >>"$HOME/.codex/config.toml"
 web_search = "disabled"
 cli_auth_credentials_store = "file"
 forced_login_method = "chatgpt"
+{codex_config_overrides}
 EOF''',
             "Configuring ChatGPT subscription auth",
             check=True,
@@ -812,19 +825,22 @@ EOF''',
 openai_base_url = "{openai_base_url}"
 web_search = "disabled"
 model_provider = "openai_http"
+{codex_config_overrides}
 
 [model_providers.openai_http]
 name = "OpenAI HTTP"
 base_url = "{openai_base_url}"
 supports_websockets = false
+wire_api = "responses"
 EOF''',
                 "Adding OPENAI_BASE_URL to config.toml",
             )
         else:
             exec_run(
                 container_id,
-                '''cat <<EOF >>"$HOME/.codex/config.toml"
+                f'''cat <<EOF >>"$HOME/.codex/config.toml"
 web_search = "disabled"
+{codex_config_overrides}
 EOF''',
                 "Configuring Codex",
             )
@@ -1254,6 +1270,18 @@ Examples:
                         help="Codex authentication method (default: api-key)")
     parser.add_argument("--codex-auth-file", default="",
                         help="File-based Codex credentials used with --codex-auth-mode chatgpt")
+    parser.add_argument(
+        "--codex-reasoning-effort",
+        choices=["", "minimal", "low", "medium", "high", "xhigh", "max", "ultra"],
+        default="",
+        help="Optional reasoning effort passed to Codex",
+    )
+    parser.add_argument(
+        "--codex-supports-reasoning-summaries",
+        choices=["auto", "true", "false"],
+        default="auto",
+        help="Override whether the selected Codex model supports reasoning summaries",
+    )
     parser.add_argument("--deepseek-model-id", default="deepseek-v4-pro",
                         help="Model ID used with --model-provider deepseek")
     parser.add_argument("--max-budget-per-task", type=float, default=10.0,

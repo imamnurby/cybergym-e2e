@@ -32,6 +32,8 @@ def _runner_env(tmp_path: Path) -> dict[str, str]:
         "OPENAI_MODEL_ID",
         "CODEX_AUTH_FILE",
         "CODEX_AUTH_MODE",
+        "CODEX_REASONING_EFFORT",
+        "CODEX_SUPPORTS_REASONING_SUMMARIES",
     ):
         env.pop(name, None)
     env.update(
@@ -56,6 +58,14 @@ class RunE2ETests(unittest.TestCase):
             "openai",
             "Qwen/Qwen3.6-27B",
             "agent_output_openhands_qwen",
+            "0",
+        ),
+        (
+            "codex-qwen",
+            "codex",
+            "openai",
+            "Qwen/Qwen3.6-27B",
+            "agent_output_codex_qwen",
             "0",
         ),
         (
@@ -141,6 +151,10 @@ class RunE2ETests(unittest.TestCase):
                         f"Maximum budget per task: {budget}", result.stdout
                     )
                     self.assertIn(f"Output: {output_dir}", result.stdout)
+                    if preset == "codex-qwen":
+                        self.assertIn(
+                            "Codex reasoning effort: medium", result.stdout
+                        )
                     self.assertIn("Tasks: ", result.stdout)
                     self.assertIn("instance.txt", result.stdout)
                     self.assertIn(

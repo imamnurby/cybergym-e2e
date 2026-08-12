@@ -61,6 +61,9 @@ Use the unified runner to select an agent and model preset:
 # Run Qwen on the tasks in easy_instance.txt with one worker
 ./run_e2e.sh qwen easy_instance.txt 1
 
+# Run Codex with Qwen on the same tasks
+./run_e2e.sh codex-qwen easy_instance.txt 1
+
 # Run Claude Opus 4.6 on instance.txt with two workers
 ./run_e2e.sh opus46 instance.txt 2
 
@@ -72,7 +75,7 @@ export DEEPSEEK_API_KEY=...
 ./run_e2e.sh deepseek instance.txt 2
 ```
 
-Available presets are `qwen`, `openhands-gpt55`, `codex-gpt55`, `codex-gpt54-sub`, `deepseek`, `opus45`, `opus46`, and `sonnet5`.
+Available presets are `qwen`, `codex-qwen`, `openhands-gpt55`, `codex-gpt55`, `codex-gpt54-sub`, `deepseek`, `opus45`, `opus46`, and `sonnet5`.
 The `codex-gpt54-sub` preset reads file-based ChatGPT credentials from `~/.codex/auth.json` by default.
 Run `codex login` first, or set `CODEX_AUTH_FILE` to another file-based credential cache.
 The subscription preset requires one worker so refreshed credentials can be persisted safely between tasks.
