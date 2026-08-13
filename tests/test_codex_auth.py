@@ -54,7 +54,7 @@ class CodexSubscriptionAuthTests(unittest.TestCase):
                 openai_model_id="Qwen/Qwen3.6-27B",
                 codex_auth_mode="api-key",
                 codex_reasoning_effort="medium",
-                codex_supports_reasoning_summaries="false",
+                codex_supports_reasoning_summaries="true",
             )
 
             with (
@@ -79,7 +79,7 @@ class CodexSubscriptionAuthTests(unittest.TestCase):
             all_commands = "\n".join(call[0] for call in exec_calls)
             self.assertIn('model_reasoning_effort = "medium"', all_commands)
             self.assertIn(
-                "model_supports_reasoning_summaries = false", all_commands
+                "model_supports_reasoning_summaries = true", all_commands
             )
             self.assertIn('wire_api = "responses"', all_commands)
             self.assertIn(
