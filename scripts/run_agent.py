@@ -5,6 +5,7 @@ Unified agent runner for cybergym-e2e.
 Supports multiple agent backends:
   - claude-code: Uses Claude Code CLI (supports iterative testing)
   - openhands: Uses OpenHands agent framework
+  - pi: Uses the Pi coding agent with an OpenAI-compatible model
 
 Modes:
   - e2e: Agent receives only source, generates both PoC and patch
@@ -47,6 +48,10 @@ from utils import (
 
 # Default timeout in seconds (90 minutes)
 DEFAULT_TIMEOUT = 5400
+
+PI_PROVIDER_ID = "local-qwen"
+PI_CONTEXT_WINDOW = 262144
+PI_MAX_OUTPUT_TOKENS = 131072
 
 
 # =============================================================================
@@ -447,7 +452,7 @@ def install(container_id, agent_id, scripts_dir=None, model_id=None):
 
     Args:
         container_id: Docker container ID
-        agent_id: Agent identifier ("claude-code", "openhands")
+        agent_id: Agent identifier ("claude-code", "openhands", "pi")
         scripts_dir: Path to scripts directory (needed for openhands)
         model_id: Model ID (for future use)
     """
@@ -490,6 +495,17 @@ chown -R agent:agent /src /output /out /work 2>/dev/null || true
         )
         if code != 0:
             raise Exception(f"Failed to install Codex: {stderr[-500:]}")
+
+    elif agent_id == "pi":
+        if not scripts_dir:
+            raise ValueError("scripts_dir required for pi")
+        copy_to_container(container_id, scripts_dir / "install_pi.sh", "/install_pi.sh")
+        code, _, stderr = exec_run(
+            container_id, "bash -eux /install_pi.sh",
+            "Installing Pi", timeout=1800
+        )
+        if code != 0:
+            raise Exception(f"Failed to install Pi: {stderr[-500:]}")
 
     elif agent_id == "gemini-cli":
         if not scripts_dir:
@@ -654,7 +670,7 @@ def _persist_codex_auth(container_id, auth_file):
         temp_path.unlink(missing_ok=True)
 
 
-def _annotate_codex_event(raw_line, started_at):
+def _annotate_json_event(raw_line, started_at):
     """Add local capture timing while keeping each output line valid JSON."""
     stripped = raw_line.rstrip("\r\n")
     captured = {
@@ -671,6 +687,11 @@ def _annotate_codex_event(raw_line, started_at):
     return json.dumps(event, ensure_ascii=False, separators=(",", ":"))
 
 
+def _annotate_codex_event(raw_line, started_at):
+    """Keep the existing Codex-specific helper as a compatibility wrapper."""
+    return _annotate_json_event(raw_line, started_at)
+
+
 def _stream_codex_exec(
     container_id,
     command,
@@ -680,6 +701,27 @@ def _stream_codex_exec(
     env,
 ):
     """Run Codex and stream timestamped JSONL to disk and batch stdout."""
+    return _stream_json_exec(
+        container_id,
+        command,
+        output_file,
+        stderr_file,
+        timeout,
+        env,
+        agent_name="Codex",
+    )
+
+
+def _stream_json_exec(
+    container_id,
+    command,
+    output_file,
+    stderr_file,
+    timeout,
+    env,
+    agent_name,
+):
+    """Run an agent and stream timestamped JSONL to disk and batch stdout."""
     docker_command = ["docker", "exec"]
     for key, value in env.items():
         if value:
@@ -703,13 +745,13 @@ def _stream_codex_exec(
         )
         if process.stdout is None:
             process.kill()
-            raise RuntimeError("Could not capture Codex JSONL output")
+            raise RuntimeError(f"Could not capture {agent_name} JSONL output")
 
         with process.stdout:
             for raw_line in process.stdout:
                 if not raw_line.strip():
                     continue
-                event_line = _annotate_codex_event(raw_line, started_at)
+                event_line = _annotate_json_event(raw_line, started_at)
                 output_stream.write(event_line + "\n")
                 output_stream.flush()
                 print(event_line, flush=True)
@@ -874,6 +916,153 @@ EOF''',
     return code
 
 
+def _pi_models_config(base_url, model_id):
+    """Build the Pi provider configuration for the local Qwen server."""
+    return {
+        "providers": {
+            PI_PROVIDER_ID: {
+                "baseUrl": base_url,
+                "api": "openai-completions",
+                "apiKey": "$OPENAI_API_KEY",
+                "authHeader": True,
+                "compat": {
+                    "supportsStore": False,
+                    "supportsDeveloperRole": False,
+                    "supportsReasoningEffort": False,
+                    "maxTokensField": "max_tokens",
+                    "thinkingFormat": "qwen-chat-template",
+                    "supportsUsageInStreaming": True,
+                },
+                "models": [
+                    {
+                        "id": model_id,
+                        "name": model_id,
+                        "reasoning": True,
+                        "input": ["text"],
+                        "contextWindow": PI_CONTEXT_WINDOW,
+                        "maxTokens": PI_MAX_OUTPUT_TOKENS,
+                        "cost": {
+                            "input": 0,
+                            "output": 0,
+                            "cacheRead": 0,
+                            "cacheWrite": 0,
+                        },
+                    }
+                ],
+            }
+        }
+    }
+
+
+def _copy_pi_session(container_id, destination):
+    """Copy the native Pi session to the stable per-attempt path."""
+    destination = Path(destination)
+    code, _, stderr = exec_run(
+        container_id,
+        """set -e
+session_file="$(find /agent_trajectory/pi_sessions -type f -name '*.jsonl' -print -quit)"
+test -n "$session_file"
+cp "$session_file" /agent_trajectory/attempt.session.jsonl
+""",
+        "Locating native Pi session",
+        verbose=False,
+    )
+    if code != 0:
+        detail = stderr.strip() or "Pi did not create a native session file"
+        print(f"  Warning: Could not locate native Pi session: {detail}")
+        return False
+
+    result = subprocess.run(
+        [
+            "docker",
+            "cp",
+            f"{container_id}:/agent_trajectory/attempt.session.jsonl",
+            str(destination),
+        ],
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip() or "unknown error"
+        print(f"  Warning: Could not copy native Pi session: {detail}")
+        return False
+    return True
+
+
+def _execute_pi(container_id, prompt, output_file, args):
+    """Execute Pi with the configured OpenAI-compatible Qwen model."""
+    if args.model_provider != "openai":
+        raise RuntimeError("Pi currently requires --model-provider openai")
+
+    env, _ = get_llm_env(
+        model_provider=args.model_provider,
+        litellm_model_id=args.litellm_model_id,
+        openai_model_id=args.openai_model_id,
+        deepseek_model_id=args.deepseek_model_id,
+        bedrock_model_id=args.bedrock_model_id,
+        anthropic_model_id=args.anthropic_model_id,
+        aws_region=args.aws_region,
+        aws_profile=args.aws_profile,
+        max_budget_per_task=args.max_budget_per_task,
+    )
+    base_url = env.get("OPENAI_BASE_URL")
+    if not base_url:
+        raise RuntimeError("Pi requires OPENAI_BASE_URL")
+
+    models_config = json.dumps(
+        _pi_models_config(base_url, args.openai_model_id),
+        indent=2,
+    )
+    exec_run(
+        container_id,
+        f"""mkdir -p \"$HOME/.pi/agent\" /agent_trajectory/pi_sessions
+cat <<'PI_MODELS_EOF' >\"$HOME/.pi/agent/models.json\"
+{models_config}
+PI_MODELS_EOF
+""",
+        "Configuring Pi model provider",
+        check=True,
+    )
+
+    pi_env = {
+        **env,
+        "PI_OFFLINE": "1",
+        "PI_SKIP_VERSION_CHECK": "1",
+        "PI_TELEMETRY": "0",
+    }
+    stderr_file = str(Path(output_file).with_suffix(".stderr.log"))
+    session_file = str(Path(output_file).with_suffix(".session.jsonl"))
+    print("  Running Pi...")
+    print(f"  Output: {output_file}")
+    print(f"  Native session: {session_file}")
+    print(f"  Stderr: {stderr_file}")
+
+    pi_command = (
+        "source $HOME/.nvm/nvm.sh && cd /src && pi "
+        "--mode json "
+        f"--provider {shlex.quote(PI_PROVIDER_ID)} "
+        f"--model {shlex.quote(args.openai_model_id)} "
+        f"--thinking {shlex.quote(args.pi_thinking_level)} "
+        "--session-dir /agent_trajectory/pi_sessions "
+        "--tools read,bash,edit,write,grep,find,ls "
+        "--no-extensions --no-skills --no-prompt-templates --approve "
+        f"{shlex.quote(prompt)}"
+    )
+    try:
+        code = _stream_json_exec(
+            container_id,
+            pi_command,
+            output_file,
+            stderr_file,
+            args.timeout,
+            pi_env,
+            agent_name="Pi",
+        )
+    finally:
+        _copy_pi_session(container_id, session_file)
+    return code
+
+
 def _execute_gemini_cli(container_id, prompt, output_file, args):
     """Execute Gemini CLI agent and return exit code.
     
@@ -999,7 +1188,7 @@ def run_agent(args, config, script_path, data_path, prompt, attempt, work_dir, t
         install(container_id, args.agent, scripts_dir=scripts_dir)
 
         # Execute agent
-        extension = "jsonl" if args.agent == "codex" else "log"
+        extension = "jsonl" if args.agent in {"codex", "pi"} else "log"
         log_file = trajectory_dir / f"attempt_{attempt}.{extension}"
 
         agent_exec_start = time.time()
@@ -1007,6 +1196,8 @@ def run_agent(args, config, script_path, data_path, prompt, attempt, work_dir, t
             exit_code = _execute_claude_code(container_id, prompt, str(log_file), args)
         elif args.agent == "codex":
             exit_code = _execute_codex(container_id, prompt, str(log_file), args)
+        elif args.agent == "pi":
+            exit_code = _execute_pi(container_id, prompt, str(log_file), args)
         elif args.agent == "gemini-cli":
             exit_code = _execute_gemini_cli(container_id, prompt, str(log_file), args)
         else:  # openhands
@@ -1093,7 +1284,9 @@ def run_agent_loop(args, config, script_path, data_path, run_dir):
             print(f"  Agent: {agent_time:.1f}s ({agent_time/60:.1f}m), exec: {agent_exec_time:.1f}s ({agent_exec_time/60:.1f}m), exit={exit_code}")
 
             # Check for generated files
-            if args.mode == "e2e" and not poc_file.exists():
+            if args.mode == "e2e" and (
+                poc_file is None or not poc_file.exists()
+            ):
                 print("  No PoC generated!")
                 all_attempts.append({
                     "attempt": attempt,
@@ -1108,7 +1301,7 @@ def run_agent_loop(args, config, script_path, data_path, run_dir):
                     feedback = "\n=== Previous Attempt Failed ===\nNo poc.bin was generated."
                 continue
 
-            if not patch_file.exists():
+            if patch_file is None or not patch_file.exists():
                 print("  No patch generated!")
                 all_attempts.append({
                     "attempt": attempt,
@@ -1239,7 +1432,7 @@ Examples:
     parser.add_argument("task_path", help="Task path (e.g., curl/arvo_66012)")
 
     # Agent selection
-    parser.add_argument("--agent", choices=["claude-code", "openhands", "codex", "gemini-cli"], default="claude-code",
+    parser.add_argument("--agent", choices=["claude-code", "openhands", "codex", "pi", "gemini-cli"], default="claude-code",
                         help="Agent backend to use (default: claude-code)")
     parser.add_argument("--prompt-style", choices=["iterative", "no-test"], default="iterative",
                         help="Prompt style: iterative (can test) or no-test (default: iterative)")
@@ -1281,6 +1474,12 @@ Examples:
         choices=["auto", "true", "false"],
         default="auto",
         help="Override whether the selected Codex model supports reasoning summaries",
+    )
+    parser.add_argument(
+        "--pi-thinking-level",
+        choices=["off", "minimal", "low", "medium", "high", "xhigh", "max"],
+        default="medium",
+        help="Pi thinking level (default: medium)",
     )
     parser.add_argument("--deepseek-model-id", default="deepseek-v4-pro",
                         help="Model ID used with --model-provider deepseek")

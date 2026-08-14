@@ -64,6 +64,9 @@ Use the unified runner to select an agent and model preset:
 # Run Codex with Qwen on the same tasks
 ./run_e2e.sh codex-qwen easy_instance.txt 1
 
+# Run Pi with Qwen on the same tasks
+./run_e2e.sh pi-qwen easy_instance.txt 1
+
 # Run Claude Opus 4.6 on instance.txt with two workers
 ./run_e2e.sh opus46 instance.txt 2
 
@@ -75,7 +78,13 @@ export DEEPSEEK_API_KEY=...
 ./run_e2e.sh deepseek instance.txt 2
 ```
 
-Available presets are `qwen`, `codex-qwen`, `openhands-gpt55`, `codex-gpt55`, `codex-gpt54-sub`, `deepseek`, `opus45`, `opus46`, and `sonnet5`.
+Available presets are `qwen`, `codex-qwen`, `pi-qwen`, `openhands-gpt55`, `codex-gpt55`, `codex-gpt54-sub`, `deepseek`, `opus45`, `opus46`, and `sonnet5`.
+The `pi-qwen` preset installs Pi 0.84.1 in each task container and uses the OpenAI-compatible Chat Completions API.
+It uses the built-in Pi coding tools and disables Pi extensions, skills, and prompt templates.
+It still loads repository context files such as `AGENTS.md`.
+The preset checks the model endpoint and sends a required tool-call request before it starts a batch.
+Set `PI_THINKING_LEVEL` to change the default `medium` thinking level.
+The Pi model uses the server's 262,144-token context window and reserves half of it for input by capping one response at 131,072 tokens.
 The `codex-gpt54-sub` preset reads file-based ChatGPT credentials from `~/.codex/auth.json` by default.
 Run `codex login` first, or set `CODEX_AUTH_FILE` to another file-based credential cache.
 The subscription preset requires one worker so refreshed credentials can be persisted safely between tasks.
@@ -100,6 +109,9 @@ The report shows high-level phases, validation results, idle gaps, notable termi
 Each run also has a detailed action browser with phase and event-kind filters, timestamps, source lines, previews, and expandable full details.
 The report includes comparison, status filtering, and text search without external JavaScript or CSS dependencies.
 Codex runs store live newline-delimited JSON in `trajectory/attempt_N.jsonl` and store diagnostic stderr separately in `trajectory/attempt_N.stderr.log`.
+Pi runs use the same raw live JSONL and stderr paths.
+Pi also stores the native session as `trajectory/attempt_N.session.jsonl`.
+The current report parser does not normalize Pi events yet, so use these raw files when you inspect the first integration.
 
 Use the same command with another output directory to inspect a different model run:
 

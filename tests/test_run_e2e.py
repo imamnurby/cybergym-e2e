@@ -13,6 +13,15 @@ def _runner_env(tmp_path: Path) -> dict[str, str]:
     fake_curl = tmp_path / "curl"
     fake_curl.write_text(
         "#!/usr/bin/env bash\n"
+        "for arg in \"$@\"; do\n"
+        "  case \"$arg\" in\n"
+        "    */chat/completions)\n"
+        "      printf '%s\\n' "
+        "'{\"choices\":[{\"message\":{\"tool_calls\":[{\"function\":{\"name\":\"echo_value\",\"arguments\":\"{\\\"value\\\":\\\"ping\\\"}\"}}]}}]}'\n"
+        "      exit 0\n"
+        "      ;;\n"
+        "  esac\n"
+        "done\n"
         "printf '%s\\n' "
         "'{\"data\":[{\"id\":\"gpt-5.5\"},'"
         "'{\"id\":\"Qwen/Qwen3.6-27B\"},'"
@@ -34,6 +43,7 @@ def _runner_env(tmp_path: Path) -> dict[str, str]:
         "CODEX_AUTH_MODE",
         "CODEX_REASONING_EFFORT",
         "CODEX_SUPPORTS_REASONING_SUMMARIES",
+        "PI_THINKING_LEVEL",
     ):
         env.pop(name, None)
     env.update(
@@ -66,6 +76,14 @@ class RunE2ETests(unittest.TestCase):
             "openai",
             "Qwen/Qwen3.6-27B",
             "agent_output_codex_qwen",
+            "0",
+        ),
+        (
+            "pi-qwen",
+            "pi",
+            "openai",
+            "Qwen/Qwen3.6-27B",
+            "agent_output_pi_qwen",
             "0",
         ),
         (
@@ -155,6 +173,8 @@ class RunE2ETests(unittest.TestCase):
                         self.assertIn(
                             "Codex reasoning effort: medium", result.stdout
                         )
+                    if preset == "pi-qwen":
+                        self.assertIn("Pi thinking level: medium", result.stdout)
                     self.assertIn("Tasks: ", result.stdout)
                     self.assertIn("instance.txt", result.stdout)
                     self.assertIn(

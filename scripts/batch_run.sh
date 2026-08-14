@@ -5,7 +5,8 @@
 #   bash scripts/batch_run.sh [tasks_file] [max_parallel] [OPTIONS]
 #
 # Options (via environment variables or positional args):
-#   AGENT=claude-code|openhands    Agent backend (default: claude-code)
+#   AGENT=claude-code|openhands|codex|pi|gemini-cli
+#                                    Agent backend (default: claude-code)
 #   MODE=e2e|patch-only            Mode (default: e2e)
 #   MAX_PARALLEL=N                 Parallel jobs (default: 4)
 #   MAX_ATTEMPTS=N                 Retry attempts (default: 1)
@@ -16,6 +17,7 @@
 #   CODEX_AUTH_FILE=...            File-based Codex credentials for chatgpt mode
 #   CODEX_REASONING_EFFORT=...      Optional Codex reasoning effort
 #   CODEX_SUPPORTS_REASONING_SUMMARIES=auto|true|false
+#   PI_THINKING_LEVEL=...          Pi thinking level (default: medium)
 #   DEEPSEEK_MODEL_ID=...          DeepSeek model ID
 #   MAX_BUDGET_PER_TASK=N          OpenHands cost limit; 0 disables it
 #   BEDROCK_MODEL_ID=...           Bedrock Model ID
@@ -70,6 +72,7 @@ CODEX_AUTH_MODE="${CODEX_AUTH_MODE:-api-key}"
 CODEX_AUTH_FILE="${CODEX_AUTH_FILE:-}"
 CODEX_REASONING_EFFORT="${CODEX_REASONING_EFFORT:-}"
 CODEX_SUPPORTS_REASONING_SUMMARIES="${CODEX_SUPPORTS_REASONING_SUMMARIES:-auto}"
+PI_THINKING_LEVEL="${PI_THINKING_LEVEL:-medium}"
 DEEPSEEK_MODEL_ID="${DEEPSEEK_MODEL_ID:-deepseek-v4-pro}"
 MAX_BUDGET_PER_TASK="${MAX_BUDGET_PER_TASK:-10}"
 BEDROCK_MODEL_ID="${BEDROCK_MODEL_ID:-us.anthropic.claude-sonnet-4-5-20250929-v1:0}"
@@ -175,6 +178,9 @@ case "$MODEL_PROVIDER" in
     deepseek)  echo "Model: $DEEPSEEK_MODEL_ID" ;;
 esac
 echo "Max budget per task: $MAX_BUDGET_PER_TASK"
+if [[ "$AGENT" = "pi" ]]; then
+    echo "Pi thinking level: $PI_THINKING_LEVEL"
+fi
 echo "Python: $PYTHON_BIN"
 echo "Mode: $MODE"
 echo "AWS Profile: $AWS_PROFILE"
@@ -206,6 +212,7 @@ run_task() {
         --codex-auth-file "$CODEX_AUTH_FILE" \
         --codex-reasoning-effort "$CODEX_REASONING_EFFORT" \
         --codex-supports-reasoning-summaries "$CODEX_SUPPORTS_REASONING_SUMMARIES" \
+        --pi-thinking-level "$PI_THINKING_LEVEL" \
         --deepseek-model-id "$DEEPSEEK_MODEL_ID" \
         --max-budget-per-task "$MAX_BUDGET_PER_TASK" \
         --bedrock-model-id "$BEDROCK_MODEL_ID" \
@@ -230,7 +237,7 @@ run_task() {
 }
 
 export -f run_task
-export SCRIPT_DIR PYTHON_BIN AGENT_OUTPUT_DIR MODE MAX_ATTEMPTS AWS_PROFILE AWS_REGION LITELLM_MODEL_ID OPENAI_MODEL_ID CODEX_AUTH_MODE CODEX_AUTH_FILE CODEX_REASONING_EFFORT CODEX_SUPPORTS_REASONING_SUMMARIES DEEPSEEK_MODEL_ID MAX_BUDGET_PER_TASK BEDROCK_MODEL_ID ANTHROPIC_MODEL_ID AGENT PROMPT_STYLE TIMEOUT MODEL_PROVIDER ANTHROPIC_API_KEY OPENAI_API_KEY OPENAI_BASE_URL DEEPSEEK_API_KEY DEEPSEEK_BASE_URL
+export SCRIPT_DIR PYTHON_BIN AGENT_OUTPUT_DIR MODE MAX_ATTEMPTS AWS_PROFILE AWS_REGION LITELLM_MODEL_ID OPENAI_MODEL_ID CODEX_AUTH_MODE CODEX_AUTH_FILE CODEX_REASONING_EFFORT CODEX_SUPPORTS_REASONING_SUMMARIES PI_THINKING_LEVEL DEEPSEEK_MODEL_ID MAX_BUDGET_PER_TASK BEDROCK_MODEL_ID ANTHROPIC_MODEL_ID AGENT PROMPT_STYLE TIMEOUT MODEL_PROVIDER ANTHROPIC_API_KEY OPENAI_API_KEY OPENAI_BASE_URL DEEPSEEK_API_KEY DEEPSEEK_BASE_URL
 
 # Run tasks in parallel
 echo "Starting parallel execution..."

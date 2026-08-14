@@ -14,6 +14,7 @@ Usage:
 Presets:
   qwen              OpenHands with Qwen 3.6 27B
   codex-qwen        Codex with Qwen 3.6 27B
+  pi-qwen           Pi with Qwen 3.6 27B
   openhands-gpt55   OpenHands with GPT-5.5
   codex-gpt55       Codex with GPT-5.5
   codex-gpt54-sub   Codex with GPT-5.4 and ChatGPT subscription auth
@@ -31,6 +32,7 @@ Environment overrides:
   OPENAI_BASE_URL, OPENAI_API_KEY, OPENAI_MODEL_ID
   CODEX_REASONING_EFFORT, CODEX_SUPPORTS_REASONING_SUMMARIES
   CODEX_AUTH_FILE
+  PI_THINKING_LEVEL
   DEEPSEEK_BASE_URL, DEEPSEEK_API_KEY, DEEPSEEK_MODEL_ID
   ANTHROPIC_BASE_URL, ANTHROPIC_API_KEY, ANTHROPIC_MODEL_ID
   PREFLIGHT_ONLY=1 checks access without starting an experiment.
@@ -38,7 +40,7 @@ EOF
 }
 
 list_presets() {
-    printf '%s\n' qwen codex-qwen openhands-gpt55 codex-gpt55 codex-gpt54-sub deepseek opus45 opus46 sonnet5
+    printf '%s\n' qwen codex-qwen pi-qwen openhands-gpt55 codex-gpt55 codex-gpt54-sub deepseek opus45 opus46 sonnet5
 }
 
 if [[ $# -eq 0 ]]; then
@@ -102,6 +104,18 @@ case "$PRESET" in
         export MAX_BUDGET_PER_TASK="${MAX_BUDGET_PER_TASK:-0}"
         export AGENT_OUTPUT_DIR="${AGENT_OUTPUT_DIR:-agent_output_codex_qwen}"
         PREFLIGHT_KIND=qwen
+        ;;
+    pi-qwen)
+        PRESET_NAME="Pi with Qwen 3.6 27B"
+        export AGENT=pi
+        export MODEL_PROVIDER=openai
+        export OPENAI_BASE_URL="${OPENAI_BASE_URL:-http://172.17.0.1:8100/v1}"
+        export OPENAI_API_KEY="${OPENAI_API_KEY:-EMPTY}"
+        export OPENAI_MODEL_ID="${OPENAI_MODEL_ID:-Qwen/Qwen3.6-27B}"
+        export PI_THINKING_LEVEL="${PI_THINKING_LEVEL:-medium}"
+        export MAX_BUDGET_PER_TASK="${MAX_BUDGET_PER_TASK:-0}"
+        export AGENT_OUTPUT_DIR="${AGENT_OUTPUT_DIR:-agent_output_pi_qwen}"
+        PREFLIGHT_KIND=pi_qwen
         ;;
     openhands-gpt55)
         PRESET_NAME="OpenHands with GPT-5.5"
@@ -207,6 +221,42 @@ case "$PREFLIGHT_KIND" in
         MODEL_ID="$OPENAI_MODEL_ID"
         ENDPOINT="$OPENAI_BASE_URL"
         ;;
+    pi_qwen)
+        MODELS_URL="${OPENAI_BASE_URL%/}/models"
+        MODEL_LIST="$(curl -fsS --max-time 15 \
+            -H "Authorization: Bearer $OPENAI_API_KEY" \
+            "$MODELS_URL")" || {
+            echo "ERROR: Cannot reach the Qwen API at $OPENAI_BASE_URL" >&2
+            exit 1
+        }
+        if ! grep -Eq "\"id\"[[:space:]]*:[[:space:]]*\"$OPENAI_MODEL_ID\"" <<<"$MODEL_LIST"; then
+            echo "ERROR: Model $OPENAI_MODEL_ID is not served by $OPENAI_BASE_URL" >&2
+            exit 1
+        fi
+        if [[ ! "$OPENAI_MODEL_ID" =~ ^[A-Za-z0-9._/:+-]+$ ]]; then
+            echo "ERROR: The Pi Qwen model ID contains unsupported characters." >&2
+            exit 1
+        fi
+        TOOL_REQUEST="$(cat <<EOF
+{"model":"$OPENAI_MODEL_ID","messages":[{"role":"user","content":"Call echo_value once with the value ping. You must use the tool."}],"tools":[{"type":"function","function":{"name":"echo_value","description":"Echo one test value.","parameters":{"type":"object","properties":{"value":{"type":"string"}},"required":["value"]}}}],"tool_choice":"required","max_tokens":1024,"chat_template_kwargs":{"enable_thinking":true}}
+EOF
+)"
+        TOOL_RESPONSE="$(curl -fsS --max-time 60 \
+            -H "Authorization: Bearer $OPENAI_API_KEY" \
+            -H "Content-Type: application/json" \
+            --data-binary "$TOOL_REQUEST" \
+            "${OPENAI_BASE_URL%/}/chat/completions")" || {
+            echo "ERROR: The Qwen tool-call preflight request failed." >&2
+            exit 1
+        }
+        if ! grep -Eq '"tool_calls"[[:space:]]*:' <<<"$TOOL_RESPONSE" || \
+            ! grep -Eq '"name"[[:space:]]*:[[:space:]]*"echo_value"' <<<"$TOOL_RESPONSE"; then
+            echo "ERROR: Qwen did not return the required echo_value tool call." >&2
+            exit 1
+        fi
+        MODEL_ID="$OPENAI_MODEL_ID"
+        ENDPOINT="$OPENAI_BASE_URL"
+        ;;
     openai)
         if [[ -z "${OPENAI_API_KEY:-}" ]]; then
             echo "ERROR: OPENAI_API_KEY is not set." >&2
@@ -290,6 +340,9 @@ echo "Parallel tasks: $MAX_PARALLEL"
 echo "Maximum budget per task: $MAX_BUDGET_PER_TASK"
 if [[ "$AGENT" == "codex" && -n "${CODEX_REASONING_EFFORT:-}" ]]; then
     echo "Codex reasoning effort: $CODEX_REASONING_EFFORT"
+fi
+if [[ "$AGENT" == "pi" ]]; then
+    echo "Pi thinking level: $PI_THINKING_LEVEL"
 fi
 echo "Output: $AGENT_OUTPUT_DIR"
 
