@@ -67,6 +67,9 @@ Use the unified runner to select an agent and model preset:
 # Run Pi with Qwen on the same tasks
 ./run_e2e.sh pi-qwen easy_instance.txt 1
 
+# Run Pi with GPT-5.4 through the OpenAI API
+./run_e2e.sh pi-gpt54 instance_failed_qwen.txt 1
+
 # Run Claude Opus 4.6 on instance.txt with two workers
 ./run_e2e.sh opus46 instance.txt 2
 
@@ -78,13 +81,14 @@ export DEEPSEEK_API_KEY=...
 ./run_e2e.sh deepseek instance.txt 2
 ```
 
-Available presets are `qwen`, `codex-qwen`, `pi-qwen`, `openhands-gpt55`, `codex-gpt55`, `codex-gpt54-sub`, `deepseek`, `opus45`, `opus46`, and `sonnet5`.
+Available presets are `qwen`, `codex-qwen`, `pi-qwen`, `pi-gpt54`, `openhands-gpt55`, `codex-gpt55`, `codex-gpt54-sub`, `deepseek`, `opus45`, `opus46`, and `sonnet5`.
 The `pi-qwen` preset installs Pi 0.84.1 in each task container and uses the OpenAI-compatible Chat Completions API.
 It uses the built-in Pi coding tools and disables Pi extensions, skills, and prompt templates.
 It still loads repository context files such as `AGENTS.md`.
 The preset checks the model endpoint and sends a required tool-call request before it starts a batch.
 Set `PI_THINKING_LEVEL` to change the default `medium` thinking level.
-The Pi model uses the server's 262,144-token context window and reserves half of it for input by capping one response at 131,072 tokens.
+The Qwen model uses the server's 262,144-token context window and reserves half of it for input by capping one response at 131,072 tokens.
+The `pi-gpt54` preset uses Pi's built-in OpenAI provider and reads `OPENAI_API_KEY` from the environment.
 The `codex-gpt54-sub` preset reads file-based ChatGPT credentials from `~/.codex/auth.json` by default.
 Run `codex login` first, or set `CODEX_AUTH_FILE` to another file-based credential cache.
 The subscription preset requires one worker so refreshed credentials can be persisted safely between tasks.

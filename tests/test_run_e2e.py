@@ -24,6 +24,7 @@ def _runner_env(tmp_path: Path) -> dict[str, str]:
         "done\n"
         "printf '%s\\n' "
         "'{\"data\":[{\"id\":\"gpt-5.5\"},'"
+        "'{\"id\":\"gpt-5.4\"},'"
         "'{\"id\":\"Qwen/Qwen3.6-27B\"},'"
         "'{\"id\":\"deepseek-v4-pro\"}],\"type\":\"model\"}'\n"
     )
@@ -43,6 +44,7 @@ def _runner_env(tmp_path: Path) -> dict[str, str]:
         "CODEX_AUTH_MODE",
         "CODEX_REASONING_EFFORT",
         "CODEX_SUPPORTS_REASONING_SUMMARIES",
+        "PI_PROVIDER_ID",
         "PI_THINKING_LEVEL",
     ):
         env.pop(name, None)
@@ -84,6 +86,14 @@ class RunE2ETests(unittest.TestCase):
             "openai",
             "Qwen/Qwen3.6-27B",
             "agent_output_pi_qwen",
+            "0",
+        ),
+        (
+            "pi-gpt54",
+            "pi",
+            "openai",
+            "gpt-5.4",
+            "agent_output_pi_gpt54",
             "0",
         ),
         (
@@ -173,8 +183,12 @@ class RunE2ETests(unittest.TestCase):
                         self.assertIn(
                             "Codex reasoning effort: medium", result.stdout
                         )
-                    if preset == "pi-qwen":
+                    if preset in {"pi-qwen", "pi-gpt54"}:
                         self.assertIn("Pi thinking level: medium", result.stdout)
+                    if preset == "pi-qwen":
+                        self.assertIn("Pi provider: local-qwen", result.stdout)
+                    if preset == "pi-gpt54":
+                        self.assertIn("Pi provider: openai", result.stdout)
                     self.assertIn("Tasks: ", result.stdout)
                     self.assertIn("instance.txt", result.stdout)
                     self.assertIn(
@@ -209,6 +223,22 @@ class RunE2ETests(unittest.TestCase):
 
         self.assertEqual(result.returncode, 1)
         self.assertIn("ERROR: DEEPSEEK_API_KEY is not set.", result.stderr)
+
+    def test_pi_gpt54_requires_openai_api_key(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            env = _runner_env(Path(temp_dir))
+            env.pop("OPENAI_API_KEY")
+            result = subprocess.run(
+                ["bash", str(RUNNER), "pi-gpt54"],
+                cwd=REPO_ROOT,
+                env=env,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("ERROR: OPENAI_API_KEY is not set.", result.stderr)
 
     def test_subscription_auth_requires_a_nonempty_auth_file(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

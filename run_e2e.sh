@@ -15,6 +15,7 @@ Presets:
   qwen              OpenHands with Qwen 3.6 27B
   codex-qwen        Codex with Qwen 3.6 27B
   pi-qwen           Pi with Qwen 3.6 27B
+  pi-gpt54          Pi with GPT-5.4
   openhands-gpt55   OpenHands with GPT-5.5
   codex-gpt55       Codex with GPT-5.5
   codex-gpt54-sub   Codex with GPT-5.4 and ChatGPT subscription auth
@@ -32,7 +33,7 @@ Environment overrides:
   OPENAI_BASE_URL, OPENAI_API_KEY, OPENAI_MODEL_ID
   CODEX_REASONING_EFFORT, CODEX_SUPPORTS_REASONING_SUMMARIES
   CODEX_AUTH_FILE
-  PI_THINKING_LEVEL
+  PI_PROVIDER_ID, PI_THINKING_LEVEL
   DEEPSEEK_BASE_URL, DEEPSEEK_API_KEY, DEEPSEEK_MODEL_ID
   ANTHROPIC_BASE_URL, ANTHROPIC_API_KEY, ANTHROPIC_MODEL_ID
   PREFLIGHT_ONLY=1 checks access without starting an experiment.
@@ -40,7 +41,7 @@ EOF
 }
 
 list_presets() {
-    printf '%s\n' qwen codex-qwen pi-qwen openhands-gpt55 codex-gpt55 codex-gpt54-sub deepseek opus45 opus46 sonnet5
+    printf '%s\n' qwen codex-qwen pi-qwen pi-gpt54 openhands-gpt55 codex-gpt55 codex-gpt54-sub deepseek opus45 opus46 sonnet5
 }
 
 if [[ $# -eq 0 ]]; then
@@ -112,10 +113,23 @@ case "$PRESET" in
         export OPENAI_BASE_URL="${OPENAI_BASE_URL:-http://172.17.0.1:8100/v1}"
         export OPENAI_API_KEY="${OPENAI_API_KEY:-EMPTY}"
         export OPENAI_MODEL_ID="${OPENAI_MODEL_ID:-Qwen/Qwen3.6-27B}"
+        export PI_PROVIDER_ID="${PI_PROVIDER_ID:-local-qwen}"
         export PI_THINKING_LEVEL="${PI_THINKING_LEVEL:-medium}"
         export MAX_BUDGET_PER_TASK="${MAX_BUDGET_PER_TASK:-0}"
         export AGENT_OUTPUT_DIR="${AGENT_OUTPUT_DIR:-agent_output_pi_qwen}"
         PREFLIGHT_KIND=pi_qwen
+        ;;
+    pi-gpt54)
+        PRESET_NAME="Pi with GPT-5.4"
+        export AGENT=pi
+        export MODEL_PROVIDER=openai
+        export OPENAI_BASE_URL="${OPENAI_BASE_URL:-https://api.openai.com/v1}"
+        export OPENAI_MODEL_ID="${OPENAI_MODEL_ID:-gpt-5.4}"
+        export PI_PROVIDER_ID="${PI_PROVIDER_ID:-openai}"
+        export PI_THINKING_LEVEL="${PI_THINKING_LEVEL:-medium}"
+        export MAX_BUDGET_PER_TASK="${MAX_BUDGET_PER_TASK:-0}"
+        export AGENT_OUTPUT_DIR="${AGENT_OUTPUT_DIR:-agent_output_pi_gpt54}"
+        PREFLIGHT_KIND=openai
         ;;
     openhands-gpt55)
         PRESET_NAME="OpenHands with GPT-5.5"
@@ -342,6 +356,7 @@ if [[ "$AGENT" == "codex" && -n "${CODEX_REASONING_EFFORT:-}" ]]; then
     echo "Codex reasoning effort: $CODEX_REASONING_EFFORT"
 fi
 if [[ "$AGENT" == "pi" ]]; then
+    echo "Pi provider: $PI_PROVIDER_ID"
     echo "Pi thinking level: $PI_THINKING_LEVEL"
 fi
 echo "Output: $AGENT_OUTPUT_DIR"

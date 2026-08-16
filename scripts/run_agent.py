@@ -5,7 +5,7 @@ Unified agent runner for cybergym-e2e.
 Supports multiple agent backends:
   - claude-code: Uses Claude Code CLI (supports iterative testing)
   - openhands: Uses OpenHands agent framework
-  - pi: Uses the Pi coding agent with an OpenAI-compatible model
+  - pi: Uses the Pi coding agent with OpenAI or an OpenAI-compatible model
 
 Modes:
   - e2e: Agent receives only source, generates both PoC and patch
@@ -49,7 +49,7 @@ from utils import (
 # Default timeout in seconds (90 minutes)
 DEFAULT_TIMEOUT = 5400
 
-PI_PROVIDER_ID = "local-qwen"
+PI_QWEN_PROVIDER_ID = "local-qwen"
 PI_CONTEXT_WINDOW = 262144
 PI_MAX_OUTPUT_TOKENS = 131072
 
@@ -920,7 +920,7 @@ def _pi_models_config(base_url, model_id):
     """Build the Pi provider configuration for the local Qwen server."""
     return {
         "providers": {
-            PI_PROVIDER_ID: {
+            PI_QWEN_PROVIDER_ID: {
                 "baseUrl": base_url,
                 "api": "openai-completions",
                 "apiKey": "$OPENAI_API_KEY",
@@ -990,7 +990,7 @@ cp "$session_file" /agent_trajectory/attempt.session.jsonl
 
 
 def _execute_pi(container_id, prompt, output_file, args):
-    """Execute Pi with the configured OpenAI-compatible Qwen model."""
+    """Execute Pi with a built-in or custom OpenAI-compatible provider."""
     if args.model_provider != "openai":
         raise RuntimeError("Pi currently requires --model-provider openai")
 
@@ -1005,24 +1005,39 @@ def _execute_pi(container_id, prompt, output_file, args):
         aws_profile=args.aws_profile,
         max_budget_per_task=args.max_budget_per_task,
     )
-    base_url = env.get("OPENAI_BASE_URL")
-    if not base_url:
-        raise RuntimeError("Pi requires OPENAI_BASE_URL")
-
-    models_config = json.dumps(
-        _pi_models_config(base_url, args.openai_model_id),
-        indent=2,
-    )
-    exec_run(
-        container_id,
-        f"""mkdir -p \"$HOME/.pi/agent\" /agent_trajectory/pi_sessions
+    if args.pi_provider_id == PI_QWEN_PROVIDER_ID:
+        base_url = env.get("OPENAI_BASE_URL")
+        if not base_url:
+            raise RuntimeError(
+                "The local Qwen Pi provider requires OPENAI_BASE_URL"
+            )
+        models_config = json.dumps(
+            _pi_models_config(base_url, args.openai_model_id),
+            indent=2,
+        )
+        exec_run(
+            container_id,
+            f"""mkdir -p \"$HOME/.pi/agent\" /agent_trajectory/pi_sessions
 cat <<'PI_MODELS_EOF' >\"$HOME/.pi/agent/models.json\"
 {models_config}
 PI_MODELS_EOF
 """,
-        "Configuring Pi model provider",
-        check=True,
-    )
+            "Configuring Pi model provider",
+            check=True,
+        )
+    elif args.pi_provider_id == "openai":
+        if not env.get("OPENAI_API_KEY"):
+            raise RuntimeError(
+                "The OpenAI Pi provider requires OPENAI_API_KEY"
+            )
+        exec_run(
+            container_id,
+            "mkdir -p /agent_trajectory/pi_sessions",
+            "Preparing Pi session directory",
+            check=True,
+        )
+    else:
+        raise RuntimeError(f"Unsupported Pi provider: {args.pi_provider_id}")
 
     pi_env = {
         **env,
@@ -1040,7 +1055,7 @@ PI_MODELS_EOF
     pi_command = (
         "source $HOME/.nvm/nvm.sh && cd /src && pi "
         "--mode json "
-        f"--provider {shlex.quote(PI_PROVIDER_ID)} "
+        f"--provider {shlex.quote(args.pi_provider_id)} "
         f"--model {shlex.quote(args.openai_model_id)} "
         f"--thinking {shlex.quote(args.pi_thinking_level)} "
         "--session-dir /agent_trajectory/pi_sessions "
@@ -1474,6 +1489,12 @@ Examples:
         choices=["auto", "true", "false"],
         default="auto",
         help="Override whether the selected Codex model supports reasoning summaries",
+    )
+    parser.add_argument(
+        "--pi-provider-id",
+        choices=["local-qwen", "openai"],
+        default="local-qwen",
+        help="Pi provider ID (default: local-qwen)",
     )
     parser.add_argument(
         "--pi-thinking-level",
