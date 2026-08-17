@@ -50,8 +50,8 @@ from utils import (
 DEFAULT_TIMEOUT = 5400
 
 PI_QWEN_PROVIDER_ID = "local-qwen"
-PI_CONTEXT_WINDOW = 262144
-PI_MAX_OUTPUT_TOKENS = 131072
+PI_DEFAULT_CONTEXT_WINDOW = 262144
+PI_DEFAULT_MAX_OUTPUT_TOKENS = 128000
 
 
 # =============================================================================
@@ -916,7 +916,9 @@ EOF''',
     return code
 
 
-def _pi_models_config(base_url, model_id):
+def _pi_qwen_models_config(
+    base_url, model_id, context_window, max_output_tokens
+):
     """Build the Pi provider configuration for the local Qwen server."""
     return {
         "providers": {
@@ -939,8 +941,8 @@ def _pi_models_config(base_url, model_id):
                         "name": model_id,
                         "reasoning": True,
                         "input": ["text"],
-                        "contextWindow": PI_CONTEXT_WINDOW,
-                        "maxTokens": PI_MAX_OUTPUT_TOKENS,
+                        "contextWindow": context_window,
+                        "maxTokens": max_output_tokens,
                         "cost": {
                             "input": 0,
                             "output": 0,
@@ -952,6 +954,37 @@ def _pi_models_config(base_url, model_id):
             }
         }
     }
+
+
+def _pi_openai_models_config(model_id, context_window, max_output_tokens):
+    """Override Pi's built-in OpenAI model limits for comparable runs."""
+    return {
+        "providers": {
+            "openai": {
+                "modelOverrides": {
+                    model_id: {
+                        "contextWindow": context_window,
+                        "maxTokens": max_output_tokens,
+                    }
+                }
+            }
+        }
+    }
+
+
+def _write_pi_models_config(container_id, config):
+    """Write one deterministic Pi model configuration in the container."""
+    models_config = json.dumps(config, indent=2)
+    exec_run(
+        container_id,
+        f"""mkdir -p \"$HOME/.pi/agent\" /agent_trajectory/pi_sessions
+cat <<'PI_MODELS_EOF' >\"$HOME/.pi/agent/models.json\"
+{models_config}
+PI_MODELS_EOF
+""",
+        "Configuring Pi model limits",
+        check=True,
+    )
 
 
 def _copy_pi_session(container_id, destination):
@@ -1011,30 +1044,26 @@ def _execute_pi(container_id, prompt, output_file, args):
             raise RuntimeError(
                 "The local Qwen Pi provider requires OPENAI_BASE_URL"
             )
-        models_config = json.dumps(
-            _pi_models_config(base_url, args.openai_model_id),
-            indent=2,
+        models_config = _pi_qwen_models_config(
+            base_url,
+            args.openai_model_id,
+            args.pi_context_window,
+            args.pi_max_output_tokens,
         )
-        exec_run(
-            container_id,
-            f"""mkdir -p \"$HOME/.pi/agent\" /agent_trajectory/pi_sessions
-cat <<'PI_MODELS_EOF' >\"$HOME/.pi/agent/models.json\"
-{models_config}
-PI_MODELS_EOF
-""",
-            "Configuring Pi model provider",
-            check=True,
-        )
+        _write_pi_models_config(container_id, models_config)
     elif args.pi_provider_id == "openai":
         if not env.get("OPENAI_API_KEY"):
             raise RuntimeError(
                 "The OpenAI Pi provider requires OPENAI_API_KEY"
             )
-        exec_run(
+        models_config = _pi_openai_models_config(
+            args.openai_model_id,
+            args.pi_context_window,
+            args.pi_max_output_tokens,
+        )
+        _write_pi_models_config(
             container_id,
-            "mkdir -p /agent_trajectory/pi_sessions",
-            "Preparing Pi session directory",
-            check=True,
+            models_config,
         )
     else:
         raise RuntimeError(f"Unsupported Pi provider: {args.pi_provider_id}")
@@ -1502,6 +1531,24 @@ Examples:
         default="medium",
         help="Pi thinking level (default: medium)",
     )
+    parser.add_argument(
+        "--pi-context-window",
+        type=int,
+        default=PI_DEFAULT_CONTEXT_WINDOW,
+        help=(
+            "Declared Pi context window in tokens "
+            f"(default: {PI_DEFAULT_CONTEXT_WINDOW})"
+        ),
+    )
+    parser.add_argument(
+        "--pi-max-output-tokens",
+        type=int,
+        default=PI_DEFAULT_MAX_OUTPUT_TOKENS,
+        help=(
+            "Declared Pi maximum output in tokens "
+            f"(default: {PI_DEFAULT_MAX_OUTPUT_TOKENS})"
+        ),
+    )
     parser.add_argument("--deepseek-model-id", default="deepseek-v4-pro",
                         help="Model ID used with --model-provider deepseek")
     parser.add_argument("--max-budget-per-task", type=float, default=10.0,
@@ -1513,6 +1560,15 @@ Examples:
     parser.add_argument("--aws-profile", default=None)
 
     args = parser.parse_args()
+
+    if args.pi_context_window <= 0:
+        parser.error("--pi-context-window must be a positive integer")
+    if args.pi_max_output_tokens <= 0:
+        parser.error("--pi-max-output-tokens must be a positive integer")
+    if args.pi_max_output_tokens > args.pi_context_window:
+        parser.error(
+            "--pi-max-output-tokens cannot exceed --pi-context-window"
+        )
 
     # Warn if using iterative prompt with OpenHands
     if args.agent == "openhands" and args.prompt_style == "iterative":
@@ -1555,6 +1611,11 @@ Examples:
     print(f"Max attempts: {args.max_attempts}")
     print(f"Timeout: {args.timeout}s ({args.timeout//60}m)")
     print(f"Model: {llm_model}")
+    if args.agent == "pi":
+        print(f"Pi provider: {args.pi_provider_id}")
+        print(f"Pi thinking level: {args.pi_thinking_level}")
+        print(f"Pi context window: {args.pi_context_window}")
+        print(f"Pi maximum output tokens: {args.pi_max_output_tokens}")
     print(f"Output: {run_dir.absolute()}")
 
     start_time = time.time()
@@ -1585,6 +1646,15 @@ Examples:
         "output_dir": str(run_dir.absolute()),
         "model": llm_model,
     }
+    if args.agent == "pi":
+        summary.update(
+            {
+                "pi_provider_id": args.pi_provider_id,
+                "pi_thinking_level": args.pi_thinking_level,
+                "pi_context_window": args.pi_context_window,
+                "pi_max_output_tokens": args.pi_max_output_tokens,
+            }
+        )
 
     # Litellm delete key
     if args.model_provider == "litellm":

@@ -25,6 +25,8 @@ def _pi_args(**overrides) -> SimpleNamespace:
         max_budget_per_task=0,
         pi_provider_id="local-qwen",
         pi_thinking_level="medium",
+        pi_context_window=262144,
+        pi_max_output_tokens=128000,
         timeout=30,
     )
     values.update(overrides)
@@ -83,7 +85,7 @@ class PiIntegrationTests(unittest.TestCase):
                 provider["compat"]["thinkingFormat"], "qwen-chat-template"
             )
             self.assertEqual(model["contextWindow"], 262144)
-            self.assertEqual(model["maxTokens"], 131072)
+            self.assertEqual(model["maxTokens"], 128000)
 
             command = stream_exec.call_args.args[1]
             self.assertIn("--mode json", command)
@@ -141,13 +143,46 @@ class PiIntegrationTests(unittest.TestCase):
 
             self.assertEqual(result, 0)
             self.assertEqual(len(exec_calls), 1)
-            self.assertNotIn("models.json", exec_calls[0][0])
+            config_command = exec_calls[0][0]
+            config_text = config_command[
+                config_command.index("{\n") : config_command.rindex(
+                    "\nPI_MODELS_EOF"
+                )
+            ]
+            config = json.loads(config_text)
+            override = config["providers"]["openai"]["modelOverrides"][
+                "gpt-5.4"
+            ]
+            self.assertEqual(override["contextWindow"], 262144)
+            self.assertEqual(override["maxTokens"], 128000)
             command = stream_exec.call_args.args[1]
             self.assertIn("--provider openai", command)
             self.assertIn("--model gpt-5.4", command)
             self.assertIn("--thinking medium", command)
             env = stream_exec.call_args.args[5]
             self.assertEqual(env["OPENAI_API_KEY"], "test-openai-key")
+
+    def test_pi_model_limits_are_configurable(self) -> None:
+        qwen = run_agent._pi_qwen_models_config(
+            "http://example.test/v1",
+            "test-qwen",
+            196608,
+            32768,
+        )
+        qwen_model = qwen["providers"]["local-qwen"]["models"][0]
+        self.assertEqual(qwen_model["contextWindow"], 196608)
+        self.assertEqual(qwen_model["maxTokens"], 32768)
+
+        openai = run_agent._pi_openai_models_config(
+            "gpt-test",
+            196608,
+            32768,
+        )
+        openai_model = openai["providers"]["openai"]["modelOverrides"][
+            "gpt-test"
+        ]
+        self.assertEqual(openai_model["contextWindow"], 196608)
+        self.assertEqual(openai_model["maxTokens"], 32768)
 
     def test_pi_requires_openai_provider(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

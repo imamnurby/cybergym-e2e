@@ -46,6 +46,8 @@ def _runner_env(tmp_path: Path) -> dict[str, str]:
         "CODEX_SUPPORTS_REASONING_SUMMARIES",
         "PI_PROVIDER_ID",
         "PI_THINKING_LEVEL",
+        "PI_CONTEXT_WINDOW",
+        "PI_MAX_OUTPUT_TOKENS",
     ):
         env.pop(name, None)
     env.update(
@@ -60,6 +62,12 @@ def _runner_env(tmp_path: Path) -> dict[str, str]:
     )
     (tmp_path / "auth.json").write_text('{"tokens":{"access_token":"test"}}')
     return env
+
+
+def _tasks_file(tmp_path: Path) -> Path:
+    tasks_file = tmp_path / "instance.txt"
+    tasks_file.write_text("example/task\n")
+    return tasks_file
 
 
 class RunE2ETests(unittest.TestCase):
@@ -156,12 +164,14 @@ class RunE2ETests(unittest.TestCase):
 
     def test_preset_preflight(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
-            env = _runner_env(Path(temp_dir))
+            temp_path = Path(temp_dir)
+            env = _runner_env(temp_path)
+            tasks_file = _tasks_file(temp_path)
             for preset, agent, provider, model, output_dir, budget in self.PRESETS:
                 with self.subTest(preset=preset):
-                    command = ["bash", str(RUNNER), preset]
+                    command = ["bash", str(RUNNER), preset, str(tasks_file)]
                     if preset == "codex-gpt54-sub":
-                        command.extend(["instance.txt", "1"])
+                        command.append("1")
                     result = subprocess.run(
                         command,
                         cwd=REPO_ROOT,
@@ -185,6 +195,13 @@ class RunE2ETests(unittest.TestCase):
                         )
                     if preset in {"pi-qwen", "pi-gpt54"}:
                         self.assertIn("Pi thinking level: medium", result.stdout)
+                        self.assertIn(
+                            "Pi context window: 262144", result.stdout
+                        )
+                        self.assertIn(
+                            "Pi maximum output tokens: 128000",
+                            result.stdout,
+                        )
                     if preset == "pi-qwen":
                         self.assertIn("Pi provider: local-qwen", result.stdout)
                     if preset == "pi-gpt54":
@@ -210,10 +227,16 @@ class RunE2ETests(unittest.TestCase):
 
     def test_deepseek_requires_api_key(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
-            env = _runner_env(Path(temp_dir))
+            temp_path = Path(temp_dir)
+            env = _runner_env(temp_path)
             env.pop("DEEPSEEK_API_KEY")
             result = subprocess.run(
-                ["bash", str(RUNNER), "deepseek"],
+                [
+                    "bash",
+                    str(RUNNER),
+                    "deepseek",
+                    str(_tasks_file(temp_path)),
+                ],
                 cwd=REPO_ROOT,
                 env=env,
                 text=True,
@@ -226,10 +249,16 @@ class RunE2ETests(unittest.TestCase):
 
     def test_pi_gpt54_requires_openai_api_key(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
-            env = _runner_env(Path(temp_dir))
+            temp_path = Path(temp_dir)
+            env = _runner_env(temp_path)
             env.pop("OPENAI_API_KEY")
             result = subprocess.run(
-                ["bash", str(RUNNER), "pi-gpt54"],
+                [
+                    "bash",
+                    str(RUNNER),
+                    "pi-gpt54",
+                    str(_tasks_file(temp_path)),
+                ],
                 cwd=REPO_ROOT,
                 env=env,
                 text=True,
@@ -240,12 +269,71 @@ class RunE2ETests(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("ERROR: OPENAI_API_KEY is not set.", result.stderr)
 
+    def test_pi_limits_accept_explicit_overrides(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            env = _runner_env(temp_path)
+            env["PI_CONTEXT_WINDOW"] = "196608"
+            env["PI_MAX_OUTPUT_TOKENS"] = "32768"
+            result = subprocess.run(
+                [
+                    "bash",
+                    str(RUNNER),
+                    "pi-gpt54",
+                    str(_tasks_file(temp_path)),
+                ],
+                cwd=REPO_ROOT,
+                env=env,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("Pi context window: 196608", result.stdout)
+        self.assertIn(
+            "Pi maximum output tokens: 32768", result.stdout
+        )
+
+    def test_pi_rejects_output_limit_above_context_window(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            env = _runner_env(temp_path)
+            env["PI_CONTEXT_WINDOW"] = "32768"
+            env["PI_MAX_OUTPUT_TOKENS"] = "32769"
+            result = subprocess.run(
+                [
+                    "bash",
+                    str(RUNNER),
+                    "pi-qwen",
+                    str(_tasks_file(temp_path)),
+                ],
+                cwd=REPO_ROOT,
+                env=env,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+
+        self.assertEqual(result.returncode, 2)
+        self.assertIn(
+            "PI_MAX_OUTPUT_TOKENS cannot exceed PI_CONTEXT_WINDOW",
+            result.stderr,
+        )
+
     def test_subscription_auth_requires_a_nonempty_auth_file(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
-            env = _runner_env(Path(temp_dir))
+            temp_path = Path(temp_dir)
+            env = _runner_env(temp_path)
             Path(env["CODEX_AUTH_FILE"]).unlink()
             result = subprocess.run(
-                ["bash", str(RUNNER), "codex-gpt54-sub", "instance.txt", "1"],
+                [
+                    "bash",
+                    str(RUNNER),
+                    "codex-gpt54-sub",
+                    str(_tasks_file(temp_path)),
+                    "1",
+                ],
                 cwd=REPO_ROOT,
                 env=env,
                 text=True,
@@ -258,9 +346,16 @@ class RunE2ETests(unittest.TestCase):
 
     def test_subscription_auth_rejects_parallel_workers(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
-            env = _runner_env(Path(temp_dir))
+            temp_path = Path(temp_dir)
+            env = _runner_env(temp_path)
             result = subprocess.run(
-                ["bash", str(RUNNER), "codex-gpt54-sub", "instance.txt", "2"],
+                [
+                    "bash",
+                    str(RUNNER),
+                    "codex-gpt54-sub",
+                    str(_tasks_file(temp_path)),
+                    "2",
+                ],
                 cwd=REPO_ROOT,
                 env=env,
                 text=True,

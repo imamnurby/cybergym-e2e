@@ -34,6 +34,7 @@ Environment overrides:
   CODEX_REASONING_EFFORT, CODEX_SUPPORTS_REASONING_SUMMARIES
   CODEX_AUTH_FILE
   PI_PROVIDER_ID, PI_THINKING_LEVEL
+  PI_CONTEXT_WINDOW, PI_MAX_OUTPUT_TOKENS
   DEEPSEEK_BASE_URL, DEEPSEEK_API_KEY, DEEPSEEK_MODEL_ID
   ANTHROPIC_BASE_URL, ANTHROPIC_API_KEY, ANTHROPIC_MODEL_ID
   PREFLIGHT_ONLY=1 checks access without starting an experiment.
@@ -211,6 +212,23 @@ case "$PRESET" in
         ;;
 esac
 
+if [[ "$AGENT" == "pi" ]]; then
+    export PI_CONTEXT_WINDOW="${PI_CONTEXT_WINDOW:-262144}"
+    export PI_MAX_OUTPUT_TOKENS="${PI_MAX_OUTPUT_TOKENS:-128000}"
+    if [[ ! "$PI_CONTEXT_WINDOW" =~ ^[1-9][0-9]*$ ]]; then
+        echo "ERROR: PI_CONTEXT_WINDOW must be a positive integer: $PI_CONTEXT_WINDOW" >&2
+        exit 2
+    fi
+    if [[ ! "$PI_MAX_OUTPUT_TOKENS" =~ ^[1-9][0-9]*$ ]]; then
+        echo "ERROR: PI_MAX_OUTPUT_TOKENS must be a positive integer: $PI_MAX_OUTPUT_TOKENS" >&2
+        exit 2
+    fi
+    if (( 10#$PI_MAX_OUTPUT_TOKENS > 10#$PI_CONTEXT_WINDOW )); then
+        echo "ERROR: PI_MAX_OUTPUT_TOKENS cannot exceed PI_CONTEXT_WINDOW." >&2
+        exit 2
+    fi
+fi
+
 if [[ ! -f "$TASKS_FILE" ]]; then
     echo "ERROR: Task file does not exist: $TASKS_FILE" >&2
     exit 1
@@ -358,6 +376,8 @@ fi
 if [[ "$AGENT" == "pi" ]]; then
     echo "Pi provider: $PI_PROVIDER_ID"
     echo "Pi thinking level: $PI_THINKING_LEVEL"
+    echo "Pi context window: $PI_CONTEXT_WINDOW"
+    echo "Pi maximum output tokens: $PI_MAX_OUTPUT_TOKENS"
 fi
 echo "Output: $AGENT_OUTPUT_DIR"
 

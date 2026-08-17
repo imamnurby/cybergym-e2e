@@ -87,7 +87,9 @@ It uses the built-in Pi coding tools and disables Pi extensions, skills, and pro
 It still loads repository context files such as `AGENTS.md`.
 The preset checks the model endpoint and sends a required tool-call request before it starts a batch.
 Set `PI_THINKING_LEVEL` to change the default `medium` thinking level.
-The Qwen model uses the server's 262,144-token context window and reserves half of it for input by capping one response at 131,072 tokens.
+The `pi-qwen` and `pi-gpt54` presets both declare a 262,144-token context window and a 128,000-token maximum output for comparable experiments.
+Set `PI_CONTEXT_WINDOW` or `PI_MAX_OUTPUT_TOKENS` to override these shared defaults explicitly.
+Each Pi result summary records the effective provider, thinking level, context window, and maximum output.
 The `pi-gpt54` preset uses Pi's built-in OpenAI provider and reads `OPENAI_API_KEY` from the environment.
 The `codex-gpt54-sub` preset reads file-based ChatGPT credentials from `~/.codex/auth.json` by default.
 Run `codex login` first, or set `CODEX_AUTH_FILE` to another file-based credential cache.
