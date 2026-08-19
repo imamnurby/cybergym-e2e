@@ -1,0 +1,236 @@
+{
+  "content_hash": "07ed2828c02ec0ec5e11e56fd67a095ebf1703154937546060240ab0dfefa011",
+  "request_hash": "8d22e2bd976c65a3a49323c82f68189c1e9384aeffaa3622767275a861ddc12d",
+  "response": {
+    "codings": [
+      {
+        "action": "ACT_CHECK_TOOL_AVAILABILITY",
+        "alternatives": [
+          "ACT_INSPECT_TOOLCHAIN",
+          "ACT_SEARCH_PATHS"
+        ],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_40",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_EXECUTABLE_TOOL",
+        "rationale": "The command checks for compile while also reporting its location and recursively searching for matching paths."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_41",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SCRIPT",
+        "rationale": "cat displays the contents of an executable build script."
+      },
+      {
+        "action": "ACT_LIST_ENTRIES",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_42",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_DIRECTORY",
+        "rationale": "ls enumerates entries in the source directory."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_43",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_BUILD_CONFIGURATION",
+        "rationale": "cat displays a Meson build configuration file."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_44",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_BUILD_CONFIGURATION",
+        "rationale": "cat displays a Meson build configuration file."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_45",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_GENERATED_TABLE",
+        "rationale": "cat and head display the beginning of a generated table artifact."
+      },
+      {
+        "action": "ACT_LIST_ENTRIES",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_46",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_DIRECTORY",
+        "rationale": "ls enumerates entries in output and build directories."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_47",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_BUILD_CONFIGURATION",
+        "rationale": "cat displays a build configuration file defining executable targets."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_48",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "cat displays a C implementation source file."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_49",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "grep searches source text for named macros and their uses."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_50",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "sed displays a selected line range containing code definitions."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_51",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "sed displays a selected line range from a source file."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_52",
+        "fit": "exact",
+        "message_role": "ROLE_EMPTY_MESSAGE",
+        "message_subject": "SUBJ_UNSPECIFIED",
+        "object": null,
+        "rationale": "The agent message text is empty and contains no subject."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_53",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "cat displays a C implementation source file."
+      },
+      {
+        "action": "ACT_SEARCH_PATHS",
+        "alternatives": [
+          "ACT_READ_CONTENT",
+          "ACT_SEARCH_TEXT"
+        ],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_54",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_BUILD_CONFIGURATION",
+        "rationale": "The pipeline finds Meson files, reads them, and searches their contents for option and fuzzer text."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_55",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SCRIPT",
+        "rationale": "cat displays an executable libFuzzer compilation script."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_56",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SCRIPT",
+        "rationale": "cat and head display the beginning of a validation script."
+      },
+      {
+        "action": "ACT_CHECK_TOOL_AVAILABILITY",
+        "alternatives": [
+          "ACT_INSPECT_TOOLCHAIN"
+        ],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_57",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_EXECUTABLE_TOOL",
+        "rationale": "which checks tool availability while clang --version inspects toolchain identity and version."
+      },
+      {
+        "action": "ACT_INSPECT_TOOLCHAIN",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_58",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_EXECUTABLE_TOOL",
+        "rationale": "The command reports compiler locations and version details."
+      },
+      {
+        "action": "ACT_LIST_ENTRIES",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_59",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_DIRECTORY",
+        "rationale": "ls enumerates entries in the configuration and data directories."
+      }
+    ]
+  }
+}

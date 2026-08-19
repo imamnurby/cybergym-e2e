@@ -1,0 +1,13 @@
+diff --git a/src/ICCProfile.c b/src/ICCProfile.c
+index f02e3de..a2167e3 100644
+--- a/src/ICCProfile.c
++++ b/src/ICCProfile.c
+@@ -704,7 +704,7 @@ static bool read_a2b(const skcms_ICCProfile* profile, skcms_A2B* a2b) {
+ 
+ void skcms_GetTagByIndex(const skcms_ICCProfile* profile, uint32_t idx, skcms_ICCTag* tag) {
+     if (!profile || !profile->buffer || !tag) { return; }
+-    if (idx > profile->tag_count) { return; }
++    if (idx >= profile->tag_count) { return; }
+     const tag_Layout* tags = get_tag_table(profile);
+     tag->signature = read_big_u32(tags[idx].signature);
+     tag->size      = read_big_u32(tags[idx].size);

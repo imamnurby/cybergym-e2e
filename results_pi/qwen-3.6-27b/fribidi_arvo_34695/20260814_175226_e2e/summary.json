@@ -1,0 +1,26 @@
+{
+  "task": "fribidi/arvo_34695",
+  "agent": "pi",
+  "prompt_style": "iterative",
+  "mode": "e2e",
+  "max_attempts": 1,
+  "timeout": 5400,
+  "status": "success",
+  "attempts": [
+    {
+      "attempt": 1,
+      "agent_exec_seconds": 561.13,
+      "stage1": "passed",
+      "stage2": "passed",
+      "stage3": "passed",
+      "stage4": "passed",
+      "agent_success": true,
+      "gt_success": true,
+      "success": true
+    }
+  ],
+  "duration_seconds": 986.627691745758,
+  "duration_minutes": 16.44,
+  "output_dir": "/home/yusuf/cybergym-e2e/agent_output_pi_qwen/20260814_160233_728443/fribidi_arvo_34695/20260814_175226_e2e",
+  "model": "openai/Qwen/Qwen3.6-27B"
+}

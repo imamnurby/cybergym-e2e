@@ -1,0 +1,1228 @@
+{
+  "action_categories": [
+    {
+      "definition": "Reads or displays existing textual content from a file or bounded region. Examples: `sed -n '1,120p' <source.c>`; `nl -ba <patch> | sed -n '20,60p'`.",
+      "examples": [
+        "`sed -n '400,620p' <source.c>`",
+        "`head -n 200 <runner-script>`"
+      ],
+      "exclude": [
+        "Text or symbol matching as the primary operation; use SEARCH_TEXT.",
+        "Path enumeration; use LIST_PATHS or SEARCH_PATHS.",
+        "Binary-byte rendering; use DUMP_BINARY.",
+        "Version-control metadata queries; use QUERY_REPOSITORY."
+      ],
+      "id": "READ_TEXT",
+      "include": [
+        "Reading source, headers, scripts, configuration, patches, changelogs, logs, or excerpts.",
+        "Using commands whose primary effect is emitting existing text."
+      ]
+    },
+    {
+      "definition": "Enumerates files or directories in a specified tree without searching their contents. Examples: `rg --files <source-tree>`; `ls -l <build-dir>`.",
+      "examples": [
+        "`ls -l <output-dir>`",
+        "`rg --files <source-tree>`"
+      ],
+      "exclude": [
+        "Filesystem searches using name, type, or existence predicates; use SEARCH_PATHS.",
+        "Content or symbol searches; use SEARCH_TEXT.",
+        "Reading file contents; use READ_TEXT."
+      ],
+      "id": "LIST_PATHS",
+      "include": [
+        "Listing directory or tree contents.",
+        "Enumerating paths without a name predicate or content predicate."
+      ]
+    },
+    {
+      "definition": "Searches the filesystem for paths, names, types, or existence conditions. Examples: `find <tree> -name '*.tab.i'`; `rg --files <tree> | rg 'fuzzer'`.",
+      "examples": [
+        "`find <tree> -name '*.h'`",
+        "`rg --files <build-dir> | rg 'target'`"
+      ],
+      "exclude": [
+        "Unfiltered directory listing; use LIST_PATHS.",
+        "Searching file contents; use SEARCH_TEXT."
+      ],
+      "id": "SEARCH_PATHS",
+      "include": [
+        "Using `find`, path filters, or filename regular expressions to locate files or directories.",
+        "Checking whether a named artifact or repository marker exists."
+      ]
+    },
+    {
+      "definition": "Searches file contents for literal text, symbols, macros, function names, or regular-expression patterns. Examples: `rg -n 'decode|malloc' <source-tree>`; `rg -n 'LLVMFuzzerTestOneInput' <tree>`.",
+      "examples": [
+        "`rg -n 'read_callback|decode' <source-tree>`",
+        "`rg -n 'TABLE|BOUNDS' <source.c>`"
+      ],
+      "exclude": [
+        "Searching only path names; use SEARCH_PATHS.",
+        "Displaying matching file contents without a search operation; use READ_TEXT."
+      ],
+      "id": "SEARCH_TEXT",
+      "include": [
+        "Content, source-code, API-symbol, macro, or pattern searches.",
+        "Searching generated code or build files for textual references."
+      ]
+    },
+    {
+      "definition": "Queries version-control metadata or history. Examples: `git -C <tree> status --short`; `git -C <tree> log --grep='fix'`.",
+      "examples": [
+        "`git -C <source-tree> status --short`",
+        "`git -C <source-tree> log --oneline`"
+      ],
+      "exclude": [
+        "Reading ordinary source or configuration files.",
+        "Creating a patch from non-version-control file variants; use GENERATE_DIFF."
+      ],
+      "id": "QUERY_REPOSITORY",
+      "include": [
+        "Repository status, log, tag, diff, or history queries.",
+        "Checking for repository metadata before using version-control operations."
+      ]
+    },
+    {
+      "definition": "Renders binary input or file contents as bytes, hexadecimal, or another low-level binary representation. Examples: `od -An -tx1 -v <input.bin>`; `xxd <crash-file>`.",
+      "examples": [
+        "`od -An -tx1 -v <crash-input>`",
+        "`xxd <binary-artifact>`"
+      ],
+      "exclude": [
+        "Measuring byte count; use MEASURE_FILE.",
+        "Creating or modifying binary input; use CONSTRUCT_TEST_INPUT or MODIFY_FILE.",
+        "Reading textual source."
+      ],
+      "id": "DUMP_BINARY",
+      "include": [
+        "Hex dumps and byte-level displays of binary files or inputs.",
+        "Printing raw byte sequences for inspection."
+      ]
+    },
+    {
+      "definition": "Measures a file or artifact using size or count metrics. Examples: `wc -c <input.bin>`; `wc -l <log>`.",
+      "examples": [
+        "`wc -c <crash-input>`",
+        "`stat <artifact>`"
+      ],
+      "exclude": [
+        "Dumping the measured contents.",
+        "Inferring runtime or test outcomes from the measurement."
+      ],
+      "id": "MEASURE_FILE",
+      "include": [
+        "Byte, line, or similar size measurements.",
+        "Commands whose primary operation reports a quantitative file measure."
+      ]
+    },
+    {
+      "definition": "Waits for a period or repeatedly samples files, logs, or runtime state. Examples: `sleep 5; tail -n 4 <fuzz-log>`; a loop that periodically reads a log.",
+      "examples": [
+        "`sleep 5; tail -n 4 <log>`",
+        "`while <condition>; do tail -n 1 <log>; done`"
+      ],
+      "exclude": [
+        "A single immediate file read without waiting; use READ_TEXT.",
+        "Launching the tested program or fuzzer; use the corresponding execution action."
+      ],
+      "id": "WAIT_OR_POLL",
+      "include": [
+        "Explicit sleeps, polling loops, or delayed log sampling.",
+        "Waiting for externally produced runtime records before inspecting them."
+      ]
+    },
+    {
+      "definition": "Configures or generates a project build with selected options, toolchains, or instrumentation settings. Examples: `cmake -S <src> -B <build> -DBUILD_FUZZERS=ON`; `meson setup <build>`.",
+      "examples": [
+        "`cmake -S <src> -B <build> -DENABLE_TESTS=ON`",
+        "`meson setup <build> -Ddocs=false`"
+      ],
+      "exclude": [
+        "Direct compiler or linker invocation; use COMPILE_TARGET.",
+        "Project compilation after configuration; use BUILD_PROJECT.",
+        "Merely reading build configuration."
+      ],
+      "id": "CONFIGURE_BUILD",
+      "include": [
+        "Build-system setup and generation commands.",
+        "Selecting sanitizer, fuzzing, shared/static, feature, or output options during configuration."
+      ]
+    },
+    {
+      "definition": "Invokes a project-level build through its build system. Examples: `cmake --build <build>`; `ninja -C <build>`.",
+      "examples": [
+        "`cmake --build <build>`",
+        "`ninja -C <build>`"
+      ],
+      "exclude": [
+        "Only generating build files; use CONFIGURE_BUILD.",
+        "Direct compiler or linker commands for one target; use COMPILE_TARGET.",
+        "Executing an already built program."
+      ],
+      "id": "BUILD_PROJECT",
+      "include": [
+        "Building configured project targets through CMake, Meson, Ninja, Make, or equivalent.",
+        "Compound commands whose substantive operation is a project build."
+      ]
+    },
+    {
+      "definition": "Directly compiles or links source into a target, including fuzzer, harness, or instrumented binaries. Examples: `clang -fsanitize=fuzzer,address <harness.c> <source.c> -o <target>`; `cc -c <source.c>`.",
+      "examples": [
+        "`clang -fsanitize=memory <harness.c> <source.c> -o <target>`",
+        "`cc <source.c> -o <executable>`"
+      ],
+      "exclude": [
+        "Project build-system invocations; use BUILD_PROJECT.",
+        "Executing the produced target.",
+        "Reading compiler configuration."
+      ],
+      "id": "COMPILE_TARGET",
+      "include": [
+        "Compiler and linker invocations.",
+        "Adding sanitizer, fuzzing, tracing, or origin-tracking flags during compilation."
+      ]
+    },
+    {
+      "definition": "Runs a shell, Python, or other orchestration script. Examples: `bash -eux <prepare-script>`; `bash <runner-script> <input>`.",
+      "examples": [
+        "`bash -eux <prepare-script>`",
+        "`bash <poc-runner> <input.bin>`"
+      ],
+      "exclude": [
+        "Reading a script; use READ_TEXT.",
+        "Directly invoking a compiled target without a script wrapper.",
+        "A dedicated validation harness invocation; use RUN_VALIDATOR when validation is primary."
+      ],
+      "id": "EXECUTE_SCRIPT",
+      "include": [
+        "Executing preparation, compilation, runner, validator-wrapper, or fuzzer-wrapper scripts.",
+        "Script execution where the script, rather than a directly invoked target, is the command object."
+      ]
+    },
+    {
+      "definition": "Invokes one executable, test binary, or harness directly on one input or fixture without a fuzzing loop or explicit sanitizer mode. Examples: `<decoder> <input.bin>`; `<test-binary> <fixture>`.",
+      "examples": [
+        "`<decoder> <input.bin>`",
+        "`<trace-harness> <fixture>`"
+      ],
+      "exclude": [
+        "Explicit sanitizer or tracing execution as the salient mode; use EXECUTE_INSTRUMENTED_TARGET.",
+        "Coverage-guided or mutational fuzzing; use RUN_FUZZER.",
+        "Iteration over an input set; use REPLAY_INPUT_SET.",
+        "Official staged validation; use RUN_VALIDATOR."
+      ],
+      "id": "EXECUTE_TARGET",
+      "include": [
+        "One-shot execution of a compiled program or test target.",
+        "Direct execution used to exercise a single generated or supplied input."
+      ]
+    },
+    {
+      "definition": "Executes a target with explicit sanitizer, tracing, or runtime-instrumentation settings. Examples: `ASAN_OPTIONS=<options> <target> <input>`; `<msan-target> <crash-input>`.",
+      "examples": [
+        "`MSAN_OPTIONS=<options> <target> <crash-input>`",
+        "`<instrumented-target> <test-input>`"
+      ],
+      "exclude": [
+        "Compiling with instrumentation; use COMPILE_TARGET.",
+        "Uninstrumented one-shot execution; use EXECUTE_TARGET.",
+        "A fuzzing engine as the primary operation; use RUN_FUZZER as applicable."
+      ],
+      "id": "EXECUTE_INSTRUMENTED_TARGET",
+      "include": [
+        "Running under ASan, MSan, UBSan, origin tracking, tracing, or equivalent explicit instrumentation.",
+        "Directly exercising an instrumented executable on a supplied input."
+      ]
+    },
+    {
+      "definition": "Launches a fuzzing engine or mutational/coverage-guided fuzzing session. Examples: `<fuzzer> -max_total_time=60 <corpus>`; `<fuzzer> -jobs=4 -workers=4 <corpus>`.",
+      "examples": [
+        "`<fuzzer> -max_total_time=60 <corpus-dir>`",
+        "`<fuzzer> -jobs=4 -workers=4 <seed-dir>`"
+      ],
+      "exclude": [
+        "One-shot target execution; use EXECUTE_TARGET or EXECUTE_INSTRUMENTED_TARGET.",
+        "Replay of a fixed existing input set; use REPLAY_INPUT_SET.",
+        "Merely inspecting fuzz logs or corpus files."
+      ],
+      "id": "RUN_FUZZER",
+      "include": [
+        "Fuzzing runs with seeds, corpus directories, time limits, jobs, workers, RSS limits, or artifact directories.",
+        "Structure-aware and general-purpose fuzzing sessions."
+      ]
+    },
+    {
+      "definition": "Iterates over an existing collection of inputs and invokes a target for each member. Examples: `for f in <crash-dir>/*; do <target> <file>; done`; replaying a fixed crasher corpus.",
+      "examples": [
+        "`for f in <crash-dir>/*; do <target> <file>; done`",
+        "`for f in <regression-dir>/*; do <test-binary> <file>; done`"
+      ],
+      "exclude": [
+        "Generating the cases during the loop; use CONSTRUCT_TEST_INPUT or RUN_TEST_MATRIX.",
+        "Coverage-guided mutation; use RUN_FUZZER.",
+        "A single input invocation."
+      ],
+      "id": "REPLAY_INPUT_SET",
+      "include": [
+        "Loops over crash, seed, regression, or corpus files for direct replay.",
+        "Control flow that handles each existing input individually or conditionally stops based on an observed invocation status."
+      ]
+    },
+    {
+      "definition": "Creates or populates directories and runtime settings needed for later testing, fuzzing, or validation. Examples: `mkdir -p <corpus> <artifacts>; cp <seed> <corpus>/`; `export MSAN_OPTIONS=<options>`.",
+      "examples": [
+        "`mkdir -p <corpus> <artifacts>`",
+        "`cp <seed-file> <corpus-dir>/`"
+      ],
+      "exclude": [
+        "The actual fuzzer or target invocation.",
+        "Building the target.",
+        "Copying a file as the main artifact operation; use COPY_FILE."
+      ],
+      "id": "PREPARE_TEST_ENVIRONMENT",
+      "include": [
+        "Creating corpus or artifact directories.",
+        "Copying seed files into a test area.",
+        "Setting sanitizer, fuzzer, or runner environment variables without executing the target."
+      ]
+    },
+    {
+      "definition": "Constructs, encodes, synthesizes, or parameterizes test data, a PoC, a compressed stream, or a fixture. Examples: a script that writes a structured image input; a loop that creates encoded streams.",
+      "examples": [
+        "`python` constructs a structured binary fixture",
+        "A loop encodes inputs across distance and length parameters"
+      ],
+      "exclude": [
+        "Only enumerating numeric candidates without constructing inputs; use ENUMERATE_VALUES.",
+        "Only writing an already defined file; use CREATE_FILE.",
+        "Executing generated cases; use RUN_TEST_MATRIX or EXECUTE_TARGET."
+      ],
+      "id": "CONSTRUCT_TEST_INPUT",
+      "include": [
+        "Hand-crafting protocol fields or compressed streams.",
+        "Generating PoCs, boundary cases, seeds, images, or other test fixtures.",
+        "Producing candidate values specifically as input data."
+      ]
+    },
+    {
+      "definition": "Enumerates or calculates a parameter space without invoking the tested target. Examples: looping over header flags satisfying a constraint; checking sample-conversion combinations.",
+      "examples": [
+        "A script enumerates header flag values satisfying a modulus",
+        "A loop prints parameter combinations within a bound"
+      ],
+      "exclude": [
+        "Constructing actual test files or streams; use CONSTRUCT_TEST_INPUT.",
+        "Running a target for each value; use RUN_TEST_MATRIX.",
+        "Filesystem path searches."
+      ],
+      "id": "ENUMERATE_VALUES",
+      "include": [
+        "Brute-force calculations, candidate-value enumeration, modular checks, and parameter-space filtering.",
+        "Exhaustive arithmetic checks whose output is values or combinations rather than target executions."
+      ]
+    },
+    {
+      "definition": "Systematically invokes a target over generated or parameterized test cases. Examples: looping over distance and length values while running a decoder; executing generated streams across boundary cases.",
+      "examples": [
+        "`for case in <generated-cases>; do <target> <case>; done`",
+        "A script generates and invokes a decoder across boundary parameters"
+      ],
+      "exclude": [
+        "Coverage-guided fuzzing; use RUN_FUZZER.",
+        "Replay of an existing corpus without generating cases; use REPLAY_INPUT_SET.",
+        "Only calculating candidates; use ENUMERATE_VALUES."
+      ],
+      "id": "RUN_TEST_MATRIX",
+      "include": [
+        "Batch probes and generated-test loops.",
+        "Focused exhaustive or combinatorial execution against a target.",
+        "Testing generated inputs under one or more target configurations."
+      ]
+    },
+    {
+      "definition": "Adds tracing, logging, probes, or other instrumentation to a source variant or temporary copy. Examples: copying `<source.c>` to `<trace.c>` and inserting match logging; adding diagnostic prints before compilation.",
+      "examples": [
+        "Insert logging into a temporary source copy",
+        "Add a probe that records distance and length values"
+      ],
+      "exclude": [
+        "Ordinary bug-fix editing; use MODIFY_FILE.",
+        "Compiling or running the instrumented result; use COMPILE_TARGET or EXECUTE_INSTRUMENTED_TARGET."
+      ],
+      "id": "INSTRUMENT_CODE",
+      "include": [
+        "Source-copy instrumentation and tracing edits.",
+        "Preparing a temporary instrumented implementation for compilation or execution."
+      ]
+    },
+    {
+      "definition": "Creates or adds a file artifact that did not previously exist at the target path. Examples: writing `<output/poc.bin>`; adding `<output/fix.patch>`.",
+      "examples": [
+        "Write a new `<output/input.bin>`",
+        "Add a new `<output/patch.diff>`"
+      ],
+      "exclude": [
+        "Editing an existing file; use MODIFY_FILE.",
+        "Deleting or copying an existing file.",
+        "The semantic construction of test content; use CONSTRUCT_TEST_INPUT when content generation is primary."
+      ],
+      "id": "CREATE_FILE",
+      "include": [
+        "File-change records of kind add.",
+        "Writing a new output, input, PoC, patch, or other artifact."
+      ]
+    },
+    {
+      "definition": "Edits or updates an existing file's contents. Examples: changing `<source.c>`; prepending a header to `<patch>`.",
+      "examples": [
+        "Update `<source.c>` with a guard",
+        "Edit `<patch>` to add a diff header"
+      ],
+      "exclude": [
+        "Adding a new file; use CREATE_FILE.",
+        "Deleting a file; use DELETE_FILE.",
+        "Generating a comparison artifact from two variants; use GENERATE_DIFF."
+      ],
+      "id": "MODIFY_FILE",
+      "include": [
+        "File-change records of kind update.",
+        "Editing source, configuration, scripts, patches, or other existing text files."
+      ]
+    },
+    {
+      "definition": "Removes an existing file from the workspace or output area. Example: deleting `<output/patch.diff>`.",
+      "examples": [
+        "Delete `<output/old-patch.diff>`",
+        "Remove a stale `<temporary-file>`"
+      ],
+      "exclude": [
+        "Replacing or updating file contents.",
+        "Removing an entire workspace when the observed action is directory cleanup rather than file deletion."
+      ],
+      "id": "DELETE_FILE",
+      "include": [
+        "File-change records of kind delete.",
+        "Explicit file removal commands."
+      ]
+    },
+    {
+      "definition": "Copies an existing file or source variant to another path. Examples: `cp <crash-input> <output/input.bin>`; copying an original source before editing.",
+      "examples": [
+        "`cp <input.bin> <output/poc.bin>`",
+        "`cp <source.c> <temporary-copy.c>`"
+      ],
+      "exclude": [
+        "Moving or renaming without copying.",
+        "Creating new content from a generator.",
+        "Generating a diff from the copies; use GENERATE_DIFF for that operation."
+      ],
+      "id": "COPY_FILE",
+      "include": [
+        "Explicit file duplication or preservation before modification.",
+        "Copying an input or source file to an output or temporary path."
+      ]
+    },
+    {
+      "definition": "Computes or emits a unified, Git-style, or other textual difference between source variants. Examples: `diff -u <old.c> <new.c> > <patch>`; `unified_diff(<old>, <new>)`.",
+      "examples": [
+        "`diff -u <old.c> <new.c> > <fix.diff>`",
+        "A script prints a unified diff between two source variants"
+      ],
+      "exclude": [
+        "Editing an already generated patch; use MODIFY_FILE.",
+        "Applying a patch or running a validator; use RUN_VALIDATOR when that is the primary action.",
+        "Comparing repository history; use QUERY_REPOSITORY."
+      ],
+      "id": "GENERATE_DIFF",
+      "include": [
+        "Creating a patch or diff by comparing original and modified content.",
+        "Emitting diff headers, hunks, or unified-diff text."
+      ]
+    },
+    {
+      "definition": "Invokes a dedicated validation harness over a PoC, patch, project, or test set. Examples: `<validator> --poc-file <poc> --patch-file <patch>`; a staged validation command with preparation options.",
+      "examples": [
+        "`<validator> --poc-file <poc.bin> --patch-file <fix.diff>`",
+        "`<validator> --run-prepare <input>`"
+      ],
+      "exclude": [
+        "Do not classify whether validation passed, failed, was skipped, or produced a crash.",
+        "General target execution, fuzzing, or test loops without a dedicated validation harness."
+      ],
+      "id": "RUN_VALIDATOR",
+      "include": [
+        "Official or project-provided validation scripts and staged PoC/patch/test validation.",
+        "Commands that apply or assess a supplied patch as part of a validation harness."
+      ]
+    }
+  ],
+  "message_roles": [
+    {
+      "definition": "States a future, intended, or conditional action without claiming that it has occurred. Examples: `I will inspect the harness and derive an input`; `I am going to regenerate the diff from a modified copy`.",
+      "examples": [
+        "`I will inspect the harness and map the input flow.`",
+        "`I am going to regenerate the diff from the modified source.`"
+      ],
+      "exclude": [
+        "Current execution status; use PROGRESS_STATUS.",
+        "A completed observation or artifact report; use RESULT_REPORT or FINDING_REPORT.",
+        "An asserted cause; use HYPOTHESIS or DIAGNOSIS."
+      ],
+      "id": "PLAN_INTENT",
+      "include": [
+        "Plans, action announcements, investigation plans, validation plans, testing plans, and implementation plans.",
+        "Conditional future actions and declared intended scope."
+      ]
+    },
+    {
+      "definition": "Reports current activity, phase, or work state without primarily stating a new technical result. Examples: `The build is in progress`; `Validation is still in the build/run phase`.",
+      "examples": [
+        "`The target build is still in progress.`",
+        "`The patch is under validation now.`"
+      ],
+      "exclude": [
+        "Future-only intent; use PLAN_INTENT.",
+        "Observed diagnostic or validator output; use RESULT_REPORT.",
+        "A causal explanation or discovered issue."
+      ],
+      "id": "PROGRESS_STATUS",
+      "include": [
+        "Ongoing work, current state, phase updates, and status summaries.",
+        "Statements that an activity has started, remains underway, or is ready for another activity."
+      ]
+    },
+    {
+      "definition": "Describes inspection, tracing, auditing, harness behavior, or analysis activity without asserting a definitive cause. Examples: `I am tracing the entrypoint and immediate callees`; `The harness reinterprets input as fixed-width values`.",
+      "examples": [
+        "`I am tracing the entrypoint and its immediate callees.`",
+        "`The harness allocates output from an input-derived size.`"
+      ],
+      "exclude": [
+        "A future-only plan; use PLAN_INTENT.",
+        "A candidate explanation; use HYPOTHESIS.",
+        "A confirmed mechanism or root cause; use DIAGNOSIS."
+      ],
+      "id": "INVESTIGATION_ACCOUNT",
+      "include": [
+        "Source-reading, call-path tracing, data-flow mapping, harness descriptions, and audit updates.",
+        "Reports of what area is being examined or how a harness operates."
+      ]
+    },
+    {
+      "definition": "Proposes, revises, or narrows a suspected explanation or attack surface without presenting it as established fact. Examples: `A missing upper-bound check may index a packed table`; `A malformed multi-block case may reach the copy path`.",
+      "examples": [
+        "`A missing bounds check may permit an out-of-range lookup.`",
+        "`The issue may require a multi-block input.`"
+      ],
+      "exclude": [
+        "An asserted root cause; use DIAGNOSIS.",
+        "A deliberate pivot away from a prior candidate; use STRATEGY_REVISION.",
+        "A neutral observation without speculation."
+      ],
+      "id": "HYPOTHESIS",
+      "include": [
+        "Suspected bug classes, candidate vulnerable areas, tentative mechanisms, and unresolved explanations.",
+        "Statements using uncertainty or exploratory framing."
+      ]
+    },
+    {
+      "definition": "Explicitly rejects, replaces, or redirects an earlier investigative candidate or method. Examples: `The first candidate was a false lead; attention is shifting to output handling`.",
+      "examples": [
+        "`The initial candidate was a false lead; I am switching to the output path.`",
+        "`The first fix was too narrow, so the fallback case is being reconsidered.`"
+      ],
+      "exclude": [
+        "A new tentative hypothesis without a pivot; use HYPOTHESIS.",
+        "Routine progress or debugging on the same line of inquiry.",
+        "A source-change description."
+      ],
+      "id": "STRATEGY_REVISION",
+      "include": [
+        "False-lead declarations, investigation pivots, revised approaches, and replacement strategies.",
+        "Statements that change the selected line of inquiry."
+      ]
+    },
+    {
+      "definition": "States an asserted causal mechanism, root cause, or direct explanation for an observed defect. Examples: `Compaction ignores a boundary field`; `The parser uses a pointer after the buffer has advanced`.",
+      "examples": [
+        "`The merge condition ignores the boundary level.`",
+        "`The parser retains a pointer across a buffer-advancing read.`"
+      ],
+      "exclude": [
+        "Tentative speculation; use HYPOTHESIS.",
+        "A report that only says an issue or artifact was found; use FINDING_REPORT.",
+        "A neutral command result."
+      ],
+      "id": "DIAGNOSIS",
+      "include": [
+        "Bug diagnoses, root-cause reports, and causal technical explanations.",
+        "Claims that connect a code behavior to a defect mechanism."
+      ]
+    },
+    {
+      "definition": "Reports an unresolved, repeated, or unexpected symptom together with active troubleshooting of its cause or targeting. Examples: `The input still reaches the same copy site; I am checking patch targeting`.",
+      "examples": [
+        "`The same copy site is still reached; patch targeting is being checked.`",
+        "`The initial trigger is not reproducing, so the input path is being narrowed.`"
+      ],
+      "exclude": [
+        "A confirmed causal explanation; use DIAGNOSIS.",
+        "A future-only debugging plan; use PLAN_INTENT.",
+        "A neutral final observation without troubleshooting."
+      ],
+      "id": "DEBUGGING_UPDATE",
+      "include": [
+        "Repeated symptoms, remaining faults, and checks of patch scope, overlap, target selection, or execution path.",
+        "Troubleshooting updates that do not yet establish a final diagnosis."
+      ]
+    },
+    {
+      "definition": "Reports an actual source, patch, instrumentation, or artifact change, including preparation of an external patch. Examples: `The payload pointer is now taken after the read`; `The fallback now copies overlapping bytes individually`.",
+      "examples": [
+        "`The pointer assignment was moved after the read.`",
+        "`The fallback copy now expands overlapping data byte by byte.`"
+      ],
+      "exclude": [
+        "A future implementation intention without an edit; use PLAN_INTENT.",
+        "A diagnosis without a change.",
+        "A validator or test result."
+      ],
+      "id": "IMPLEMENTATION_UPDATE",
+      "include": [
+        "Descriptions of edits already made or currently being applied.",
+        "Patch preparation, source-fix updates, and implementation changes."
+      ]
+    },
+    {
+      "definition": "Reports a discovered issue, location, artifact, or relevant finding as an identified result. Examples: `I found a memory-safety issue in list compaction`; `The vulnerable routine is in the parser`.",
+      "examples": [
+        "`I found a memory-safety issue in the compaction logic.`",
+        "`The vulnerable routine is in the post-data parser.`"
+      ],
+      "exclude": [
+        "A causal root-cause explanation; use DIAGNOSIS.",
+        "A merely observed command output; use RESULT_REPORT.",
+        "A proposed or future action."
+      ],
+      "id": "FINDING_REPORT",
+      "include": [
+        "Finding reports that identify a bug, vulnerable area, artifact, or sanitizer location.",
+        "Summaries that connect a discovery to produced PoC or patch artifacts without explaining the full mechanism."
+      ]
+    },
+    {
+      "definition": "Reports an observed output, diagnostic, artifact state, or validation record without classifying its success or failure. Examples: `The run emitted an uninitialized-memory trace`; `The validator printed stage labels and a patch-application message`.",
+      "examples": [
+        "`The run emitted a sanitizer trace at <function>.`",
+        "`The validator printed stage labels and a patch message.`"
+      ],
+      "exclude": [
+        "Do not encode whether a run passed, failed, crashed, or succeeded as a category.",
+        "A discovered defect or location stated as a finding; use FINDING_REPORT.",
+        "A causal explanation; use DIAGNOSIS."
+      ],
+      "id": "RESULT_REPORT",
+      "include": [
+        "Neutral reports of command output, sanitizer diagnostics, emitted files, stage records, or measured observations.",
+        "Reports of what was observed without adding a causal interpretation."
+      ]
+    }
+  ],
+  "message_subjects": [
+    {
+      "definition": "Concerns the target executable, test or fuzzing harness, entry point, input representation, and calls exercised by the input. Examples: mapping bytes to library APIs; locating a fuzz entry point and immediate callees.",
+      "examples": [
+        "`I am locating the fuzz entry point and mapping bytes to library calls.`",
+        "`The harness converts the input into fixed-width elements before analysis.`"
+      ],
+      "exclude": [
+        "Build mechanics alone; use BUILD_TOOLCHAIN_AND_INSTRUMENTATION.",
+        "Actual fuzzing or validation output.",
+        "A domain-specific root cause."
+      ],
+      "id": "TARGET_HARNESS_INPUT_FLOW",
+      "include": [
+        "Harness discovery, input-to-call tracing, target scoping, and harness behavior.",
+        "Descriptions of how raw input becomes API arguments or allocated buffers."
+      ]
+    },
+    {
+      "definition": "Concerns configuring, compiling, building, instrumenting, or making a target available, including sanitizer toolchains. Examples: a local memory-instrumented build; compiler flags for a fuzz target.",
+      "examples": [
+        "`The target is being rebuilt with memory instrumentation.`",
+        "`The compiler flags are being checked for the fuzz harness.`"
+      ],
+      "exclude": [
+        "The behavior of the target after execution.",
+        "A source-level defect mechanism.",
+        "A fuzzing corpus or sanitizer diagnostic itself."
+      ],
+      "id": "BUILD_TOOLCHAIN_AND_INSTRUMENTATION",
+      "include": [
+        "Build progress, compiler configuration, sanitizer/fuzzer flags, target availability, and local build setup.",
+        "Plans or reports about building a target before exercising it."
+      ]
+    },
+    {
+      "definition": "Concerns fuzzing sessions, seed or crasher corpora, parallel fuzzing, corpus artifacts, and replay of existing inputs. Examples: replaying historical crash files; examining fuzzing logs or corpus growth.",
+      "examples": [
+        "`The existing crasher corpus is being replayed against the current target.`",
+        "`The fuzz logs and seed corpus are under inspection.`"
+      ],
+      "exclude": [
+        "Deriving or minimizing one PoC; use CRASH_INPUT_AND_POC.",
+        "A one-shot sanitizer diagnostic; use MEMORY_SAFETY_DIAGNOSTICS.",
+        "Compiler/build setup."
+      ],
+      "id": "FUZZING_CORPUS_AND_REPLAY",
+      "include": [
+        "Fuzzing strategy, corpus preparation, fuzz logs, historical crash inputs, and replay behavior.",
+        "Parallel jobs, time limits, seed sets, and crasher-corpus checks."
+      ]
+    },
+    {
+      "definition": "Concerns deriving, minimizing, selecting, reproducing, or packaging a crashing input or proof-of-concept artifact. Examples: reducing a sanitizer-triggering input; writing a PoC file.",
+      "examples": [
+        "`I have a small crashing input and am minimizing it into a PoC.`",
+        "`The trigger input was written as an external artifact.`"
+      ],
+      "exclude": [
+        "The sanitizer diagnostic itself; use MEMORY_SAFETY_DIAGNOSTICS.",
+        "Patch mechanics; use PATCH_CONSTRUCTION_AND_APPLICATION.",
+        "Validator stage execution; use VALIDATION_EXECUTION."
+      ],
+      "id": "CRASH_INPUT_AND_POC",
+      "include": [
+        "Crash-input derivation, minimization, PoC candidates, PoC artifacts, and the relation between an input and a trigger.",
+        "Historical inputs when discussed as candidate PoCs rather than corpus operations."
+      ]
+    },
+    {
+      "definition": "Concerns sanitizer findings and memory-safety manifestations such as uninitialized reads, out-of-bounds access, use-after-free, or exact diagnostic locations. Examples: an MSan trace; an ASan report tied to a function.",
+      "examples": [
+        "`The instrumented run reports uninitialized memory at <function>.`",
+        "`The sanitizer location was mapped back to the decompressor.`"
+      ],
+      "exclude": [
+        "A confirmed code-level root cause; use DIAGNOSIS with the relevant subject.",
+        "General build instrumentation; use BUILD_TOOLCHAIN_AND_INSTRUMENTATION.",
+        "A PoC artifact without diagnostic content; use CRASH_INPUT_AND_POC."
+      ],
+      "id": "MEMORY_SAFETY_DIAGNOSTICS",
+      "include": [
+        "ASan, MSan, UBSan, origin-tracking, memory-safety, and sanitizer-location discussion.",
+        "Observed or anticipated memory-safety behavior."
+      ]
+    },
+    {
+      "definition": "Concerns compressed-data formats and decoder state, including zlib or deflate headers, fixed or dynamic Huffman coding, code-length expansion, symbol validity, and multi-block edge cases. Examples: testing header flags; reviewing invalid distance symbols.",
+      "examples": [
+        "`A malformed distance symbol is being examined.`",
+        "`The dynamic code-length expansion may exceed its state storage.`"
+      ],
+      "exclude": [
+        "Backreference overlap, fast-copy, or output-buffer bounds; use DECOMPRESSION_COPY_OUTPUT_BOUNDS.",
+        "Generic sanitizer diagnostics.",
+        "Build or harness setup."
+      ],
+      "id": "DECOMPRESSION_ENCODING_AND_STATE",
+      "include": [
+        "Compressed-stream construction, protocol header fields, Huffman tables, dynamic code lengths, invalid symbols, and decoder-state transitions.",
+        "Boundary cases whose main subject is encoded-data interpretation."
+      ]
+    },
+    {
+      "definition": "Concerns decompressor output limits and match-copy behavior, including backreference overlap, fast paths, fallback copies, match-source materialization, and output-buffer bounds. Examples: bytewise copying for overlap; tracing distance and counter values.",
+      "examples": [
+        "`The fallback must copy an overlapping match one byte at a time.`",
+        "`The investigation is tracing match distance, length, and output offsets.`"
+      ],
+      "exclude": [
+        "Huffman symbol decoding when copy behavior is not involved; use DECOMPRESSION_ENCODING_AND_STATE.",
+        "General sanitizer reporting without decompression-copy content.",
+        "Patch formatting or pathing as such; use PATCH_CONSTRUCTION_AND_APPLICATION."
+      ],
+      "id": "DECOMPRESSION_COPY_OUTPUT_BOUNDS",
+      "include": [
+        "Backreference copy loops, output paths, buffer bounds, overlap conditions, and fast/fallback copy behavior.",
+        "Tracing or fixing the source of copied match bytes."
+      ]
+    },
+    {
+      "definition": "Concerns buffer advancement, read callbacks, stale pointers, and the lifetime or timing of payload pointers across parser reads. Examples: acquiring a payload pointer after a read advances the buffer; auditing a callback-based reader.",
+      "examples": [
+        "`The payload pointer must be taken after the read advances the buffer.`",
+        "`The reader callback and pointer lifetime are being audited.`"
+      ],
+      "exclude": [
+        "Chunk order or metadata semantics without pointer-lifetime content; use IMAGE_CHUNK_METADATA_PARSING.",
+        "Decompressor match-copy pointers; use DECOMPRESSION_COPY_OUTPUT_BOUNDS.",
+        "Generic source inspection."
+      ],
+      "id": "PARSER_POINTER_LIFETIME",
+      "include": [
+        "Pointer validity across reads, buffer-mode parsing, read callbacks, payload-pointer acquisition, and stale-pointer fixes.",
+        "Parser state that changes when a read consumes bytes."
+      ]
+    },
+    {
+      "definition": "Concerns image-container chunk parsing, ancillary metadata, chunk order, post-data validation, CRC or header checks, and metadata-specific parser paths. Examples: a metadata chunk after image data; validating ancillary chunks.",
+      "examples": [
+        "`A metadata chunk after image data is being used as a parser trigger.`",
+        "`The post-data ancillary-chunk validation path is under review.`"
+      ],
+      "exclude": [
+        "Pixel conversion, row filters, or decoded-output sizing; use IMAGE_DECODE_PIXEL_CONVERSION.",
+        "Pointer lifetime as the primary topic; use PARSER_POINTER_LIFETIME.",
+        "Generic binary input generation."
+      ],
+      "id": "IMAGE_CHUNK_METADATA_PARSING",
+      "include": [
+        "Chunk readers, post-data or post-IDAT validation, metadata chunks, chunk ordering, and parser callbacks when image-container semantics are central.",
+        "Input construction involving ancillary metadata."
+      ]
+    },
+    {
+      "definition": "Concerns image decoding, decoded-output sizing, pixel sample normalization, gamma or ancillary transforms, scanlines, row filters, and optimized pixel paths. Examples: computing RGBA output size; brute-checking sample conversion combinations.",
+      "examples": [
+        "`The harness computes RGBA output size before decoding.`",
+        "`Sample normalization and row-filter combinations are being checked.`"
+      ],
+      "exclude": [
+        "Chunk parsing and pointer lifetime; use IMAGE_CHUNK_METADATA_PARSING or PARSER_POINTER_LIFETIME.",
+        "Generic fuzzer build or execution.",
+        "Unrelated binary input construction."
+      ],
+      "id": "IMAGE_DECODE_PIXEL_CONVERSION",
+      "include": [
+        "Image decode harness behavior, pixel-format conversion, gamma/sample scaling, row filters, SIMD paths, and output allocation.",
+        "Focused tests of pixel conversion or decoded image size."
+      ]
+    },
+    {
+      "definition": "Concerns generated or packed lookup tables, generated macros, Unicode or code-point bounds, and table-generator behavior. Examples: checking whether an out-of-range code point indexes a packed table; locating generated table bodies.",
+      "examples": [
+        "`A raw code point may index a packed table without an upper bound.`",
+        "`The generated lookup macro bodies are being located.`"
+      ],
+      "exclude": [
+        "Linked-list or run compaction; use LINKED_LIST_COMPACTION_BOUNDARIES.",
+        "General generated build artifacts without lookup semantics.",
+        "A generic API search with no table or Unicode subject."
+      ],
+      "id": "GENERATED_TABLES_AND_UNICODE_LOOKUPS",
+      "include": [
+        "Unicode and bracket lookup tables, generated includes, packed-table macros, code-generation sources, and bounds around table indexing.",
+        "Hypotheses about raw code points bypassing table bounds."
+      ]
+    },
+    {
+      "definition": "Concerns linked-list or run-list mutation, compaction, adjacent-node merging, isolate or boundary bookkeeping, and resulting stale or freed-node references. Examples: merging adjacent runs without respecting a boundary field.",
+      "examples": [
+        "`Compaction merges adjacent nodes without respecting a boundary field.`",
+        "`The adjacent-node lookup follows a stale link after list mutation.`"
+      ],
+      "exclude": [
+        "Generated Unicode lookup tables; use GENERATED_TABLES_AND_UNICODE_LOOKUPS.",
+        "Generic allocator or sanitizer discussion without list content.",
+        "Parser pointer lifetime."
+      ],
+      "id": "LINKED_LIST_COMPACTION_BOUNDARIES",
+      "include": [
+        "List construction, compaction conditions, adjacent-node lookup, boundary levels, isolate/bracket bookkeeping, and list memory safety.",
+        "Root-cause or fix discussions centered on list mutation."
+      ]
+    },
+    {
+      "definition": "Concerns designing, generating, formatting, targeting, pathing, applying, or packaging a source patch. Examples: repository-relative diff paths; regenerating a patch from an exact modified copy.",
+      "examples": [
+        "`The diff needs repository-relative paths.`",
+        "`The patch is being regenerated from the exact modified source copy.`"
+      ],
+      "exclude": [
+        "Running the dedicated validator as an operation; use VALIDATION_EXECUTION.",
+        "The underlying bug mechanism without patch content.",
+        "A PoC input without patch content."
+      ],
+      "id": "PATCH_CONSTRUCTION_AND_APPLICATION",
+      "include": [
+        "Fix strategy expressed as a patch, diff formatting, patch headers, context, target paths, application mechanics, and external patch artifacts.",
+        "Patch-specific overlap or targeting discussions."
+      ]
+    },
+    {
+      "definition": "Concerns invoking or reporting on a dedicated validator and its PoC, patch, preparation, or test stages. Examples: running a validator with a PoC and patch; recording stage labels.",
+      "examples": [
+        "`The validator is being run with a PoC and patch.`",
+        "`Validation output contains stage labels and a patch-application record.`"
+      ],
+      "exclude": [
+        "Do not encode pass, fail, crash, or success as a subject category.",
+        "General fuzzing or corpus replay; use FUZZING_CORPUS_AND_REPLAY.",
+        "Patch formatting/pathing without validator execution; use PATCH_CONSTRUCTION_AND_APPLICATION."
+      ],
+      "id": "VALIDATION_EXECUTION",
+      "include": [
+        "Official validation harness execution, PoC validation, patch validation, and validation-stage status.",
+        "Statements about validation being underway or about validator-emitted records."
+      ]
+    },
+    {
+      "definition": "Concerns repository history, version-control provenance, differential comparison, alternate local copies, packages, caches, or historical fixes. Examples: searching local history for a fix; comparing an alternate source copy.",
+      "examples": [
+        "`The source tree lacks history, so a cached alternate copy is being compared.`",
+        "`Local repository history is being searched for a prior fix.`"
+      ],
+      "exclude": [
+        "Current source or build inspection without provenance content.",
+        "Creating or applying the current patch; use PATCH_CONSTRUCTION_AND_APPLICATION.",
+        "General filesystem search unrelated to reference comparison."
+      ],
+      "id": "REPOSITORY_HISTORY_AND_REFERENCE_ARTIFACTS",
+      "include": [
+        "Git history/status/tag investigations, differential analysis, local package lookup, and alternate-version comparison.",
+        "Searching provenance artifacts because the active tree lacks history."
+      ]
+    }
+  ],
+  "name": "observable_agent_behavior_ontology",
+  "object_categories": [
+    {
+      "definition": "A project source checkout or source directory tree treated as a collection. Examples: `<src-tree>`; a command listing files under `<source-tree>`.",
+      "examples": [
+        "`<src-tree>`",
+        "A recursive source-tree file listing"
+      ],
+      "exclude": [
+        "A configured build workspace; use BUILD_TREE.",
+        "A generic output or temporary directory; use DIRECTORY_PATH.",
+        "A single source file; use SOURCE_CODE or HEADER_INTERFACE."
+      ],
+      "id": "SOURCE_TREE",
+      "include": [
+        "Directories containing implementation, header, test, generator, or documentation sources.",
+        "Source-tree paths used for recursive listing or searching."
+      ]
+    },
+    {
+      "definition": "A configured or generated build workspace and its inventory. Examples: `<build-dir>`; a command inspecting generated build artifacts.",
+      "examples": [
+        "`<build-dir>`",
+        "A temporary sanitizer build workspace"
+      ],
+      "exclude": [
+        "Declarative build definitions as individual files; use BUILD_CONFIGURATION.",
+        "A single executable; use EXECUTABLE_TARGET.",
+        "A source checkout."
+      ],
+      "id": "BUILD_TREE",
+      "include": [
+        "Build directories, generated build metadata, and build-tree inventories.",
+        "Temporary configured workspaces used to locate compiled or generated outputs."
+      ]
+    },
+    {
+      "definition": "An implementation source file, source excerpt, numbered region, or source variant. Examples: `<decoder.c>`; lines from `<parser.c>`.",
+      "examples": [
+        "`<parser.c>`",
+        "Lines 400-620 of `<decoder.c>`"
+      ],
+      "exclude": [
+        "Headers or API declarations; use HEADER_INTERFACE.",
+        "Build files or scripts.",
+        "Generated lookup/codegen output; use GENERATED_CODE_TABLE.",
+        "Patch files; use PATCH_DIFF."
+      ],
+      "id": "SOURCE_CODE",
+      "include": [
+        "C, C++, or other implementation files and their excerpts.",
+        "Temporary modified copies of implementation source."
+      ]
+    },
+    {
+      "definition": "A public or internal header, declaration file, type-definition file, or API interface. Examples: `<library.h>`; `<internal-types.h>`.",
+      "examples": [
+        "`<api.h>`",
+        "`<internal-state.h>`"
+      ],
+      "exclude": [
+        "Implementation source files.",
+        "Build configuration and scripts.",
+        "Generated tables unless the header is the generated artifact itself."
+      ],
+      "id": "HEADER_INTERFACE",
+      "include": [
+        "Headers containing declarations, macros, types, constants, or API definitions.",
+        "Interface excerpts searched or displayed as code."
+      ]
+    },
+    {
+      "definition": "A declarative build-system file or build option set. Examples: `<CMakeLists.txt>`; `<meson.build>`; `<build-cache>`.",
+      "examples": [
+        "`<build-definition>`",
+        "`<build-options>`"
+      ],
+      "exclude": [
+        "A script that orchestrates commands; use SCRIPT.",
+        "A materialized build workspace; use BUILD_TREE.",
+        "Runtime or validator configuration; use PROJECT_CONFIGURATION."
+      ],
+      "id": "BUILD_CONFIGURATION",
+      "include": [
+        "CMake, Meson, Make, Ninja, or equivalent build definitions and options.",
+        "Build caches or configuration fragments when inspected as build configuration."
+      ]
+    },
+    {
+      "definition": "An executable shell, Python, or similar orchestration script. Examples: `<prepare-script>`; `<runner-script>`; `<validator-wrapper>`.",
+      "examples": [
+        "`<compile-script>`",
+        "`<poc-runner>`"
+      ],
+      "exclude": [
+        "A build definition file; use BUILD_CONFIGURATION.",
+        "A fuzzer harness source file; use TEST_HARNESS.",
+        "A compiled executable."
+      ],
+      "id": "SCRIPT",
+      "include": [
+        "Preparation, compilation, runner, fuzzing, and validation scripts as files or command objects.",
+        "Scripts read, executed, or searched as script text."
+      ]
+    },
+    {
+      "definition": "Source for a test or fuzzing harness, including its entry point and input-to-library wiring. Examples: `<fuzzer-harness.c>`; `<reader-test.cc>`.",
+      "examples": [
+        "`<uncompress-harness.c>`",
+        "`<image-reader-fuzzer.cc>`"
+      ],
+      "exclude": [
+        "Production implementation source.",
+        "A compiled harness binary; use EXECUTABLE_TARGET.",
+        "A runner script; use SCRIPT."
+      ],
+      "id": "TEST_HARNESS",
+      "include": [
+        "Fuzzer entrypoint source, test harness source, and harness-specific glue.",
+        "Harness files that allocate buffers, decode inputs, or call library APIs."
+      ]
+    },
+    {
+      "definition": "A compiled executable, test binary, fuzzer, sanitizer binary, or tracing binary. Examples: `<fuzzer>`; `<decoder-asan>`; `<trace-target>`.",
+      "examples": [
+        "`<fuzzer-binary>`",
+        "`<instrumented-decoder>`"
+      ],
+      "exclude": [
+        "Source for the executable; use SOURCE_CODE or TEST_HARNESS.",
+        "An input file passed to the executable; use INPUT_DATA.",
+        "A build directory containing the executable; use BUILD_TREE."
+      ],
+      "id": "EXECUTABLE_TARGET",
+      "include": [
+        "Built programs invoked directly or through scripts.",
+        "Instrumented and non-instrumented executables."
+      ]
+    },
+    {
+      "definition": "One raw input or fixture supplied to a target. Examples: `<poc.bin>`; `<crash-input>`; a compressed stream; a structured image.",
+      "examples": [
+        "`<input.bin>`",
+        "`<structured-fixture>`"
+      ],
+      "exclude": [
+        "A collection of inputs; use CORPUS.",
+        "A patch or diff; use PATCH_DIFF.",
+        "A source or executable."
+      ],
+      "id": "INPUT_DATA",
+      "include": [
+        "PoCs, crash inputs, seed files, generated streams, images, null-byte inputs, and individual regression fixtures.",
+        "Raw byte sequences treated as one target input."
+      ]
+    },
+    {
+      "definition": "A collection or directory of seed, fuzzing, regression, or crasher inputs. Examples: `<seed-corpus>`; `<crasher-dir>`.",
+      "examples": [
+        "`<corpus-dir>`",
+        "`<crashers-dir>`"
+      ],
+      "exclude": [
+        "A single input file; use INPUT_DATA.",
+        "A log collection; use LOG_RECORD.",
+        "A generic output directory with unrelated artifacts."
+      ],
+      "id": "CORPUS",
+      "include": [
+        "Directories or sets containing multiple test inputs.",
+        "Fuzzing corpora and historical crasher collections."
+      ]
+    },
+    {
+      "definition": "A runtime, fuzzing, sanitizer, tracing, or validation log or log excerpt. Examples: `<fuzz.log>`; a sanitizer trace; a tail of runtime output.",
+      "examples": [
+        "`<fuzz-log>`",
+        "`<sanitizer-trace>`"
+      ],
+      "exclude": [
+        "Source code that contains logging statements.",
+        "A single input or artifact file.",
+        "A command's result when no log object is being inspected."
+      ],
+      "id": "LOG_RECORD",
+      "include": [
+        "Persistent logs and diagnostic traces read or tailed as records.",
+        "Runtime output treated as a log object rather than source text."
+      ]
+    },
+    {
+      "definition": "A patch, unified diff, Git-style diff, or patch artifact. Examples: `<fix.diff>`; `<patch-file>`.",
+      "examples": [
+        "`<fix.patch>`",
+        "`<source-change.diff>`"
+      ],
+      "exclude": [
+        "The modified source itself; use SOURCE_CODE.",
+        "A PoC or test input; use INPUT_DATA.",
+        "Repository history queries."
+      ],
+      "id": "PATCH_DIFF",
+      "include": [
+        "Patch files, diff text, diff hunks, and patch variants.",
+        "Artifacts intended to modify source through a textual change."
+      ]
+    },
+    {
+      "definition": "Generated source, amalgamated source, packed lookup table, generated include, or code-generation output. Examples: `<generated-table.i>`; `<amalgamated.c>`.",
+      "examples": [
+        "`<generated-lookup.i>`",
+        "`<combined-source.c>`"
+      ],
+      "exclude": [
+        "The generator implementation; use SOURCE_CODE.",
+        "Declarative build configuration.",
+        "A generic source file with no generated status."
+      ],
+      "id": "GENERATED_CODE_TABLE",
+      "include": [
+        "Generated Unicode or protocol tables, packed macros, amalgamated files, and generated includes.",
+        "Outputs of code generators inspected as generated artifacts."
+      ]
+    },
+    {
+      "definition": "Version-control metadata or records describing repository history and state. Examples: `<tree>/.git`; status, tag, or log metadata.",
+      "examples": [
+        "`<source-tree>/.git`",
+        "A repository history record"
+      ],
+      "exclude": [
+        "Ordinary source-tree contents.",
+        "An external package or alternate source copy; use REFERENCE_ARTIFACT."
+      ],
+      "id": "REPOSITORY_METADATA",
+      "include": [
+        "Repository directories, commit history, tags, status records, and version-control state.",
+        "Metadata queried to locate prior fixes or determine repository availability."
+      ]
+    },
+    {
+      "definition": "Runtime, validator, immutable-file, or project-level configuration distinct from build configuration. Examples: `<validator-config>`; `<runtime-config>`.",
+      "examples": [
+        "`<config.toml>`",
+        "`<validator-settings>`"
+      ],
+      "exclude": [
+        "Compiler/build options; use BUILD_CONFIGURATION.",
+        "A shell/Python orchestration file; use SCRIPT.",
+        "A source file."
+      ],
+      "id": "PROJECT_CONFIGURATION",
+      "include": [
+        "TOML, YAML, JSON, or similar files defining validation targets, runtime settings, or project policy.",
+        "Configuration identifying a repository target or protected paths."
+      ]
+    },
+    {
+      "definition": "A generic directory or path whose semantic type is not more specific. Examples: `<output-dir>`; `<temporary-dir>`; `<backup-path>`.",
+      "examples": [
+        "`<output-dir>`",
+        "`<temporary-workspace>`"
+      ],
+      "exclude": [
+        "Source trees, build trees, and corpora when those roles are explicit.",
+        "A specific file object."
+      ],
+      "id": "DIRECTORY_PATH",
+      "include": [
+        "Output, temporary, backup, artifact, or configuration directories treated as paths.",
+        "Path arguments without a source-tree, build-tree, corpus, or other specific role."
+      ]
+    },
+    {
+      "definition": "A search target consisting of symbols, identifiers, macros, function names, literals, or regular-expression patterns. Examples: `decode_image`; `LLVMFuzzerTestOneInput`; `malloc|memcpy`.",
+      "examples": [
+        "`<entrypoint-symbol>`",
+        "`<pointer|length|chunk>`"
+      ],
+      "exclude": [
+        "The source file containing the symbol.",
+        "A generated table artifact when it is the searched file rather than the pattern."
+      ],
+      "id": "SYMBOL_PATTERN",
+      "include": [
+        "API symbols, generated macro names, source patterns, and search expressions.",
+        "Names searched across files rather than files themselves."
+      ]
+    },
+    {
+      "definition": "Project documentation or explanatory text that is not source, configuration, or a runtime log. Examples: `<CHANGELOG>`; `<README>`.",
+      "examples": [
+        "`<changelog>`",
+        "`<design-notes>`"
+      ],
+      "exclude": [
+        "Source code, headers, scripts, and logs.",
+        "A diagnostic message emitted by a command."
+      ],
+      "id": "DOCUMENTATION",
+      "include": [
+        "Changelogs, readmes, design notes, and similar documentation files."
+      ]
+    },
+    {
+      "definition": "An external, cached, packaged, or alternate local artifact used for comparison or provenance. Examples: `<package-cache>`; `<alternate-source-copy>`; `<archive>`.",
+      "examples": [
+        "`<cached-package>`",
+        "`<alternate-copy>`"
+      ],
+      "exclude": [
+        "The active source tree or build tree.",
+        "A generated patch or current output artifact."
+      ],
+      "id": "REFERENCE_ARTIFACT",
+      "include": [
+        "Local packages, tarballs, cached copies, installed artifacts, and alternate source versions.",
+        "Artifacts searched to find historical fixes or compare implementations."
+      ]
+    },
+    {
+      "definition": "A deliberately grouped set of heterogeneous output artifacts. Examples: a PoC together with a patch; an output directory containing both.",
+      "examples": [
+        "`<poc.bin>` plus `<fix.patch>`",
+        "A bundle of generated validation artifacts"
+      ],
+      "exclude": [
+        "A homogeneous input corpus; use CORPUS.",
+        "A single patch or input.",
+        "A project source or build tree."
+      ],
+      "id": "ARTIFACT_SET",
+      "include": [
+        "Commands that treat multiple generated deliverables as one bundle.",
+        "Grouped PoC, patch, report, or output-artifact references."
+      ]
+    }
+  ],
+  "version": 1
+}

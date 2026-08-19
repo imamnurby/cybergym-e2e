@@ -1,0 +1,228 @@
+{
+  "content_hash": "a361ad2b67f63634ac54969c6c4e490e14d5b5dd2b3454189fc96836446c6863",
+  "request_hash": "3d240442b6fb233bf0c5040ec762782d7bad32f6df559113eb08d27b1e0023cc",
+  "response": {
+    "codings": [
+      {
+        "action": "GENERATE_DIFF",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_51",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "PATCH_DIFF",
+        "rationale": "The command creates temporary source variants and emits their unified diff."
+      },
+      {
+        "action": "MODIFY_FILE",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_52",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "PATCH_DIFF",
+        "rationale": "An existing patch artifact is updated."
+      },
+      {
+        "action": "RUN_VALIDATOR",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_53",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "ARTIFACT_SET",
+        "rationale": "A dedicated validator is invoked over the PoC and patch artifacts."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_54",
+        "fit": "exact",
+        "message_role": "DIAGNOSIS",
+        "message_subject": "PARSER_POINTER_LIFETIME",
+        "object": null,
+        "rationale": "The message asserts a causal stale-pointer mechanism across parser reads."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_0",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "It states an intended plan to inspect the runner, locate the fuzz entry point, and map input flow."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_1",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "sed displays the contents of a runner script."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_2",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "The command searches source contents for the fuzz entry-point symbol."
+      },
+      {
+        "action": "LIST_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_3",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "rg --files enumerates paths in the source tree without reading contents."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_4",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "It announces the intended narrowing and tracing of the active harness path."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_5",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "TEST_HARNESS",
+        "rationale": "sed displays the fuzz harness source."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_6",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "The command searches source contents for decompression API symbols."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_7",
+        "fit": "exact",
+        "message_role": "INVESTIGATION_ACCOUNT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "It describes how the harness derives an output size and passes the input to uncompress."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_8",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays an implementation-source excerpt."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_9",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays the decompressor implementation source."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_10",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays a later implementation-source region."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_11",
+        "fit": "exact",
+        "message_role": "HYPOTHESIS",
+        "message_subject": "DECOMPRESSION_ENCODING_AND_STATE",
+        "object": null,
+        "rationale": "It proposes a tentative dynamic Huffman code-length expansion issue."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_12",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "sed displays a decompressor header and state definition."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_13",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "The command searches source contents for state and table symbols."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_14",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "sed displays the OSS-Fuzz build script."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_15",
+        "fit": "exact",
+        "message_role": "STRATEGY_REVISION",
+        "message_subject": "DECOMPRESSION_COPY_OUTPUT_BOUNDS",
+        "object": null,
+        "rationale": "It rejects the initial candidate and redirects investigation to user-buffer output handling."
+      }
+    ]
+  }
+}

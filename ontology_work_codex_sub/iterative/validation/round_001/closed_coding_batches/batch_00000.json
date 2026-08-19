@@ -1,0 +1,227 @@
+{
+  "request_hash": "9d037a77eb8c42f23d0ff7e004d7855c45b1aabf62a995d73c10e008a1913307",
+  "response": {
+    "codings": [
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_0",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "Announces an initial harness and input-flow inspection before investigating the bug."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_1",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "sed displays the existing shell runner script."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_2",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "rg searches source contents for the fuzzer entry-point symbol."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_3",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "Announces the next source-reading and call-tracing step for the harness input flow."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_4",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "TEST_HARNESS",
+        "rationale": "sed displays the fuzzer harness source."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_5",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "rg searches source contents for charset-related API identifiers."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_6",
+        "fit": "exact",
+        "message_role": "INVESTIGATION_ACCOUNT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "Describes raw-byte interpretation and ongoing tracing of harness call paths without asserting a cause."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_7",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "rg searches library source contents for the listed API symbols."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_8",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays an implementation source file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_9",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays the bracket-processing implementation source."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_10",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays the bidirectional-algorithm implementation source."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_11",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "sed displays an internal header and type interface."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_12",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "GENERATED_CODE_TABLE",
+        "rationale": "The command attempts to display a generated table include."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_13",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "GENERATED_CODE_TABLE",
+        "rationale": "The command attempts to display another generated table include."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_14",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "rg searches source contents for generated-table accessor macros."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_15",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "GENERATED_CODE_TABLE",
+        "rationale": "The command attempts to display the generated bidi-type table include."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_16",
+        "fit": "exact",
+        "message_role": "HYPOTHESIS",
+        "message_subject": "GENERATED_TABLES_AND_UNICODE_LOOKUPS",
+        "object": null,
+        "rationale": "Proposes a tentative unchecked code-point lookup as the likely bug class."
+      },
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_17",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "The pipeline searches source-tree paths and filters their names by pattern."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_18",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "rg searches source contents for generated lookup macros."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_19",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays the generator implementation source."
+      }
+    ]
+  }
+}

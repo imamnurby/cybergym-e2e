@@ -1,0 +1,15 @@
+diff --git a/usbredirparser/usbredirparser.c b/usbredirparser/usbredirparser.c
+--- a/usbredirparser/usbredirparser.c
++++ b/usbredirparser/usbredirparser.c
+@@ -1802,6 +1802,12 @@ int usbredirparser_unserialize(struct usbredirparser *parser_pub,
+                 int type_header_len =
+                     usbredirparser_get_type_header_len(parser_pub,
+                                                        parser->header.type, 0);
++                if (parser->header.length > MAX_PACKET_SIZE) {
++                    ERROR("error unserialize packet length of %d larger than permitted %d bytes",
++                          parser->header.length, MAX_PACKET_SIZE);
++                    return -1;
++                }
+                 if (type_header_len < 0 ||
+                     type_header_len > sizeof(parser->type_header) ||
+                     parser->header.length < type_header_len ||

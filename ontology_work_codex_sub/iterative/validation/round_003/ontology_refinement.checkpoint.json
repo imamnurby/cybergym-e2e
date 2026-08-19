@@ -1,0 +1,879 @@
+{
+  "request_hash": "72994769525a42337ce78aceef8bd841ad5ed1999ebac7e1edfecb58f462cb31",
+  "response": {
+    "action_categories": [
+      {
+        "definition": "Reads or displays existing textual content from a file or bounded region.",
+        "examples": [],
+        "exclude": [
+          "Text or symbol matching as the primary operation; use SEARCH_TEXT.",
+          "Path enumeration; use LIST_PATHS or SEARCH_PATHS.",
+          "Binary-byte rendering; use DUMP_BINARY.",
+          "Version-control metadata queries; use QUERY_REPOSITORY.",
+          "Opening or attempting to read a named path without displaying substantive content; use ACCESS_FILE."
+        ],
+        "id": "READ_TEXT",
+        "include": [
+          "Reading source, headers, scripts, configuration, patches, changelogs, logs, or excerpts.",
+          "Using commands whose primary effect is emitting existing text."
+        ]
+      },
+      {
+        "definition": "Searches textual content for strings, symbols, identifiers, or code patterns.",
+        "examples": [],
+        "exclude": [
+          "Path or filename search; use SEARCH_PATHS.",
+          "Unfiltered path enumeration; use LIST_PATHS.",
+          "Version-control history or state queries; use QUERY_REPOSITORY.",
+          "Displaying text without matching it; use READ_TEXT."
+        ],
+        "id": "SEARCH_TEXT",
+        "include": [
+          "Matching text within one or more text-bearing files.",
+          "Locating source definitions, references, macros, APIs, or implementation patterns."
+        ]
+      },
+      {
+        "definition": "Enumerates files, directories, or other filesystem paths without requiring a matching predicate.",
+        "examples": [],
+        "exclude": [
+          "Searching for paths by name, type, or predicate; use SEARCH_PATHS.",
+          "Matching file contents; use SEARCH_TEXT.",
+          "Displaying file contents; use READ_TEXT or DUMP_BINARY."
+        ],
+        "id": "LIST_PATHS",
+        "include": [
+          "Listing directory contents or recursively enumerating project files.",
+          "Listing corpus, build, output, or artifact paths."
+        ]
+      },
+      {
+        "definition": "Searches a filesystem or directory tree for paths matching names, types, locations, or other path predicates.",
+        "examples": [],
+        "exclude": [
+          "Unfiltered path enumeration; use LIST_PATHS.",
+          "Matching file contents; use SEARCH_TEXT.",
+          "Version-control metadata queries; use QUERY_REPOSITORY."
+        ],
+        "id": "SEARCH_PATHS",
+        "include": [
+          "Finding files, directories, repository markers, generated files, or executables by path criteria.",
+          "Searching for a specific file or directory that may be absent."
+        ]
+      },
+      {
+        "definition": "Displays or renders existing binary content as raw bytes, hexadecimal, or another byte-oriented representation.",
+        "examples": [],
+        "exclude": [
+          "Reading textual content; use READ_TEXT.",
+          "Computing measurements or derived values without rendering bytes; use MEASURE_DATA or COMPUTE_RESULT."
+        ],
+        "id": "DUMP_BINARY",
+        "include": [
+          "Hex-dumping files or bounded binary regions.",
+          "Printing raw bytes from inputs, corpus entries, or crash artifacts."
+        ]
+      },
+      {
+        "definition": "Queries or attempts to query version-control or repository metadata, history, state, tags, or repository-level differences.",
+        "examples": [],
+        "exclude": [
+          "Reading source text; use READ_TEXT.",
+          "Searching source content; use SEARCH_TEXT.",
+          "Generating an independent patch artifact; use GENERATE_PATCH."
+        ],
+        "id": "QUERY_REPOSITORY",
+        "include": [
+          "Inspecting repository history, status, tags, identity, or metadata.",
+          "Requesting repository-level diffs or checking whether a directory is a repository."
+        ]
+      },
+      {
+        "definition": "Attempts to open, read, or verify access to a specified file or path when no substantive file content is emitted.",
+        "examples": [],
+        "exclude": [
+          "Displaying existing textual content; use READ_TEXT.",
+          "Enumerating or searching paths; use LIST_PATHS or SEARCH_PATHS.",
+          "Executing a program at a path; use EXECUTE_PROGRAM."
+        ],
+        "id": "ACCESS_FILE",
+        "include": [
+          "Failed or missing-file read attempts that produce only access diagnostics.",
+          "Checking whether a named file can be opened or accessed."
+        ]
+      },
+      {
+        "definition": "Measures a simple quantitative property of data, files, or artifacts.",
+        "examples": [],
+        "exclude": [
+          "Rendering raw bytes; use DUMP_BINARY.",
+          "Computing derived candidates or analytical results; use COMPUTE_RESULT."
+        ],
+        "id": "MEASURE_DATA",
+        "include": [
+          "Counting bytes, file sizes, lengths, dimensions, or similar direct properties.",
+          "Reporting quantitative metadata for an artifact."
+        ]
+      },
+      {
+        "definition": "Performs a deterministic calculation or bounded analytical check and emits derived values or findings.",
+        "examples": [],
+        "exclude": [
+          "Only measuring a direct file or data property; use MEASURE_DATA.",
+          "Executing an external program as the primary operation; use EXECUTE_PROGRAM or RUN_TEST."
+        ],
+        "id": "COMPUTE_RESULT",
+        "include": [
+          "Computing valid parameter combinations, checksums, bounds, or conversion results.",
+          "Running a deterministic exhaustive calculation over supplied cases."
+        ]
+      },
+      {
+        "definition": "Compares two or more source, text, or data variants and derives or displays their differences.",
+        "examples": [],
+        "exclude": [
+          "Producing an applyable patch artifact as the primary operation; use GENERATE_PATCH.",
+          "Repository-level history or state queries; use QUERY_REPOSITORY."
+        ],
+        "id": "COMPARE_VARIANTS",
+        "include": [
+          "Constructing a comparison or unified-diff representation between variants.",
+          "Using differential analysis to identify changes between versions."
+        ]
+      },
+      {
+        "definition": "Creates a directory or other filesystem container.",
+        "examples": [],
+        "exclude": [
+          "Creating a file; use CREATE_FILE.",
+          "Only listing or searching directories; use LIST_PATHS or SEARCH_PATHS."
+        ],
+        "id": "CREATE_DIRECTORY",
+        "include": [
+          "Creating directories for inputs, outputs, builds, artifacts, or corpora.",
+          "Creating a previously absent path container."
+        ]
+      },
+      {
+        "definition": "Creates a new file by writing or materializing generated or explicitly supplied content.",
+        "examples": [],
+        "exclude": [
+          "Duplicating an existing file as the primary operation; use COPY_FILE.",
+          "Changing an existing file; use MODIFY_FILE.",
+          "Removing a file; use DELETE_FILE."
+        ],
+        "id": "CREATE_FILE",
+        "include": [
+          "Writing a newly constructed input, patch, source, or output artifact.",
+          "Adding a file that did not previously exist."
+        ]
+      },
+      {
+        "definition": "Duplicates an existing file or source artifact to another path.",
+        "examples": [],
+        "exclude": [
+          "Writing newly generated content; use CREATE_FILE or GENERATE_TEST_INPUT.",
+          "Editing file contents; use MODIFY_FILE."
+        ],
+        "id": "COPY_FILE",
+        "include": [
+          "Copying a crash input, seed, source file, or other existing artifact.",
+          "Creating a destination file whose content is copied from an existing file."
+        ]
+      },
+      {
+        "definition": "Changes the contents of an existing file.",
+        "examples": [],
+        "exclude": [
+          "Creating a previously absent file; use CREATE_FILE.",
+          "Duplicating without content changes; use COPY_FILE.",
+          "Removing a file; use DELETE_FILE."
+        ],
+        "id": "MODIFY_FILE",
+        "include": [
+          "Updating source, patch, configuration, or other existing files.",
+          "Editing a copied source variant or rewriting an existing artifact."
+        ]
+      },
+      {
+        "definition": "Removes an existing file.",
+        "examples": [],
+        "exclude": [
+          "Changing or replacing file contents without removal; use MODIFY_FILE."
+        ],
+        "id": "DELETE_FILE",
+        "include": [
+          "Deleting an artifact, patch, input, or other file."
+        ]
+      },
+      {
+        "definition": "Constructs or synthesizes data intended to exercise a program, parser, decoder, or other target.",
+        "examples": [],
+        "exclude": [
+          "Merely copying an existing input; use COPY_FILE.",
+          "Generating a source-change artifact; use GENERATE_PATCH."
+        ],
+        "id": "GENERATE_TEST_INPUT",
+        "include": [
+          "Creating handcrafted, boundary, malformed, compressed, encoded, or reproducer inputs.",
+          "Generating seed data or test cases for later execution or fuzzing."
+        ]
+      },
+      {
+        "definition": "Constructs a patch or diff artifact that represents source or file changes.",
+        "examples": [],
+        "exclude": [
+          "Only comparing or displaying differences; use COMPARE_VARIANTS or READ_TEXT.",
+          "Applying an existing patch; use APPLY_PATCH."
+        ],
+        "id": "GENERATE_PATCH",
+        "include": [
+          "Generating unified diffs, patch files, or patch headers.",
+          "Writing a change representation for later application."
+        ]
+      },
+      {
+        "definition": "Prepares, configures, compiles, links, assembles, or installs software or build artifacts.",
+        "examples": [],
+        "exclude": [
+          "Only editing source; use MODIFY_FILE.",
+          "Running an already built program; use EXECUTE_PROGRAM.",
+          "Adding tracing or diagnostic instrumentation as the primary operation; use INSTRUMENT_CODE."
+        ],
+        "id": "BUILD_CODE",
+        "include": [
+          "Compiling source into executables or libraries.",
+          "Running build or setup commands, including builds with fuzzing or diagnostic options."
+        ]
+      },
+      {
+        "definition": "Adds or configures tracing, logging, sanitizer, or other diagnostic instrumentation for program analysis.",
+        "examples": [],
+        "exclude": [
+          "Ordinary compilation without added instrumentation; use BUILD_CODE.",
+          "Only running an instrumented program; use EXECUTE_PROGRAM or RUN_TEST."
+        ],
+        "id": "INSTRUMENT_CODE",
+        "include": [
+          "Inserting diagnostic logging into a source copy.",
+          "Configuring a build or executable to collect memory-safety or execution diagnostics."
+        ]
+      },
+      {
+        "definition": "Starts or runs a script, executable, harness, command, or test target and observes its process behavior or output.",
+        "examples": [],
+        "exclude": [
+          "Compiling or linking the target; use BUILD_CODE.",
+          "Mutation-driven fuzzing as the primary operation; use FUZZ_TEST.",
+          "Explicit assessment of a proposed change; use VALIDATE_CHANGE."
+        ],
+        "id": "EXECUTE_PROGRAM",
+        "include": [
+          "Running a binary or script on supplied arguments or files.",
+          "Executing a target that emits diagnostics, traces, return codes, or other output."
+        ]
+      },
+      {
+        "definition": "Executes deliberate test cases, test inputs, corpus entries, or deterministic checks against a target.",
+        "examples": [],
+        "exclude": [
+          "Automatically mutating or generating inputs at scale; use FUZZ_TEST.",
+          "Validation of a proposed patch or change as the primary purpose; use VALIDATE_CHANGE."
+        ],
+        "id": "RUN_TEST",
+        "include": [
+          "Running selected inputs, replaying reproducer inputs, or probing boundary cases.",
+          "Executing sanitizer-backed tests or exhaustive checks."
+        ]
+      },
+      {
+        "definition": "Drives a target with automatically generated or mutated inputs, usually using seeds, a corpus, coverage feedback, or multiple workers.",
+        "examples": [],
+        "exclude": [
+          "Building the fuzz target; use BUILD_CODE.",
+          "Running one deliberately selected input; use RUN_TEST."
+        ],
+        "id": "FUZZ_TEST",
+        "include": [
+          "Launching fuzzing runs or structure-aware fuzzing.",
+          "Generating or mutating corpus entries while executing a fuzz target."
+        ]
+      },
+      {
+        "definition": "Applies an existing patch or diff to source files or a file set.",
+        "examples": [],
+        "exclude": [
+          "Creating a patch artifact; use GENERATE_PATCH.",
+          "Directly editing source without applying a patch; use MODIFY_FILE."
+        ],
+        "id": "APPLY_PATCH",
+        "include": [
+          "Applying a generated patch to a source tree.",
+          "Attempting patch application before rebuilding or testing."
+        ]
+      },
+      {
+        "definition": "Assesses a proposed patch, fix, reproducer, or other change against expected behavior or checks.",
+        "examples": [],
+        "exclude": [
+          "Creating or editing the change itself; use GENERATE_PATCH or MODIFY_FILE.",
+          "Generic testing not tied to a proposed change; use RUN_TEST."
+        ],
+        "id": "VALIDATE_CHANGE",
+        "include": [
+          "Validating a reproducer with and without a change.",
+          "Applying, building, and testing a proposed change as an assessment."
+        ]
+      }
+    ],
+    "message_roles": [
+      {
+        "definition": "States an intended investigation, experiment, construction, validation, or next action.",
+        "examples": [],
+        "exclude": [
+          "Reporting completed or current work without intent; use STATUS_UPDATE or RESULT_REPORT.",
+          "A causal explanation; use DIAGNOSIS."
+        ],
+        "id": "INTENT_STATEMENT",
+        "include": [
+          "Plans to inspect, build, test, trace, generate, or change something.",
+          "Conditional statements about what will be done next."
+        ]
+      },
+      {
+        "definition": "Reports the current state or progress of an ongoing activity or artifact.",
+        "examples": [],
+        "exclude": [
+          "A future plan; use INTENT_STATEMENT.",
+          "A causal explanation; use DIAGNOSIS.",
+          "A specific observed outcome presented as evidence; use RESULT_REPORT."
+        ],
+        "id": "STATUS_UPDATE",
+        "include": [
+          "Describing work as in progress, completed, blocked, still under investigation, or awaiting a result.",
+          "Reporting current validation, build, or debugging status."
+        ]
+      },
+      {
+        "definition": "Explains implementation structure, data flow, call paths, or observed technical mechanisms.",
+        "examples": [],
+        "exclude": [
+          "An asserted cause of a defect; use DIAGNOSIS.",
+          "A proposed fix; use REMEDIATION_PLAN."
+        ],
+        "id": "TECHNICAL_ANALYSIS",
+        "include": [
+          "Describing how a harness maps inputs to calls.",
+          "Tracing functions, APIs, buffers, source definitions, or execution paths."
+        ]
+      },
+      {
+        "definition": "States or revises an explanation for a defect, failure, or observed behavior.",
+        "examples": [],
+        "exclude": [
+          "A neutral implementation description; use TECHNICAL_ANALYSIS.",
+          "A proposed corrective action without causal explanation; use REMEDIATION_PLAN."
+        ],
+        "id": "DIAGNOSIS",
+        "include": [
+          "Bug diagnoses, hypotheses, root-cause claims, and hypothesis revisions.",
+          "Explaining why an observed failure or memory-safety issue occurs."
+        ]
+      },
+      {
+        "definition": "Reports a discovered condition, bug, evidence, or confirmed technical observation.",
+        "examples": [],
+        "exclude": [
+          "A tentative explanation without an established observation; use DIAGNOSIS.",
+          "A test or validation outcome as the primary content; use RESULT_REPORT."
+        ],
+        "id": "FINDING_REPORT",
+        "include": [
+          "Reporting a newly found issue or confirmed behavior.",
+          "Summarizing evidence and identifying affected behavior or artifacts."
+        ]
+      },
+      {
+        "definition": "Proposes a fix, mitigation, or strategy for changing behavior or addressing a finding.",
+        "examples": [],
+        "exclude": [
+          "Reporting an already prepared or implemented fix; use REMEDIATION_UPDATE.",
+          "Reporting only the underlying cause; use DIAGNOSIS."
+        ],
+        "id": "REMEDIATION_PLAN",
+        "include": [
+          "Describing a planned patch or corrective code change.",
+          "Proposing a fallback, bounds check, validation rule, or other mitigation."
+        ]
+      },
+      {
+        "definition": "Reports an implemented, prepared, revised, or otherwise materialized fix or change.",
+        "examples": [],
+        "exclude": [
+          "A future fix proposal; use REMEDIATION_PLAN.",
+          "A test result about the fix; use RESULT_REPORT."
+        ],
+        "id": "REMEDIATION_UPDATE",
+        "include": [
+          "Describing a completed source change or prepared patch artifact.",
+          "Reporting that a corrective implementation has been adjusted or is ready for assessment."
+        ]
+      },
+      {
+        "definition": "Reports observed outcomes from tests, builds, validation, experiments, or diagnostic runs without classifying them as successful or unsuccessful.",
+        "examples": [],
+        "exclude": [
+          "A plan to run the check; use INTENT_STATEMENT.",
+          "A causal explanation of the result; use DIAGNOSIS."
+        ],
+        "id": "RESULT_REPORT",
+        "include": [
+          "Reporting crashes, warnings, clean observations, errors, coverage changes, or validation results.",
+          "Summarizing what an executed check or experiment produced."
+        ]
+      },
+      {
+        "definition": "Reports a change in investigative, testing, comparison, or debugging method or focus.",
+        "examples": [],
+        "exclude": [
+          "A routine progress update without a change in method; use STATUS_UPDATE.",
+          "A proposed code fix; use REMEDIATION_PLAN."
+        ],
+        "id": "METHOD_CHANGE",
+        "include": [
+          "Shifting from one hypothesis, source area, input strategy, or analysis method to another.",
+          "Explaining why the current approach is being redirected."
+        ]
+      }
+    ],
+    "message_subjects": [
+      {
+        "definition": "Program structure, entry points, APIs, call paths, and source-level implementation details under examination.",
+        "examples": [],
+        "exclude": [
+          "Repository history or version metadata; use SOURCE_VARIANTS_AND_REPOSITORY.",
+          "Runtime diagnostic output without structural analysis; use SANITIZER_DIAGNOSTICS."
+        ],
+        "id": "SOURCE_STRUCTURE_AND_CALL_FLOW",
+        "include": [
+          "Harness wiring, function definitions, immediate callees, callbacks, and source references.",
+          "Tracing how data reaches a library or program component."
+        ]
+      },
+      {
+        "definition": "Compilers, build scripts, build configuration, instrumentation settings, packaging, and build outputs.",
+        "examples": [],
+        "exclude": [
+          "Running an already built target; use VALIDATION_AND_TESTING or FUZZING_AND_CORPORA.",
+          "Source-level bug mechanism without build context; use SOURCE_STRUCTURE_AND_CALL_FLOW."
+        ],
+        "id": "BUILD_AND_TOOLCHAIN",
+        "include": [
+          "Compilation, sanitizer-enabled builds, amalgamation, build trees, and toolchain warnings.",
+          "Searching or comparing alternate built or packaged implementations."
+        ]
+      },
+      {
+        "definition": "Source copies, implementation variants, repository history, version comparisons, and repository state.",
+        "examples": [],
+        "exclude": [
+          "A newly generated patch as the main subject; use PATCHING_AND_REMEDIATION.",
+          "General filesystem placement or artifact size; use FILESYSTEM_AND_ARTIFACTS."
+        ],
+        "id": "SOURCE_VARIANTS_AND_REPOSITORY",
+        "include": [
+          "Differential source analysis, historical fix lookup, repository metadata, and local packaging comparisons.",
+          "Comparing alternate implementations or revisions."
+        ]
+      },
+      {
+        "definition": "Files, directories, paths, artifact placement, copying, presence, and simple artifact metadata.",
+        "examples": [],
+        "exclude": [
+          "The semantic contents of source or parser code; use SOURCE_STRUCTURE_AND_CALL_FLOW.",
+          "Patch logic as the main subject; use PATCHING_AND_REMEDIATION."
+        ],
+        "id": "FILESYSTEM_AND_ARTIFACTS",
+        "include": [
+          "Source trees, output files, corpus directories, file paths, sizes, and artifact organization.",
+          "Problems involving missing, added, updated, or removed files."
+        ]
+      },
+      {
+        "definition": "Corrective source changes, patch contents, patch formatting, patch paths, and fix artifacts.",
+        "examples": [],
+        "exclude": [
+          "The underlying defect mechanism without the corrective change; use MEMORY_SAFETY or PARSING_AND_DECODING.",
+          "Generic source comparison; use SOURCE_VARIANTS_AND_REPOSITORY."
+        ],
+        "id": "PATCHING_AND_REMEDIATION",
+        "include": [
+          "Patch preparation, application, formatting, pathing, and targeted source fixes.",
+          "Discussion of how a proposed remediation changes behavior."
+        ]
+      },
+      {
+        "definition": "Crafted, minimized, boundary, malformed, or fault-reproducing inputs used for analysis or testing.",
+        "examples": [],
+        "exclude": [
+          "Corpus management or mutation at scale; use FUZZING_AND_CORPORA.",
+          "The harness that consumes the input; use SOURCE_STRUCTURE_AND_CALL_FLOW."
+        ],
+        "id": "TEST_INPUTS_AND_REPRODUCERS",
+        "include": [
+          "Reproducer files, proof-of-concept inputs, compressed streams, parser fixtures, and boundary cases.",
+          "Designing or reducing inputs to expose a behavior."
+        ]
+      },
+      {
+        "definition": "Fuzz targets, input mutation, seed generation, corpus management, and fuzzing diagnostics.",
+        "examples": [],
+        "exclude": [
+          "A single handcrafted input or reproducer; use TEST_INPUTS_AND_REPRODUCERS.",
+          "Building the target without fuzzing activity; use BUILD_AND_TOOLCHAIN."
+        ],
+        "id": "FUZZING_AND_CORPORA",
+        "include": [
+          "Fuzzing runs, workers, corpus entries, reductions, coverage progress, and crash discovery.",
+          "Structure-aware or sanitizer-backed fuzzing."
+        ]
+      },
+      {
+        "definition": "Deliberate tests, regression checks, replay, validation assessments, and their observed outcomes.",
+        "examples": [],
+        "exclude": [
+          "Automatic mutation-driven exploration; use FUZZING_AND_CORPORA.",
+          "The code defect mechanism itself; use MEMORY_SAFETY or PARSING_AND_DECODING."
+        ],
+        "id": "VALIDATION_AND_TESTING",
+        "include": [
+          "Testing a change against a reproducer or test suite.",
+          "Running selected inputs, deterministic checks, or validation harnesses."
+        ]
+      },
+      {
+        "definition": "Memory-safety instrumentation, sanitizer configurations, sanitizer reports, and diagnostic traces.",
+        "examples": [],
+        "exclude": [
+          "Ordinary tests without diagnostic instrumentation; use VALIDATION_AND_TESTING.",
+          "The underlying source-level memory defect; use MEMORY_SAFETY."
+        ],
+        "id": "SANITIZER_DIAGNOSTICS",
+        "include": [
+          "Address, memory, or similar sanitizer builds and reports.",
+          "Uninitialized-value, use-after-free, trace, and origin diagnostics."
+        ]
+      },
+      {
+        "definition": "Memory-lifetime, initialization, bounds, allocation, and invalid-access behavior.",
+        "examples": [],
+        "exclude": [
+          "Only reporting sanitizer output without interpreting the defect; use SANITIZER_DIAGNOSTICS.",
+          "Non-memory functional conversion or lookup issues; use DATA_CONVERSION or TABLE_LOOKUP_VALIDATION."
+        ],
+        "id": "MEMORY_SAFETY",
+        "include": [
+          "Use-after-free, uninitialized reads, buffer overflows, invalid offsets, and unsafe copying.",
+          "Reasoning about memory-safety consequences of parser or data-structure logic."
+        ]
+      },
+      {
+        "definition": "Parsing, decoding, decompression, encoded-format handling, and format-specific control flow.",
+        "examples": [],
+        "exclude": [
+          "Generic file access or path operations; use FILESYSTEM_AND_ARTIFACTS.",
+          "Memory-lifetime consequences as the main topic; use MEMORY_SAFETY or BUFFER_POINTER_AND_BOUNDS."
+        ],
+        "id": "PARSING_AND_DECODING",
+        "include": [
+          "Chunk readers, compressed streams, decoder symbols, parse paths, and format metadata.",
+          "Investigating how malformed or unusual encoded data is processed."
+        ]
+      },
+      {
+        "definition": "Pointer lifetime, buffer sizing, offset tracking, bounds checks, and overlapping or repeated-copy behavior.",
+        "examples": [],
+        "exclude": [
+          "General parser behavior without buffer or pointer focus; use PARSING_AND_DECODING.",
+          "Linked-run or other abstract data-structure invariants; use DATA_STRUCTURE_INVARIANTS."
+        ],
+        "id": "BUFFER_POINTER_AND_BOUNDS",
+        "include": [
+          "Stale pointers, output-buffer state, allocation sizing, backreference distances, and copy-loop boundaries.",
+          "Checking whether indices, lengths, or offsets are validated before use."
+        ]
+      },
+      {
+        "definition": "Invariants and mutation rules for linked, indexed, or stateful data structures.",
+        "examples": [],
+        "exclude": [
+          "Raw buffer or pointer arithmetic; use BUFFER_POINTER_AND_BOUNDS.",
+          "Generic parser control flow; use PARSING_AND_DECODING."
+        ],
+        "id": "DATA_STRUCTURE_INVARIANTS",
+        "include": [
+          "Run merging, link consistency, isolate boundaries, compaction, and structural bookkeeping.",
+          "Reasoning about whether mutations preserve relationships between elements."
+        ]
+      },
+      {
+        "definition": "Generated or packed lookup tables and validation of values used to index them.",
+        "examples": [],
+        "exclude": [
+          "General source searching without table semantics; use SOURCE_STRUCTURE_AND_CALL_FLOW.",
+          "Numeric conversion without lookup indexing; use DATA_CONVERSION."
+        ],
+        "id": "TABLE_LOOKUP_VALIDATION",
+        "include": [
+          "Table generation, lookup macros, code-point or symbol ranges, and upper-bound checks.",
+          "Investigating out-of-range input values reaching table access."
+        ]
+      },
+      {
+        "definition": "Conversion, normalization, encoding, or decoding of values between representations.",
+        "examples": [],
+        "exclude": [
+          "Parsing the enclosing file format; use PARSING_AND_DECODING.",
+          "Table-index bounds as the primary issue; use TABLE_LOOKUP_VALIDATION."
+        ],
+        "id": "DATA_CONVERSION",
+        "include": [
+          "Character-set, sample, pixel, bit-depth, gamma, or other representation conversions.",
+          "Checking conversion bounds and normalization behavior."
+        ]
+      }
+    ],
+    "name": "observable_agent_behavior_ontology",
+    "object_categories": [
+      {
+        "definition": "Textual content stored or handled as a file or bounded artifact.",
+        "examples": [],
+        "exclude": [
+          "Opaque encoded bytes; use BINARY_ARTIFACT.",
+          "Runnable compiled programs; use EXECUTABLE."
+        ],
+        "id": "TEXT_ARTIFACT",
+        "include": [
+          "Source, headers, scripts, configuration, logs, patches, changelogs, and generated text.",
+          "Text excerpts or textual command output."
+        ]
+      },
+      {
+        "definition": "Opaque or encoded binary data stored as a file or stream.",
+        "examples": [],
+        "exclude": [
+          "Source or other text handled as text; use TEXT_ARTIFACT or SOURCE_CODE.",
+          "A runnable compiled program; use EXECUTABLE."
+        ],
+        "id": "BINARY_ARTIFACT",
+        "include": [
+          "Images, compressed streams, raw crash data, and binary outputs.",
+          "Files inspected or generated as byte sequences."
+        ]
+      },
+      {
+        "definition": "Program source, headers, generated source, or a source variant.",
+        "examples": [],
+        "exclude": [
+          "Compiled or linked output; use BUILD_ARTIFACT or EXECUTABLE.",
+          "A patch representation rather than source contents; use PATCH."
+        ],
+        "id": "SOURCE_CODE",
+        "include": [
+          "Implementation files, declarations, macros, test drivers, and copied source variants.",
+          "Generated code used as program source."
+        ]
+      },
+      {
+        "definition": "A directory tree containing source code and related project files.",
+        "examples": [],
+        "exclude": [
+          "A standalone file; use SOURCE_CODE or TEXT_ARTIFACT.",
+          "A corpus or artifact collection; use FUZZ_CORPUS or DIRECTORY."
+        ],
+        "id": "SOURCE_TREE",
+        "include": [
+          "Source repositories, library trees, test trees, and build-input trees."
+        ]
+      },
+      {
+        "definition": "A filesystem directory or path container used to hold files or artifacts.",
+        "examples": [],
+        "exclude": [
+          "A collection defined by its fuzzing inputs; use FUZZ_CORPUS.",
+          "A file or stream; use TEXT_ARTIFACT or BINARY_ARTIFACT."
+        ],
+        "id": "DIRECTORY",
+        "include": [
+          "Build, output, corpus, temporary, source, and artifact directories."
+        ]
+      },
+      {
+        "definition": "Settings or parameters that control a build, test, validator, or tool.",
+        "examples": [],
+        "exclude": [
+          "Program source implementing behavior; use SOURCE_CODE.",
+          "Observed diagnostic output; use DIAGNOSTIC_OUTPUT."
+        ],
+        "id": "CONFIGURATION",
+        "include": [
+          "Configuration files, build options, sanitizer settings, and command parameters."
+        ]
+      },
+      {
+        "definition": "A runnable binary, script, fuzzer, harness, or test program.",
+        "examples": [],
+        "exclude": [
+          "Uncompiled source; use SOURCE_CODE.",
+          "A non-runnable input file; use TEST_INPUT or BINARY_ARTIFACT."
+        ],
+        "id": "EXECUTABLE",
+        "include": [
+          "Compiled test targets, command-line programs, scripts, and instrumented executables."
+        ]
+      },
+      {
+        "definition": "Output produced by a build or instrumentation process, including build trees and compiled artifacts.",
+        "examples": [],
+        "exclude": [
+          "Original source inputs; use SOURCE_CODE or SOURCE_TREE.",
+          "A deliberately supplied test input; use TEST_INPUT."
+        ],
+        "id": "BUILD_ARTIFACT",
+        "include": [
+          "Compiled libraries, object files, instrumented outputs, and temporary build trees.",
+          "Build products that may contain one or more executables."
+        ]
+      },
+      {
+        "definition": "A source-level program component or implementation unit.",
+        "examples": [],
+        "exclude": [
+          "The complete runnable target; use EXECUTABLE.",
+          "A generated lookup-data artifact; use LOOKUP_TABLE."
+        ],
+        "id": "PROGRAM_COMPONENT",
+        "include": [
+          "Functions, APIs, callbacks, parsers, decoders, copy loops, and data-structure implementations.",
+          "Entry points and immediate callees examined during analysis."
+        ]
+      },
+      {
+        "definition": "A driver that converts inputs into calls to a program or library target.",
+        "examples": [],
+        "exclude": [
+          "The target implementation itself; use PROGRAM_COMPONENT.",
+          "The input supplied to the driver; use TEST_INPUT or FUZZ_CORPUS."
+        ],
+        "id": "HARNESS",
+        "include": [
+          "Fuzzer entrypoints, validator drivers, test harnesses, and input adapters."
+        ]
+      },
+      {
+        "definition": "A selected or generated input used to exercise a program or parser.",
+        "examples": [],
+        "exclude": [
+          "A collection of many fuzz inputs; use FUZZ_CORPUS.",
+          "Source code or a patch; use SOURCE_CODE or PATCH."
+        ],
+        "id": "TEST_INPUT",
+        "include": [
+          "Handcrafted streams, encoded files, boundary cases, seed files, and test fixtures.",
+          "Inputs used for ordinary tests or exploratory probes."
+        ]
+      },
+      {
+        "definition": "A test input intended to reproduce a specific observed fault or abnormal behavior.",
+        "examples": [],
+        "exclude": [
+          "General-purpose seeds without a reproduction purpose; use TEST_INPUT or FUZZ_CORPUS.",
+          "The patch intended to address the fault; use PATCH."
+        ],
+        "id": "REPRODUCER_INPUT",
+        "include": [
+          "Crash inputs, minimized reproducers, and proof-of-concept inputs.",
+          "Inputs retained for regression or patch validation."
+        ]
+      },
+      {
+        "definition": "A collection of seed, mutated, reduced, or otherwise retained fuzzing inputs.",
+        "examples": [],
+        "exclude": [
+          "A single deliberately crafted reproducer; use REPRODUCER_INPUT.",
+          "A directory with no corpus role; use DIRECTORY."
+        ],
+        "id": "FUZZ_CORPUS",
+        "include": [
+          "Fuzzing corpus directories and their individual retained entries.",
+          "Corpus snapshots used to seed or replay fuzzing."
+        ]
+      },
+      {
+        "definition": "A textual diff or patch representation of changes to files or source.",
+        "examples": [],
+        "exclude": [
+          "The modified source itself; use SOURCE_CODE.",
+          "A comparison that is not materialized as a patch; use SOURCE_CODE or TEXT_ARTIFACT."
+        ],
+        "id": "PATCH",
+        "include": [
+          "Unified diffs, patch files, repository-style change headers, and fix artifacts.",
+          "A patch prepared for application or validation."
+        ]
+      },
+      {
+        "definition": "Generated, packed, or indexed table data used by program logic.",
+        "examples": [],
+        "exclude": [
+          "General source code not serving as table data; use SOURCE_CODE.",
+          "Runtime table state held during execution; use RUNTIME_STATE."
+        ],
+        "id": "LOOKUP_TABLE",
+        "include": [
+          "Generated character, symbol, macro, or lookup tables and their generators.",
+          "Table definitions and table-related artifacts examined for bounds issues."
+        ]
+      },
+      {
+        "definition": "Mutable execution state relevant to program behavior or diagnostics.",
+        "examples": [],
+        "exclude": [
+          "Static source definitions; use PROGRAM_COMPONENT or SOURCE_CODE.",
+          "A diagnostic report describing the state; use DIAGNOSTIC_OUTPUT."
+        ],
+        "id": "RUNTIME_STATE",
+        "include": [
+          "Buffers, pointer state, allocator state, decoder state, copy offsets, and table state.",
+          "Callback or output state observed during tracing."
+        ]
+      },
+      {
+        "definition": "Output that records warnings, traces, sanitizer findings, coverage information, or other execution diagnostics.",
+        "examples": [],
+        "exclude": [
+          "The executable or input that produced the output; use EXECUTABLE or TEST_INPUT.",
+          "Source text being inspected; use TEXT_ARTIFACT."
+        ],
+        "id": "DIAGNOSTIC_OUTPUT",
+        "include": [
+          "Compiler warnings, sanitizer reports, trace logs, corpus-progress output, and error diagnostics.",
+          "Observed return codes or process messages when treated as evidence."
+        ]
+      },
+      {
+        "definition": "Version-control or repository information rather than the repository's file contents.",
+        "examples": [],
+        "exclude": [
+          "Source files and their text; use SOURCE_CODE or TEXT_ARTIFACT.",
+          "An independently generated patch artifact; use PATCH."
+        ],
+        "id": "REPOSITORY_METADATA",
+        "include": [
+          "History, status, tags, repository identity, and repository-level differences."
+        ]
+      }
+    ],
+    "version": 4
+  }
+}

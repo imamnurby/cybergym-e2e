@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "codings": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "action_label": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "confidence": {
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "discourse_role": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "event_uid": {
+            "enum": [
+              "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_17",
+              "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_41"
+            ],
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "object_label": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "subject_label": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "summary": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "event_uid",
+          "action_label",
+          "object_label",
+          "discourse_role",
+          "subject_label",
+          "summary",
+          "evidence",
+          "confidence"
+        ],
+        "type": "object"
+      },
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    }
+  },
+  "required": [
+    "codings"
+  ],
+  "type": "object"
+}

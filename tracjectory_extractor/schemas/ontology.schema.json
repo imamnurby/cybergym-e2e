@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "version",
+    "action_categories",
+    "object_categories",
+    "message_roles",
+    "message_subjects"
+  ],
+  "properties": {
+    "name": {"type": "string"},
+    "version": {"type": "integer", "minimum": 1},
+    "action_categories": {"$ref": "#/$defs/categories"},
+    "object_categories": {"$ref": "#/$defs/categories"},
+    "message_roles": {"$ref": "#/$defs/categories"},
+    "message_subjects": {"$ref": "#/$defs/categories"}
+  },
+  "$defs": {
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "definition", "include", "exclude", "examples"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+          "definition": {"type": "string"},
+          "include": {"type": "array", "items": {"type": "string"}},
+          "exclude": {"type": "array", "items": {"type": "string"}},
+          "examples": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  }
+}

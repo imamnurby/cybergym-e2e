@@ -1,0 +1,245 @@
+{
+  "content_hash": "0b85a049d4f81aa56d9668ee69a516d2a96066cd21ef109caf0eb3e4458ea1c1",
+  "request_hash": "c59e9edb8fad26c2e6d80809889b71f7d4ae9528ee591d540bfb0357d80c7de3",
+  "response": {
+    "codings": [
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_20",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "find uses filename predicates to locate generated table files in the source tree."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_21",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays an excerpt from a C implementation source file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_22",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays an excerpt from a C implementation source file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_23",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "sed displays the contents of a header interface file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_24",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays an excerpt from packtab.c."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [
+          "SOURCE_TREE",
+          "HEADER_INTERFACE"
+        ],
+        "confidence": "medium",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_25",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "rg searches source contents for symbols, but the command spans multiple source/header path targets."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_26",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "sed displays a Unicode definitions header."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [
+          "SOURCE_TREE",
+          "BUILD_TREE",
+          "DIRECTORY_PATH"
+        ],
+        "confidence": "medium",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_27",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "rg searches for macro definitions across several source, build, and output paths."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_28",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "sed displays the contents of common.h, a header interface."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_29",
+        "fit": "exact",
+        "message_role": "HYPOTHESIS",
+        "message_subject": "GENERATED_TABLES_AND_UNICODE_LOOKUPS",
+        "object": null,
+        "rationale": "The message proposes a tentative raw-codepoint and packed-table indexing mechanism while stating that confirmation is pending."
+      },
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_30",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "find locates files by name and type within the source tree."
+      },
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_31",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "DIRECTORY_PATH",
+        "rationale": "find searches the output directory for named generated artifacts."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [
+          "SOURCE_TREE",
+          "BUILD_TREE",
+          "DIRECTORY_PATH"
+        ],
+        "confidence": "medium",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_32",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "rg searches textual symbols across source, build, library, and output path targets."
+      },
+      {
+        "action": "LIST_PATHS",
+        "alternatives": [
+          "EXECUTABLE_TARGET"
+        ],
+        "confidence": "medium",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_33",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "DIRECTORY_PATH",
+        "rationale": "ls enumerates an output directory and a path that may be an executable target."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_34",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays an implementation-source excerpt."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_35",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays an implementation-source excerpt."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_36",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays an implementation-source excerpt."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [
+          "SOURCE_CODE"
+        ],
+        "confidence": "medium",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_37",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "rg searches packtab.c for a macro-generation pattern within a specific source file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_38",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays an implementation-source excerpt from packtab.c."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [
+          "SYMBOL_PATTERN"
+        ],
+        "confidence": "medium",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_39",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "rg searches a source file using a compound regular-expression-like pattern."
+      }
+    ]
+  }
+}

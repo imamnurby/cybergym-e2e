@@ -1,0 +1,27 @@
+{
+  "request_hash": "1e99366f9f652fa8502024b87d6bf34ea2cd1693b064dd6002f231f7187ab8f6",
+  "response": {
+    "codings": [
+      {
+        "action_label": "inspect_source_range",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_75",
+        "evidence": "`sed -n '355,410p' /src/miniz/miniz.c`",
+        "object_label": "miniz.c_inflate_initialization",
+        "subject_label": null,
+        "summary": "Displays a selected source range containing inflate initialization and reset logic."
+      },
+      {
+        "action_label": "read_source_file",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_48",
+        "evidence": "`cat /src/fribidi/gen.tab/gen-brackets-type-tab.c`",
+        "object_label": "gen-brackets-type-tab.c",
+        "subject_label": null,
+        "summary": "Prints the contents of the FriBidi bracket-table generator source file."
+      }
+    ]
+  }
+}

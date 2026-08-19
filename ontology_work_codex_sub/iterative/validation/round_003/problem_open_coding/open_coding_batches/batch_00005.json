@@ -1,0 +1,207 @@
+{
+  "request_hash": "1bc98aa22b62db5c8cd02821b0b4662110b66b569ac341af91a3a45724faba85",
+  "response": {
+    "codings": [
+      {
+        "action_label": null,
+        "confidence": "high",
+        "discourse_role": "investigation_update",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_19",
+        "evidence": "“I’m building a local ASan copy of `uncompress_fuzzer`”",
+        "object_label": null,
+        "subject_label": "local_asan_fuzzer",
+        "summary": "Reports a suspected vulnerable area and says a local ASan uncompress fuzzer is being built for candidate zlib streams."
+      },
+      {
+        "action_label": null,
+        "confidence": "high",
+        "discourse_role": "investigation_update",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_56",
+        "evidence": "“I’m now chasing local packaging artifacts”",
+        "object_label": null,
+        "subject_label": "miniz_packaging_artifacts",
+        "summary": "Reports searching local package artifacts or cached tarballs for a newer decompressor fix because the source lacks git history."
+      },
+      {
+        "action_label": "compute",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_40",
+        "evidence": "`0x78 [1, 94, 156, 218] minprod 120`",
+        "object_label": "zlib_header_values",
+        "subject_label": null,
+        "summary": "Computes and prints checksum-valid zlib FLG candidates for selected CMF values while excluding FDICT."
+      },
+      {
+        "action_label": "read_file",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_12",
+        "evidence": "`sed: can't read /src/fribidi/lib/brackets-type.tab.i: No such file or directory`",
+        "object_label": "brackets_type_tab_i",
+        "subject_label": null,
+        "summary": "Attempts to print the first 220 lines of a table file, but the file is missing."
+      },
+      {
+        "action_label": "run_fuzzer",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_32",
+        "evidence": "`#6643 NEW    cov: 191 ft: 423 corp: 97/1487b`",
+        "object_label": "uncompress_fuzzer",
+        "subject_label": null,
+        "summary": "Creates a corpus directory and runs the uncompress fuzzer with a 30-second limit; output shows mutation and coverage updates."
+      },
+      {
+        "action_label": "search_files",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_17",
+        "evidence": "`/src/fribidi/gen.tab/gen-brackets-type-tab.c`",
+        "object_label": "generated_unicode_tables",
+        "subject_label": null,
+        "summary": "Searches the FriBidi tree for generated Unicode table files and lists matching generator sources and data files."
+      },
+      {
+        "action_label": "validate_patch",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_49",
+        "evidence": "`ERROR: Failed to apply patch ... malformed patch at line 15`",
+        "object_label": "libspng_poc_and_patch",
+        "subject_label": null,
+        "summary": "Runs the validator; the unpatched PoC crashes, patch application fails as malformed, and the next test stage is skipped."
+      },
+      {
+        "action_label": "search_files",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_22",
+        "evidence": "Recorded output is empty: `\"\"` with exit code `1`.",
+        "object_label": "built_uncompress_fuzzer",
+        "subject_label": null,
+        "summary": "Searches the ASan build tree for an uncompress fuzzer artifact and produces no matching output."
+      },
+      {
+        "action_label": null,
+        "confidence": "high",
+        "discourse_role": "investigation_update",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_31",
+        "evidence": "“I’ve shifted to the pixel conversion logic now.”",
+        "object_label": null,
+        "subject_label": "pixel_conversion_logic",
+        "summary": "Reports shifting investigation to pixel conversion and brute-checking sample normalization and gamma-related combinations."
+      },
+      {
+        "action_label": "count_bytes",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_65",
+        "evidence": "`38 /src/fribidi/test/fuzzing/crash-69ebdb74927bd63911e9af32e7da3b0216279461`",
+        "object_label": "fribidi_crash_input",
+        "subject_label": null,
+        "summary": "Counts the FriBidi crash input as 38 bytes."
+      },
+      {
+        "action_label": null,
+        "confidence": "high",
+        "discourse_role": "diagnosis_update",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_84",
+        "evidence": "“The second validator failure is patch formatting”",
+        "object_label": null,
+        "subject_label": "miniz_patch_formatting",
+        "summary": "Diagnoses a validator failure as patch formatting and says a fresh diff will be generated from a modified copy."
+      },
+      {
+        "action_label": "generate_test_input",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_48",
+        "evidence": "`raw 73040100` and `decomp b'AAAAA'`",
+        "object_label": "fixed_huffman_deflate_stream",
+        "subject_label": null,
+        "summary": "Constructs a fixed-Huffman deflate stream, writes `/tmp/manual.bin`, and tests it with the MSan decompressor."
+      },
+      {
+        "action_label": "run_validation",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_53",
+        "evidence": "\"Stage 1 (PoC crashes w/o patch): PASS\"; \"Stage 2 (PoC OK with patch): PASS\"; \"Stage 3 (Tests pass with patch): PASS\"",
+        "object_label": "poc_patch_and_tests",
+        "subject_label": null,
+        "summary": "Runs the validator for the PoC, patch, and tests; stages 1–3 are reported as passed while stage 4 is skipped."
+      },
+      {
+        "action_label": null,
+        "confidence": "high",
+        "discourse_role": "diagnosis_update",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_75",
+        "evidence": "“Stage 2 still crashed at the same copy site”",
+        "object_label": null,
+        "subject_label": "miniz_amalgamated_patch",
+        "summary": "Reports that Stage 2 still crashes at the copy site and checks amalgamated-build targeting and the overlap condition."
+      },
+      {
+        "action_label": "list_artifacts",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_87",
+        "evidence": "`fix.patch` is `831` bytes and `poc.bin` is `38` bytes.",
+        "object_label": "fribidi_output_artifacts",
+        "subject_label": null,
+        "summary": "Lists the output PoC and patch files with their sizes."
+      },
+      {
+        "action_label": null,
+        "confidence": "high",
+        "discourse_role": "investigation_update",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_7",
+        "evidence": "“it treats the entire input as a PNG buffer”",
+        "object_label": null,
+        "subject_label": "png_decoder_harness",
+        "summary": "Describes the PNG fuzzing harness and says parser and decoder paths are being traced, especially chunk readers and row transforms."
+      },
+      {
+        "action_label": "create_file",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_73",
+        "evidence": "File change: `kind: add`, `path: /output/fix.patch`",
+        "object_label": "fribidi_fix_patch",
+        "subject_label": null,
+        "summary": "Adds `/output/fix.patch`."
+      },
+      {
+        "action_label": "run_sanitized_fuzzer",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_61",
+        "evidence": "`SUMMARY: MemorySanitizer: use-of-uninitialized-value ... in get_adjacent_run`",
+        "object_label": "fribidi_crash_input",
+        "subject_label": null,
+        "summary": "Runs the FriBidi fuzzer under MSan on a crash input and reports an uninitialized-value use in `get_adjacent_run`."
+      },
+      {
+        "action_label": "compile",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_51",
+        "evidence": "`clang -fsanitize=fuzzer,memory -fsanitize-memory-track-origins=2`",
+        "object_label": "miniz_msan_fuzzer",
+        "subject_label": null,
+        "summary": "Compiles a libFuzzer and MemorySanitizer uncompress fuzzer with origin tracking into `/tmp/uncompress_fuzzer_msan`."
+      },
+      {
+        "action_label": null,
+        "confidence": "high",
+        "discourse_role": "finding_report",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_54",
+        "evidence": "“it parses post-`IDAT` chunks from an uninitialized `data` pointer instead of `ctx->data`”",
+        "object_label": null,
+        "subject_label": "spng_stale_pointer",
+        "summary": "Reports a stale `data` pointer in two libspng parsing paths, names PoC and patch artifacts, and states validation results."
+      }
+    ]
+  }
+}

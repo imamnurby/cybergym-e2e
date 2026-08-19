@@ -1,0 +1,232 @@
+{
+  "content_hash": "535f5ac1772980a0411d10592fcac7fb4a964b0544b9cf8ebad25f0f3e96bb9a",
+  "request_hash": "a8c3ec38b8ffaf8bca9666c2ee02f91119a1dfb9e9ada2fb3d5c6f91bf2eb81a",
+  "response": {
+    "codings": [
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_40",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an excerpt from an implementation source file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_41",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an excerpt from an implementation source file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_42",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an excerpt from an implementation source file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_43",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "Displays an excerpt from an internal header interface."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_44",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Attempts to read an implementation source file; the path is absent, but the observable operation is textual reading."
+      },
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_45",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "Searches the source tree for files matching run-related names."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [
+          "SYMBOL_PATTERN"
+        ],
+        "confidence": "medium",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_46",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "Searches source contents for named symbols and patterns across the source tree; the pattern itself is also a plausible object."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_47",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an excerpt from an implementation source file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_48",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an excerpt from an implementation source file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_49",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "Displays an excerpt from a header interface."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_50",
+        "fit": "exact",
+        "message_role": "STRATEGY_REVISION",
+        "message_subject": "LINKED_LIST_COMPACTION_BOUNDARIES",
+        "object": null,
+        "rationale": "Explicitly moves away from the table-lookup hypothesis toward bidi run-list mutation and isolate/bracket bookkeeping."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_51",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "Displays an excerpt from the validation orchestration script."
+      },
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_52",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "DIRECTORY_PATH",
+        "rationale": "Enumerates files under the configuration directory using a filesystem type predicate."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_53",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "PROJECT_CONFIGURATION",
+        "rationale": "Displays the project-level TOML configuration."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_54",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "Displays an excerpt from the compilation script."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_55",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "Displays an excerpt from the preparation script."
+      },
+      {
+        "action": null,
+        "alternatives": [
+          "TARGET_HARNESS_INPUT_FLOW"
+        ],
+        "confidence": "medium",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_56",
+        "fit": "ambiguous",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "BUILD_TOOLCHAIN_AND_INSTRUMENTATION",
+        "object": null,
+        "rationale": "Announces planned compilation and subsequent focused target execution, spanning build setup and input-path exercise."
+      },
+      {
+        "action": "EXECUTE_SCRIPT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_57",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "Runs preparation and compilation orchestration scripts."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_58",
+        "fit": "exact",
+        "message_role": "PROGRESS_STATUS",
+        "message_subject": "BUILD_TOOLCHAIN_AND_INSTRUMENTATION",
+        "object": null,
+        "rationale": "Reports that the build remains in progress and describes the next testing phase."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_59",
+        "fit": "exact",
+        "message_role": "PROGRESS_STATUS",
+        "message_subject": "FUZZING_CORPUS_AND_REPLAY",
+        "object": null,
+        "rationale": "Reports completion of the build and current testing of historical crashing fuzz inputs."
+      }
+    ]
+  }
+}

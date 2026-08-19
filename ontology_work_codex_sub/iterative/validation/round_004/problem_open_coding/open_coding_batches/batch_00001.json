@@ -1,0 +1,27 @@
+{
+  "request_hash": "b39251f333fd84049cae75d2bd3d7be7cb8fb53bcda98413df42c2081460a635",
+  "response": {
+    "codings": [
+      {
+        "action_label": "generate_and_test_streams",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_46",
+        "evidence": "The command invokes `/tmp/uncompress_msan` for generated inputs and outputs `no crash`.",
+        "object_label": "uncompress_msan",
+        "subject_label": null,
+        "summary": "Generates zlib streams from repeating byte patterns across multiple lengths, runs the MSan decoder, and prints that no crash occurred."
+      },
+      {
+        "action_label": "seed_and_run_fuzzer",
+        "confidence": "high",
+        "discourse_role": null,
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_52",
+        "evidence": "The command runs `mkdir -p /tmp/corpus4`, copies `/tmp/corpus3_seed/*`, and launches `/tmp/uncompress_fuzzer_msan -max_total_time=60 -rss_limit_mb=2048`; output includes `NEW` and `REDUCE` entries.",
+        "object_label": "uncompress_fuzzer_msan",
+        "subject_label": null,
+        "summary": "Creates a new corpus directory, copies seed inputs into it, and runs the MSan fuzzer with time and memory limits while reporting corpus mutations."
+      }
+    ]
+  }
+}

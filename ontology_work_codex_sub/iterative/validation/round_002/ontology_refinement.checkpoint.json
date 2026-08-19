@@ -1,0 +1,27 @@
+{
+  "request_hash": "d7473936ac6a513af6248f302c4afb829fc6a9a397aaab9557746db096e2c4af",
+  "response": {
+    "action_categories": [
+      {
+        "definition": "Reads or displays existing textual content from a file or bounded region.",
+        "examples": [],
+        "exclude": [
+          "Text or symbol matching as the primary operation; use SEARCH_TEXT.",
+          "Path enumeration; use LIST_PATHS or SEARCH_PATHS.",
+          "Binary-byte rendering; use DUMP_BINARY.",
+          "Version-control metadata queries; use QUERY_REPOSITORY."
+        ],
+        "id": "READ_TEXT",
+        "include": [
+          "Reading source, headers, scripts, configuration, patches, changelogs, logs, or excerpts.",
+          "Using commands whose primary effect is emitting existing text."
+        ]
+      }
+    ],
+    "message_roles": [],
+    "message_subjects": [],
+    "name": "observable_agent_behavior_ontology",
+    "object_categories": [],
+    "version": 3
+  }
+}

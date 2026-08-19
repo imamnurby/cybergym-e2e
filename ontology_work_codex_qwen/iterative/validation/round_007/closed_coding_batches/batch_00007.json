@@ -1,0 +1,228 @@
+{
+  "content_hash": "54852cf47d907e971d9ff2858730977ba162dd1b44c7dd5d0a47df94dd9a9153",
+  "request_hash": "20331c56eb86806e8a335a5bf19c54644f60eb5700bb293799367faff3644bab",
+  "response": {
+    "codings": [
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_47",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "sed displays a selected region of spng.c."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_0",
+        "fit": "exact",
+        "message_role": "ROLE_ERROR_EVENT",
+        "message_subject": "SUBJ_UNSPECIFIED",
+        "object": null,
+        "rationale": "The event is explicitly typed as an error with no payload."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_1",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SCRIPT",
+        "rationale": "cat reads the executable run_poc.sh script."
+      },
+      {
+        "action": "ACT_SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_2",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_DIRECTORY",
+        "rationale": "find recursively searches the miniz directory for files."
+      },
+      {
+        "action": "ACT_LIST_ENTRIES",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_3",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_DIRECTORY",
+        "rationale": "ls enumerates entries in the configuration, data, and scripts directories."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_4",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_FUZZER_HARNESS",
+        "rationale": "cat reads the source implementing the fuzz entry point."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_5",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_VALIDATION_CONFIGURATION",
+        "rationale": "cat reads validator configuration containing repository and immutable-path settings."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_6",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SCRIPT",
+        "rationale": "cat reads the executable validation script."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_7",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_HEADER_INTERFACE",
+        "rationale": "grep searches miniz.h for function and decompression symbols."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_8",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "grep searches miniz.c for implementation symbols."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_9",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "sed displays a selected region of miniz.c."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_10",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "grep searches miniz.c for decompression symbols."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_11",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "sed displays a selected region of miniz.c."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_12",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_HEADER_INTERFACE",
+        "rationale": "grep searches miniz_tinfl.h for decompressor declarations and fields."
+      },
+      {
+        "action": "ACT_MEASURE_LINES",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_13",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "wc -l counts lines in miniz_tinfl.c."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_14",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "sed displays the beginning of miniz_tinfl.c."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_15",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_HEADER_INTERFACE",
+        "rationale": "grep searches the header for decompressor state fields and symbols."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_16",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "grep searches miniz.c for inflate state and dictionary symbols."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_17",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "grep searches miniz_tinfl.c for output-buffer and decompression symbols."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260812_182116_e2e:attempt_1:item_18",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "sed displays a selected region of miniz_tinfl.c."
+      }
+    ]
+  }
+}

@@ -1,0 +1,229 @@
+{
+  "request_hash": "0078320bf866550d49df69ffac6ac67835919a9f616ddb2eb50c0bba79e46324",
+  "response": {
+    "codings": [
+      {
+        "action": null,
+        "alternatives": [
+          "PROGRESS_STATUS"
+        ],
+        "confidence": "medium",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_80",
+        "fit": "ambiguous",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "VALIDATION_EXECUTION",
+        "object": null,
+        "rationale": "Announces an active validation run and a conditional next validation step, mixing intent with current status."
+      },
+      {
+        "action": "RUN_VALIDATOR",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_81",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "ARTIFACT_SET",
+        "rationale": "Runs the dedicated validator over the PoC and patch artifacts."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_82",
+        "fit": "exact",
+        "message_role": "DIAGNOSIS",
+        "message_subject": "PATCH_CONSTRUCTION_AND_APPLICATION",
+        "object": null,
+        "rationale": "Identifies incorrect patch pathing relative to the validator working directory as the direct cause."
+      },
+      {
+        "action": "MODIFY_FILE",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_83",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "PATCH_DIFF",
+        "rationale": "Updates the existing patch artifact."
+      },
+      {
+        "action": "RUN_VALIDATOR",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_84",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "ARTIFACT_SET",
+        "rationale": "Runs the dedicated validator over the PoC and patch artifacts."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_85",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays a bounded source-code excerpt from fribidi-bidi.c."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_86",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays a bounded source-code excerpt from fribidi-bidi.c."
+      },
+      {
+        "action": "LIST_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_87",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "ARTIFACT_SET",
+        "rationale": "Lists the two output artifacts and their metadata."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_88",
+        "fit": "exact",
+        "message_role": "DIAGNOSIS",
+        "message_subject": "LINKED_LIST_COMPACTION_BOUNDARIES",
+        "object": null,
+        "rationale": "States the causal compaction and stale-link mechanism underlying the memory-safety issue."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_0",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "Announces planned tracing of the fuzzer entrypoint and harness wiring before constructing input."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_1",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "Displays the contents of the shell runner script."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_2",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches source contents for the fuzzer entrypoint symbol."
+      },
+      {
+        "action": "LIST_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_3",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "Enumerates paths in the libspng source tree."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_4",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "States the next planned inspection of the fuzzer and exercised library entrypoints."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_5",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "TEST_HARNESS",
+        "rationale": "Displays the fuzzer harness source."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_6",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches implementation and header contents for API symbols."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_7",
+        "fit": "exact",
+        "message_role": "INVESTIGATION_ACCOUNT",
+        "message_subject": "IMAGE_DECODE_PIXEL_CONVERSION",
+        "object": null,
+        "rationale": "Describes image-decoding harness behavior, decoded-output sizing, transforms, and ongoing parser/decoder tracing."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_8",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays a bounded implementation-source excerpt from spng.c."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_9",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays a bounded implementation-source excerpt from spng.c."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_10",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches spng.c for memory, allocation, scanline, filter, and chunk-related patterns."
+      }
+    ]
+  }
+}

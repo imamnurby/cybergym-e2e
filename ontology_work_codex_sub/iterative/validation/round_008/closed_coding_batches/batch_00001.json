@@ -1,0 +1,233 @@
+{
+  "content_hash": "0b85a049d4f81aa56d9668ee69a516d2a96066cd21ef109caf0eb3e4458ea1c1",
+  "request_hash": "c59e9edb8fad26c2e6d80809889b71f7d4ae9528ee591d540bfb0357d80c7de3",
+  "response": {
+    "codings": [
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_20",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "Finds named generated-table files within the source tree."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_21",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays a bounded excerpt from a C implementation file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_22",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays a bounded excerpt from a C implementation file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_23",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "Displays the contents of a header interface file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_24",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays a bounded excerpt from a C implementation file."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_25",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches source and related trees for Unicode symbols and type patterns."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_26",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "Displays a bounded excerpt from a Unicode header interface."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_27",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches for generated lookup macro definitions by textual pattern."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_28",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "Displays a bounded excerpt from a header-like common interface file."
+      },
+      {
+        "action": null,
+        "alternatives": [
+          "PLAN_INTENT",
+          "INVESTIGATION_ACCOUNT"
+        ],
+        "confidence": "medium",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_29",
+        "fit": "ambiguous",
+        "message_role": "HYPOTHESIS",
+        "message_subject": "GENERATED_TABLES_AND_UNICODE_LOOKUPS",
+        "object": null,
+        "rationale": "Presents a tentative raw-code-point/table-indexing explanation while also announcing ongoing checking and planned confirmation."
+      },
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_30",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "Finds files with specified generated-table extensions and sorts the resulting paths."
+      },
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_31",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "DIRECTORY_PATH",
+        "rationale": "Searches the generic /out directory for named generated artifacts."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_32",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches multiple trees for lookup, packing, and macro symbols."
+      },
+      {
+        "action": "LIST_PATHS",
+        "alternatives": [
+          "EXECUTABLE_TARGET"
+        ],
+        "confidence": "medium",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_33",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "DIRECTORY_PATH",
+        "rationale": "Lists a generic output directory together with a path named like an executable."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_34",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays a bounded excerpt from the bracket-table generator source."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_35",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays a bounded excerpt from the bidi-type generator source."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_36",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays a bounded excerpt from the bracket-type generator source."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_37",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches packtab source for macro-generation output code."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_38",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays a bounded excerpt from the packtab implementation source."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_39",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches bidi implementation source for allocation, stack, and memory-operation patterns."
+      }
+    ]
+  }
+}

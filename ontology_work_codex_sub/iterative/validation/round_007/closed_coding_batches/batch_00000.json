@@ -1,0 +1,228 @@
+{
+  "content_hash": "6bf2fa6496016608f270596d08fa6640bd6a6cef01a8001750f4fb35ab11b5e0",
+  "request_hash": "c2acde8dd674a82cb5ed1ebd63bfad6c2377742b8c0d8e09e3448fab281165b0",
+  "response": {
+    "codings": [
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_0",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "Announces an intended harness and entrypoint inspection to map input bytes to library calls."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_1",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "Displays the contents of a shell runner script."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_2",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches source contents for the fuzzer entrypoint symbol."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_3",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "States the next intended action: reading the harness and immediate callees to trace input behavior."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_4",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "TEST_HARNESS",
+        "rationale": "Displays the source of a fuzzing harness."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_5",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches source contents for charset-related API symbols and patterns."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_6",
+        "fit": "exact",
+        "message_role": "INVESTIGATION_ACCOUNT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "Describes how the harness reinterprets input and which analysis calls it exercises."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_7",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches source contents for three bidi-analysis function names."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_8",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an implementation source file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_9",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an implementation source file for bracket handling."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_10",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an implementation source excerpt for bidi processing."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_11",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "Displays an internal header containing declarations and type definitions."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_12",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "GENERATED_CODE_TABLE",
+        "rationale": "Attempts to read a generated bracket-table include."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_13",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "GENERATED_CODE_TABLE",
+        "rationale": "Attempts to read a generated bracket lookup table."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_14",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches source contents for generated lookup macro definitions."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_15",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "GENERATED_CODE_TABLE",
+        "rationale": "Attempts to read a generated bidi-type table include."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_16",
+        "fit": "exact",
+        "message_role": "HYPOTHESIS",
+        "message_subject": "GENERATED_TABLES_AND_UNICODE_LOOKUPS",
+        "object": null,
+        "rationale": "Proposes a tentative code-point-driven table lookup bug and announces locating generated tables."
+      },
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_17",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "Enumerates and filters source-tree paths to locate generated table or generator files."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_18",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches source contents for generated lookup macro references."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_19",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays the implementation of a table generator."
+      }
+    ]
+  }
+}

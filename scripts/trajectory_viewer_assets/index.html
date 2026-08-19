@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Pi trajectory viewer</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">π</span>
+        <div>
+          <h1>Trajectory viewer</h1>
+          <p id="root-label">Loading results...</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span id="live-status" class="live-status" aria-live="polite">
+          <span class="status-dot"></span>
+          <span>Idle</span>
+        </span>
+        <button id="live-toggle" class="icon-button" type="button" title="Pause live refresh">Pause</button>
+        <button id="theme-toggle" class="icon-button" type="button" title="Change color theme">Theme</button>
+        <button id="open-file" class="primary-button" type="button">Open JSONL</button>
+        <input id="file-input" type="file" accept=".jsonl,application/json" hidden>
+      </div>
+    </header>
+
+    <main>
+      <section class="session-bar" aria-label="Session selection">
+        <label class="session-search-wrap">
+          <span>Session</span>
+          <input id="session-search" type="search" placeholder="Filter tasks, models, or runs" autocomplete="off">
+        </label>
+        <label>
+          <span>Task</span>
+          <select id="task-select"><option value="">Select a task</option></select>
+        </label>
+        <label>
+          <span>Model</span>
+          <select id="model-select"><option value="">Select a model</option></select>
+        </label>
+        <label>
+          <span>Run</span>
+          <select id="run-select"><option value="">Select a run</option></select>
+        </label>
+        <label>
+          <span>Attempt</span>
+          <select id="attempt-select"><option value="">Select an attempt</option></select>
+        </label>
+        <button id="refresh-sessions" class="icon-button refresh-button" type="button">Refresh</button>
+      </section>
+
+      <section id="drop-zone" class="drop-zone" aria-label="Drop a JSONL file">
+        Drop an <code>attempt_*.session.jsonl</code> file anywhere to inspect it locally.
+      </section>
+
+      <section id="empty-state" class="empty-state">
+        <div class="empty-icon" aria-hidden="true">⌁</div>
+        <h2>Choose a trajectory</h2>
+        <p>Select a discovered PI session above, or open a local JSONL file.</p>
+      </section>
+
+      <div id="viewer" class="viewer" hidden>
+        <section class="overview" aria-label="Session overview">
+          <div class="overview-title">
+            <div>
+              <p class="eyebrow">Current session</p>
+              <h2 id="session-title">Session</h2>
+              <p id="session-path" class="session-path"></p>
+            </div>
+            <button id="copy-link" class="icon-button" type="button">Copy link</button>
+          </div>
+          <div id="metrics" class="metrics"></div>
+        </section>
+
+        <section class="control-bar" aria-label="Timeline controls">
+          <label class="search-control">
+            <span class="sr-only">Search all content</span>
+            <input id="global-search" type="search" placeholder="Search all content  /" autocomplete="off">
+          </label>
+          <button id="filter-button" class="icon-button" type="button" aria-expanded="false">Filters</button>
+          <form id="goto-form" class="goto-form">
+            <label for="goto-line">Line</label>
+            <input id="goto-line" type="number" min="1" inputmode="numeric" placeholder="42">
+            <button class="primary-button" type="submit">Go</button>
+          </form>
+          <span id="result-count" class="result-count"></span>
+        </section>
+
+        <section id="filter-panel" class="filter-panel" hidden>
+          <fieldset>
+            <legend>Show records</legend>
+            <div id="kind-filters" class="check-grid"></div>
+          </fieldset>
+          <label>
+            <span>Tool name</span>
+            <select id="tool-filter"><option value="">All tools</option></select>
+          </label>
+          <button id="clear-filters" class="text-button" type="button">Reset filters</button>
+        </section>
+
+        <div id="filter-notice" class="filter-notice" hidden>
+          This selected line is temporarily visible because a filter hides it.
+        </div>
+
+        <nav class="mobile-tabs" aria-label="Viewer pane">
+          <button class="mobile-tab active" data-pane="timeline" type="button">Timeline</button>
+          <button class="mobile-tab" data-pane="raw" type="button">JSON</button>
+        </nav>
+
+        <section id="split-view" class="split-view">
+          <div id="timeline-pane" class="timeline-pane">
+            <div id="timeline" class="timeline" role="listbox" aria-label="Physical JSONL records"></div>
+          </div>
+          <div id="splitter" class="splitter" role="separator" aria-orientation="vertical" tabindex="0" aria-label="Resize panes"></div>
+          <aside id="raw-pane" class="raw-pane" aria-label="Selected raw record">
+            <header class="raw-header">
+              <div>
+                <p class="eyebrow">Source record</p>
+                <h3 id="raw-title">Select a line</h3>
+              </div>
+              <div class="raw-actions">
+                <button id="copy-record" class="icon-button" type="button">Copy</button>
+                <button id="download-record" class="icon-button" type="button">Download</button>
+              </div>
+            </header>
+            <nav class="raw-tabs" aria-label="Record representation">
+              <button class="raw-tab active" data-raw-tab="pretty" type="button">Pretty JSON</button>
+              <button class="raw-tab" data-raw-tab="exact" type="button">Exact line</button>
+            </nav>
+            <pre id="raw-content" class="raw-content" tabindex="0"></pre>
+          </aside>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

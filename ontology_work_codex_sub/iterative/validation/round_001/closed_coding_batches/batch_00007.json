@@ -1,0 +1,234 @@
+{
+  "request_hash": "f5c076cde713240f4acbc085f89f48c627643f0362e58287191a5c2a980d7e3a",
+  "response": {
+    "codings": [
+      {
+        "action": "GENERATE_DIFF",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_51",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "PATCH_DIFF",
+        "rationale": "The command creates temporary source variants and emits a unified diff."
+      },
+      {
+        "action": "MODIFY_FILE",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_52",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "PATCH_DIFF",
+        "rationale": "The event updates the existing patch artifact."
+      },
+      {
+        "action": "RUN_VALIDATOR",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_53",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "ARTIFACT_SET",
+        "rationale": "A dedicated validator is invoked over the PoC and patch as a grouped artifact set."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_54",
+        "fit": "exact",
+        "message_role": "DIAGNOSIS",
+        "message_subject": "PARSER_POINTER_LIFETIME",
+        "object": null,
+        "rationale": "The message asserts stale payload-pointer use across a buffer-advancing read as the causal defect."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_0",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "It announces intended harness reading, entry-point discovery, and input-flow tracing."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_1",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "sed displays the existing run_poc.sh script."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [
+          "SYMBOL_PATTERN"
+        ],
+        "confidence": "medium",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_2",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "The command searches the miniz source tree for a named API symbol; the symbol pattern is also a valid object interpretation."
+      },
+      {
+        "action": "LIST_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_3",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "rg --files enumerates paths in the miniz source tree."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_4",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "It states the intended narrowing to the active harness and subsequent API-flow tracing."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_5",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "TEST_HARNESS",
+        "rationale": "sed displays the fuzzing harness source."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [
+          "SYMBOL_PATTERN"
+        ],
+        "confidence": "medium",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_6",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "The command searches the miniz source tree for decompression API and function-name patterns."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_7",
+        "fit": "exact",
+        "message_role": "INVESTIGATION_ACCOUNT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "It describes how harness bytes determine the allocation and how the input reaches uncompress()."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_8",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays an implementation-source excerpt from miniz.c."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_9",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays the decompressor implementation source."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_10",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "sed displays another implementation-source region from miniz_tinfl.c."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_11",
+        "fit": "exact",
+        "message_role": "HYPOTHESIS",
+        "message_subject": "DECOMPRESSION_ENCODING_AND_STATE",
+        "object": null,
+        "rationale": "It presents a suspected, not yet confirmed, overflow in dynamic Huffman code-length expansion."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_12",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "sed displays declarations and decompressor state definitions from a header."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [
+          "SOURCE_CODE",
+          "HEADER_INTERFACE"
+        ],
+        "confidence": "medium",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_13",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "The command searches named symbols across a mix of implementation and header files."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_14",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "sed displays the existing ossfuzz.sh orchestration script."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_15",
+        "fit": "exact",
+        "message_role": "STRATEGY_REVISION",
+        "message_subject": "DECOMPRESSION_COPY_OUTPUT_BOUNDS",
+        "object": null,
+        "rationale": "It explicitly rejects the first candidate and pivots to the non-wrapping output and user-buffer path."
+      }
+    ]
+  }
+}

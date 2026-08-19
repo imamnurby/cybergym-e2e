@@ -1,0 +1,228 @@
+{
+  "content_hash": "5e202376cb5bd3e5329d03401c9902b45d922e53e33d8e5534496ca3e323c084",
+  "request_hash": "3ac4f21c009c311eead2e6418ae1b074c793201fed602eb6de363e3fdb356fbb",
+  "response": {
+    "codings": [
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_16",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an excerpt from the implementation source file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_17",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "DOCUMENTATION",
+        "rationale": "Displays the changelog text."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_18",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches source contents for decoder symbols and macros."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_19",
+        "fit": "exact",
+        "message_role": "PROGRESS_STATUS",
+        "message_subject": "BUILD_TOOLCHAIN_AND_INSTRUMENTATION",
+        "object": null,
+        "rationale": "Reports that an ASan target build is underway."
+      },
+      {
+        "action": "BUILD_PROJECT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_20",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "BUILD_TREE",
+        "rationale": "Configures and builds the project into a sanitizer build workspace; the substantive operation is the project build."
+      },
+      {
+        "action": "EXECUTE_INSTRUMENTED_TARGET",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_21",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "Runs the ASan-built fuzzer executable on one input."
+      },
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_22",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "BUILD_TREE",
+        "rationale": "Filters enumerated build-tree paths for the fuzzer name."
+      },
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_23",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "BUILD_TREE",
+        "rationale": "Searches the build workspace for files."
+      },
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_24",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "BUILD_TREE",
+        "rationale": "Searches the build workspace for executable files."
+      },
+      {
+        "action": "COMPILE_TARGET",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_25",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "Directly compiles the harness and miniz sources into an ASan executable."
+      },
+      {
+        "action": "EXECUTE_INSTRUMENTED_TARGET",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_26",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "Runs the explicitly ASan-named executable on one input."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_27",
+        "fit": "exact",
+        "message_role": "STRATEGY_REVISION",
+        "message_subject": "REPOSITORY_HISTORY_AND_REFERENCE_ARTIFACTS",
+        "object": null,
+        "rationale": "Explicitly pivots to differential analysis and local history."
+      },
+      {
+        "action": "QUERY_REPOSITORY",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_28",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "REPOSITORY_METADATA",
+        "rationale": "Queries repository history for a matching fix."
+      },
+      {
+        "action": "QUERY_REPOSITORY",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_29",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "REPOSITORY_METADATA",
+        "rationale": "Queries repository tags and version metadata."
+      },
+      {
+        "action": "QUERY_REPOSITORY",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_30",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "REPOSITORY_METADATA",
+        "rationale": "Queries repository status metadata."
+      },
+      {
+        "action": "COMPILE_TARGET",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_31",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "Directly compiles a libFuzzer and ASan executable."
+      },
+      {
+        "action": "RUN_FUZZER",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_32",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "CORPUS",
+        "rationale": "Launches a libFuzzer session over a corpus directory."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_33",
+        "fit": "exact",
+        "message_role": "DEBUGGING_UPDATE",
+        "message_subject": "REPOSITORY_HISTORY_AND_REFERENCE_ARTIFACTS",
+        "object": null,
+        "rationale": "Reports an unresolved fuzzing symptom and active comparison against another local copy."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_34",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches source files for bug-related literals and code patterns."
+      },
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_35",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "REFERENCE_ARTIFACT",
+        "rationale": "Looks for alternate or packaged miniz source artifacts in system paths."
+      }
+    ]
+  }
+}

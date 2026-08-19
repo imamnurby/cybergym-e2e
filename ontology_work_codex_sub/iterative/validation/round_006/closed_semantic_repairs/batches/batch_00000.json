@@ -1,0 +1,62 @@
+{
+  "request_hash": "f040fd5183a581cbd77794cd1be0804f6f2f45a0e9924cb9601ec6b0513d1093",
+  "response": {
+    "codings": [
+      {
+        "action": "ACCESS_FILE",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_12",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "LOOKUP_TABLE",
+        "rationale": "The command attempts to read a named generated lookup-table include, but only a missing-file diagnostic is emitted."
+      },
+      {
+        "action": "ACCESS_FILE",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_13",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "LOOKUP_TABLE",
+        "rationale": "The command attempts to read a named generated lookup-table include, but only a missing-file diagnostic is emitted."
+      },
+      {
+        "action": "ACCESS_FILE",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_15",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "LOOKUP_TABLE",
+        "rationale": "The command attempts to read a named generated lookup-table include, but only a missing-file diagnostic is emitted."
+      },
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_17",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "The command matches path names under the FriBidi source tree; it does not search file contents."
+      },
+      {
+        "action": "SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_57",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "DIRECTORY",
+        "rationale": "The find command searches filesystem paths for matching artifact directories and emits their paths."
+      }
+    ]
+  }
+}

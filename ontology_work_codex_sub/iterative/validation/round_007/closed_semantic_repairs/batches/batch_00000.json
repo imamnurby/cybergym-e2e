@@ -1,0 +1,19 @@
+{
+  "content_hash": "eae135365f48a76bfca87637ded104247bd772646564c03eaa017683a222779e",
+  "request_hash": "5c6c79ee40b5ba5a109428c62590f4529ffc09de250d8f800f6fdbdcb4d9722c",
+  "response": {
+    "codings": [
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260811_232023_e2e:attempt_1:item_50",
+        "fit": "exact",
+        "message_role": "STRATEGY_REVISION",
+        "message_subject": "LINKED_LIST_COMPACTION_BOUNDARIES",
+        "object": null,
+        "rationale": "The message explicitly rejects the prior table-lookup hypothesis and redirects investigation to bidi run list mutation and isolate/bracket bookkeeping."
+      }
+    ]
+  }
+}

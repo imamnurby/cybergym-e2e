@@ -1,0 +1,230 @@
+{
+  "content_hash": "9e7acdf85d6406882b778600128aa5810e1e4cae31ff67e1c67c1cd4acc0a1ee",
+  "request_hash": "c3804c155e9747f6a461b543891331b7bd9a8b940c76906723950444b5c3a61b",
+  "response": {
+    "codings": [
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_80",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_GENERATED_TABLE",
+        "rationale": "head displays contents of a generated lookup-table artifact."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_81",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "sed displays a selected source-code line range."
+      },
+      {
+        "action": "ACT_UPDATE_TASK_LIST",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_82",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_TASK_LIST",
+        "rationale": "The event updates a structured todo list with completion statuses."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_83",
+        "fit": "exact",
+        "message_role": "ROLE_EMPTY_MESSAGE",
+        "message_subject": "SUBJ_UNSPECIFIED",
+        "object": null,
+        "rationale": "The agent message text is empty."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_84",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "grep searches source contents for pairing-related symbols."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_85",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "sed displays a selected source-code region."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_86",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "grep searches source contents for bracket_type references."
+      },
+      {
+        "action": "ACT_MEASURE_LINES",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_87",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_GENERATED_TABLE",
+        "rationale": "wc -l counts lines in a generated lookup-table artifact."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_88",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "grep searches a header for named constants."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_89",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SCRIPT",
+        "rationale": "head and tail display a selected region of a validation script."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_90",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "cat piped to sed displays a selected source-code region."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_91",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "grep searches source contents for a named macro."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_92",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "sed displays a selected source-code region."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_0",
+        "fit": "exact",
+        "message_role": "ROLE_ERROR_EVENT",
+        "message_subject": "SUBJ_UNSPECIFIED",
+        "object": null,
+        "rationale": "The event is explicitly typed as an error with no payload."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_1",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SCRIPT",
+        "rationale": "cat displays the contents of an executable shell script."
+      },
+      {
+        "action": "ACT_SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_2",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_DIRECTORY",
+        "rationale": "find traverses a directory tree using file type and extension predicates."
+      },
+      {
+        "action": "ACT_LIST_ENTRIES",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_3",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_DIRECTORY",
+        "rationale": "ls enumerates entries in a directory."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_4",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "grep searches for the fuzz-entry symbol in source and output contents."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_5",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_FUZZER_HARNESS",
+        "rationale": "cat displays the source implementing the fuzz harness."
+      },
+      {
+        "action": "ACT_MEASURE_LINES",
+        "alternatives": [
+          "OBJ_HEADER_INTERFACE"
+        ],
+        "confidence": "medium",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_6",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "wc -l measures both an implementation source file and a header, so the object category is mixed."
+      }
+    ]
+  }
+}

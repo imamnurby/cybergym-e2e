@@ -1,0 +1,228 @@
+{
+  "content_hash": "a361ad2b67f63634ac54969c6c4e490e14d5b5dd2b3454189fc96836446c6863",
+  "request_hash": "3d240442b6fb233bf0c5040ec762782d7bad32f6df559113eb08d27b1e0023cc",
+  "response": {
+    "codings": [
+      {
+        "action": "GENERATE_DIFF",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_51",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "PATCH_DIFF",
+        "rationale": "The command computes and emits a unified diff between two source variants."
+      },
+      {
+        "action": "MODIFY_FILE",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_52",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "PATCH_DIFF",
+        "rationale": "The existing patch artifact is updated."
+      },
+      {
+        "action": "RUN_VALIDATOR",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_53",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "ARTIFACT_SET",
+        "rationale": "A dedicated validator is invoked with a PoC and patch artifact."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_54",
+        "fit": "exact",
+        "message_role": "DIAGNOSIS",
+        "message_subject": "PARSER_POINTER_LIFETIME",
+        "object": null,
+        "rationale": "The message asserts a stale or uninitialized payload pointer across a parser read as the defect mechanism."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_0",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "It states the intended harness inspection and input-to-library-flow tracing."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_1",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "The command displays the contents of a shell runner script."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_2",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "It searches source contents for the fuzz entry-point symbol."
+      },
+      {
+        "action": "LIST_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_3",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "It enumerates paths under the source tree without searching contents."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_4",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "It announces narrowing the target and future API-flow tracing."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_5",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "TEST_HARNESS",
+        "rationale": "The command displays the fuzz harness source."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_6",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "It searches source contents for decompression API symbols."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_7",
+        "fit": "exact",
+        "message_role": "INVESTIGATION_ACCOUNT",
+        "message_subject": "TARGET_HARNESS_INPUT_FLOW",
+        "object": null,
+        "rationale": "It describes the harness data flow and current source investigation."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_8",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "The command displays an implementation-source excerpt from miniz.c."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_9",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "The command displays an implementation-source excerpt from miniz_tinfl.c."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_10",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "The command displays another implementation-source excerpt."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_11",
+        "fit": "exact",
+        "message_role": "HYPOTHESIS",
+        "message_subject": "DECOMPRESSION_ENCODING_AND_STATE",
+        "object": null,
+        "rationale": "It proposes a tentative dynamic Huffman code-length expansion issue."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_12",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "The command displays a header/type-definition excerpt."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_13",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "It searches source and header contents for internal decompressor symbols."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_14",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "The command displays the OSS-Fuzz build script."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_15",
+        "fit": "exact",
+        "message_role": "STRATEGY_REVISION",
+        "message_subject": "DECOMPRESSION_COPY_OUTPUT_BOUNDS",
+        "object": null,
+        "rationale": "It rejects the initial candidate and redirects investigation to the decompressor output-buffer path."
+      }
+    ]
+  }
+}

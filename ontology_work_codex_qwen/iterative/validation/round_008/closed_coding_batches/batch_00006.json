@@ -1,0 +1,231 @@
+{
+  "content_hash": "37bf710b2bb254dfe2cb257cd4163989545455a6dd197b2514b8a62c8dce30c6",
+  "request_hash": "db2de128a369ef09e84737c6bc6c314bae914bcb63beb6a161dee8541d6c102a",
+  "response": {
+    "codings": [
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_27",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_HEADER_INTERFACE",
+        "rationale": "Reads the spng.h header contents."
+      },
+      {
+        "action": "ACT_UPDATE_TASK_LIST",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_28",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_TASK_LIST",
+        "rationale": "Creates a todo-list payload with work items and statuses."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_29",
+        "fit": "exact",
+        "message_role": "ROLE_EMPTY_MESSAGE",
+        "message_subject": "SUBJ_UNSPECIFIED",
+        "object": null,
+        "rationale": "The agent message text is empty."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_30",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "Displays a selected source-code function region from spng.c."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_31",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "Displays a selected source-code function region from spng.c."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_32",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "Searches spng.c for named functions and symbols."
+      },
+      {
+        "action": "ACT_LIST_ENTRIES",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_33",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_DIRECTORY",
+        "rationale": "Lists entries in the out, config, and data directories."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_34",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_VALIDATION_CONFIGURATION",
+        "rationale": "Reads the validator configuration file."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [
+          "ACT_LIST_ENTRIES",
+          "OBJ_DIRECTORY"
+        ],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_35",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SCRIPT",
+        "rationale": "The compound command both lists /scripts and reads the validation script; the selected labels represent the content-reading component."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_36",
+        "fit": "exact",
+        "message_role": "ROLE_EMPTY_MESSAGE",
+        "message_subject": "SUBJ_UNSPECIFIED",
+        "object": null,
+        "rationale": "The agent message text is empty."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_37",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "Displays a selected source-code function region from spng.c."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "medium",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_38",
+        "fit": "no_fit",
+        "message_role": null,
+        "message_subject": null,
+        "object": null,
+        "rationale": "The action matches in-memory data generation, but the ontology excludes an object category for byte data that is only constructed and printed, not written or supplied as input."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_39",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "Searches spng.c for named functions and symbols."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_40",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "Displays a selected source-code function region from spng.c."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_41",
+        "fit": "exact",
+        "message_role": "ROLE_EMPTY_MESSAGE",
+        "message_subject": "SUBJ_UNSPECIFIED",
+        "object": null,
+        "rationale": "The agent message text is empty."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_42",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "Displays a selected source-code function region from spng.c."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_43",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "Displays a selected source-code region handling PNG chunk data."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_44",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SCRIPT",
+        "rationale": "Reads the prepare.sh executable script."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_45",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "Searches spng.c for deallocation functions and related symbols."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_46",
+        "fit": "exact",
+        "message_role": "ROLE_EMPTY_MESSAGE",
+        "message_subject": "SUBJ_UNSPECIFIED",
+        "object": null,
+        "rationale": "The agent message text is empty."
+      }
+    ]
+  }
+}

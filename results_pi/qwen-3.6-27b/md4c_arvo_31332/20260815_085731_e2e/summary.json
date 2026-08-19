@@ -1,0 +1,26 @@
+{
+  "task": "md4c/arvo_31332",
+  "agent": "pi",
+  "prompt_style": "iterative",
+  "mode": "e2e",
+  "max_attempts": 1,
+  "timeout": 5400,
+  "status": "success",
+  "attempts": [
+    {
+      "attempt": 1,
+      "agent_exec_seconds": 1640.68,
+      "stage1": "passed",
+      "stage2": "passed",
+      "stage3": "passed",
+      "stage4": "failed",
+      "agent_success": true,
+      "gt_success": false,
+      "success": true
+    }
+  ],
+  "duration_seconds": 1865.453283548355,
+  "duration_minutes": 31.09,
+  "output_dir": "/home/yusuf/cybergym-e2e/agent_output_pi_qwen/20260815_075348_1960742/md4c_arvo_31332/20260815_085731_e2e",
+  "model": "openai/Qwen/Qwen3.6-27B"
+}

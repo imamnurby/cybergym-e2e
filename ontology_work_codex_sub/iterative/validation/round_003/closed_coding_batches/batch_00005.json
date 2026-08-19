@@ -1,0 +1,228 @@
+{
+  "content_hash": "ce16123912857adacb5e5d7cb1390178f1bea5e3c8632c3e1fe0395618b0ba1b",
+  "request_hash": "8aab97d92bc91b3ca216e27dd3d63185ae7aa8ed7b8404e35809765c65b553b6",
+  "response": {
+    "codings": [
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_11",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an excerpt from spng.c."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_12",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches source contents for symbols and patterns."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_13",
+        "fit": "exact",
+        "message_role": "DIAGNOSIS",
+        "message_subject": "IMAGE_CHUNK_METADATA_PARSING",
+        "object": null,
+        "rationale": "Asserts a causal bug mechanism in post-IDAT ancillary-chunk parsing."
+      },
+      {
+        "action": "CONSTRUCT_TEST_INPUT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_14",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "INPUT_DATA",
+        "rationale": "Constructs a PNG PoC input and writes it as an artifact."
+      },
+      {
+        "action": "RUN_VALIDATOR",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_15",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "Invokes the dedicated validation script with a PoC."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_16",
+        "fit": "exact",
+        "message_role": "PROGRESS_STATUS",
+        "message_subject": "VALIDATION_EXECUTION",
+        "object": null,
+        "rationale": "Reports that validation is in its compile/run phase."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_17",
+        "fit": "exact",
+        "message_role": "PROGRESS_STATUS",
+        "message_subject": "VALIDATION_EXECUTION",
+        "object": null,
+        "rationale": "Reports ongoing validation and a conditional next patch step."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_18",
+        "fit": "exact",
+        "message_role": "DEBUGGING_UPDATE",
+        "message_subject": "PARSER_POINTER_LIFETIME",
+        "object": null,
+        "rationale": "Reports a non-reproducing trigger and active troubleshooting of parser and allocation paths."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_19",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an excerpt from spng.c."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_20",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays source code from spng.c."
+      },
+      {
+        "action": "QUERY_REPOSITORY",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_21",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "REPOSITORY_METADATA",
+        "rationale": "Queries Git history for spng.c."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_22",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an excerpt from the implementation source."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_23",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "BUILD_CONFIGURATION",
+        "rationale": "Displays the Meson build definition."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_24",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "BUILD_CONFIGURATION",
+        "rationale": "Displays the tests Meson build definition."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_25",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays the optimized filter implementation source."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_26",
+        "fit": "exact",
+        "message_role": "INVESTIGATION_ACCOUNT",
+        "message_subject": "FUZZING_CORPUS_AND_REPLAY",
+        "object": null,
+        "rationale": "Reports checking the existing crasher corpus against the current build."
+      },
+      {
+        "action": "REPLAY_INPUT_SET",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_27",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "CORPUS",
+        "rationale": "Loops over existing crasher inputs and invokes the target for each."
+      },
+      {
+        "action": "RUN_FUZZER",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_28",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "Invokes the fuzzing executable with a corpus and artifact prefix."
+      },
+      {
+        "action": "RUN_FUZZER",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_29",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "Runs a time-limited fuzzing session over a seed corpus."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_30",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches source trees for fuzzing API symbols."
+      }
+    ]
+  }
+}

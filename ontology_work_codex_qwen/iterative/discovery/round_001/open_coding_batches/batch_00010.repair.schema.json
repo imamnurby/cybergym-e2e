@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "codings": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "action_label": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "confidence": {
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "discourse_role": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "event_uid": {
+            "enum": [
+              "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_43"
+            ],
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "object_label": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "subject_label": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "summary": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "event_uid",
+          "action_label",
+          "object_label",
+          "discourse_role",
+          "subject_label",
+          "summary",
+          "evidence",
+          "confidence"
+        ],
+        "type": "object"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "codings"
+  ],
+  "type": "object"
+}

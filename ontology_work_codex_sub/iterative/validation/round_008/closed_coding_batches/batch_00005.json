@@ -1,0 +1,228 @@
+{
+  "content_hash": "ce16123912857adacb5e5d7cb1390178f1bea5e3c8632c3e1fe0395618b0ba1b",
+  "request_hash": "8aab97d92bc91b3ca216e27dd3d63185ae7aa8ed7b8404e35809765c65b553b6",
+  "response": {
+    "codings": [
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_11",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an excerpt from the implementation source file."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_12",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Searches source contents for symbols and text patterns."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_13",
+        "fit": "exact",
+        "message_role": "DIAGNOSIS",
+        "message_subject": "IMAGE_CHUNK_METADATA_PARSING",
+        "object": null,
+        "rationale": "Asserts a concrete uninitialized-pointer causal defect in post-IDAT chunk parsing."
+      },
+      {
+        "action": "CONSTRUCT_TEST_INPUT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_14",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "INPUT_DATA",
+        "rationale": "Constructs a minimal PNG fixture with a post-IDAT tIME chunk."
+      },
+      {
+        "action": "RUN_VALIDATOR",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_15",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "INPUT_DATA",
+        "rationale": "Invokes the dedicated validation harness on the PoC input."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_16",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "VALIDATION_EXECUTION",
+        "object": null,
+        "rationale": "States intended follow-up based on the ongoing validation run."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_17",
+        "fit": "exact",
+        "message_role": "PROGRESS_STATUS",
+        "message_subject": "VALIDATION_EXECUTION",
+        "object": null,
+        "rationale": "Reports that validation remains in the build/run phase."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_18",
+        "fit": "exact",
+        "message_role": "STRATEGY_REVISION",
+        "message_subject": "IMAGE_CHUNK_METADATA_PARSING",
+        "object": null,
+        "rationale": "Redirects the investigation from the weak tIME trigger toward deterministic chunk-reader conditions."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_19",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an excerpt from the implementation source file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_20",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an excerpt from the implementation source file."
+      },
+      {
+        "action": "QUERY_REPOSITORY",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_21",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "REPOSITORY_METADATA",
+        "rationale": "Queries version-control history for the source file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_22",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an implementation-source excerpt containing optimized filter code."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_23",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "BUILD_CONFIGURATION",
+        "rationale": "Displays the Meson build configuration."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_24",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "BUILD_CONFIGURATION",
+        "rationale": "Displays the tests Meson build configuration."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_25",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an implementation-source excerpt for SSE2 filter functions."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_26",
+        "fit": "exact",
+        "message_role": "INVESTIGATION_ACCOUNT",
+        "message_subject": "FUZZING_CORPUS_AND_REPLAY",
+        "object": null,
+        "rationale": "Reports inspection of the existing crasher corpus as an investigative step."
+      },
+      {
+        "action": "REPLAY_INPUT_SET",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_27",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "CORPUS",
+        "rationale": "Loops over existing crasher inputs and invokes the target for each."
+      },
+      {
+        "action": "RUN_FUZZER",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_28",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "CORPUS",
+        "rationale": "Launches the fuzzing executable against a seed corpus."
+      },
+      {
+        "action": "RUN_FUZZER",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_29",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "CORPUS",
+        "rationale": "Launches a time-limited fuzzing session using the prepared corpus."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_30",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "Searches source-tree contents for fuzzing entry-point symbols."
+      }
+    ]
+  }
+}

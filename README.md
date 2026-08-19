@@ -119,6 +119,30 @@ Pi runs use the same raw live JSONL and stderr paths.
 Pi also stores the native session as `trajectory/attempt_N.session.jsonl`.
 The current report parser does not normalize Pi events yet, so use these raw files when you inspect the first integration.
 
+### PI Session Viewer
+
+Start the local browser application to inspect native PI session files under `results_pi`:
+
+```bash
+python3 scripts/trajectory_viewer.py
+```
+
+The viewer discovers `attempt_*.session.jsonl` files and groups them by task, model, run, and attempt.
+It shows one timeline item for each physical JSONL line and provides direct line navigation, full-text search, filters, linked tool calls and results, raw JSON, and live updates.
+You can also drag a session file into the browser or use **Open JSONL** to read it locally without uploading it to the server.
+
+Use another results directory or port when needed:
+
+```bash
+python3 scripts/trajectory_viewer.py \
+  --root /path/to/results_pi \
+  --port 9000 \
+  --no-browser
+```
+
+The server binds to `127.0.0.1` by default and restricts file access to the configured results root.
+Use `--host` only when you intend to expose the viewer on another network interface.
+
 Use the same command with another output directory to inspect a different model run:
 
 ```bash

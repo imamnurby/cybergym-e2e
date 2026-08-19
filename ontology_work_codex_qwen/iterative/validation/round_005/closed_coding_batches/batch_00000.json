@@ -1,0 +1,235 @@
+{
+  "content_hash": "2fdd25a4326274233a74a63bdbeaec26503dbe1a6703e26e91e0af89d39231bd",
+  "request_hash": "58d0115b4d1f3d199586b4f566d46957c2c06db549bb2b2465073775fb6b288e",
+  "response": {
+    "codings": [
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_0",
+        "fit": "exact",
+        "message_role": "ROLE_ERROR_EVENT",
+        "message_subject": "SUBJ_UNSPECIFIED",
+        "object": null,
+        "rationale": "Explicit error event with no command, output, or text."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_1",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SCRIPT",
+        "rationale": "Reads the contents of run_poc.sh."
+      },
+      {
+        "action": "ACT_SEARCH_PATHS",
+        "alternatives": [
+          "OBJ_SOURCE_FILE",
+          "OBJ_HEADER_INTERFACE"
+        ],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_2",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": null,
+        "rationale": "Searches recursively for both C source files and header files."
+      },
+      {
+        "action": "ACT_LIST_ENTRIES",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_3",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_DIRECTORY",
+        "rationale": "Lists entries in the /src directory."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_4",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_FUZZER_HARNESS",
+        "rationale": "Reads the dedicated fuzzer harness implementation."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_5",
+        "fit": "exact",
+        "message_role": "ROLE_EMPTY_MESSAGE",
+        "message_subject": "SUBJ_UNSPECIFIED",
+        "object": null,
+        "rationale": "Message text is empty."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_6",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_HEADER_INTERFACE",
+        "rationale": "Reads a header/interface file."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_7",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "Reads the fribidi-bidi.c implementation file."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_8",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "Reads the fribidi-brackets.c implementation file."
+      },
+      {
+        "action": "ACT_SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_9",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_GENERATED_TABLE",
+        "rationale": "Searches for bracket-related generated table files."
+      },
+      {
+        "action": "ACT_SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_10",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_GENERATED_TABLE",
+        "rationale": "Searches for generated .tab files."
+      },
+      {
+        "action": "ACT_SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_11",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_GENERATED_TABLE",
+        "rationale": "Searches for a brackets-prefixed generated table artifact."
+      },
+      {
+        "action": "ACT_SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_12",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_GENERATED_TABLE",
+        "rationale": "Searches for generated .tab.i include artifacts."
+      },
+      {
+        "action": "ACT_SEARCH_PATHS",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_13",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_GENERATED_TABLE",
+        "rationale": "Searches for generated include artifacts with an .i suffix."
+      },
+      {
+        "action": "ACT_SEARCH_PATHS",
+        "alternatives": [
+          "OBJ_GENERATED_TABLE",
+          "OBJ_SOURCE_FILE",
+          "OBJ_HEADER_INTERFACE"
+        ],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_14",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": null,
+        "rationale": "Searches multiple bracket-related names that could denote generated tables, source files, or headers."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_15",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_HEADER_INTERFACE",
+        "rationale": "Reads the fribidi-brackets.h header."
+      },
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_16",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_CODE_REGION_SYMBOL",
+        "rationale": "Searches source text for named bracket-related macros and symbols."
+      },
+      {
+        "action": "ACT_READ_CONTENT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_17",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "Reads the table-generator source implementation."
+      },
+      {
+        "action": "ACT_LIST_ENTRIES",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_18",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_GENERATED_TABLE",
+        "rationale": "Lists matching generated table artifacts using file globs."
+      },
+      {
+        "action": "ACT_LIST_ENTRIES",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_19",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_DIRECTORY",
+        "rationale": "Lists entries in the /out directory."
+      }
+    ]
+  }
+}

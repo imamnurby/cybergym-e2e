@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "codings": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "alternatives": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "confidence": {
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "event_uid": {
+            "enum": [
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_8",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_9",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_10",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_11",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_12",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_13",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_14",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_15",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_16",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_17",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_18",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_19",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_20",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_21",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_22",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_23",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_24",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_25",
+              "libspng_arvo_14935:20260812_170242_e2e:attempt_1:item_26"
+            ],
+            "type": "string"
+          },
+          "fit": {
+            "enum": [
+              "exact",
+              "ambiguous",
+              "no_fit"
+            ]
+          },
+          "message_role": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "message_subject": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "object": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "rationale": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "event_uid",
+          "action",
+          "object",
+          "message_role",
+          "message_subject",
+          "fit",
+          "alternatives",
+          "rationale",
+          "confidence"
+        ],
+        "type": "object"
+      },
+      "maxItems": 19,
+      "minItems": 19,
+      "type": "array"
+    }
+  },
+  "required": [
+    "codings"
+  ],
+  "type": "object"
+}

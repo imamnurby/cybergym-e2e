@@ -1,0 +1,228 @@
+{
+  "content_hash": "ce16123912857adacb5e5d7cb1390178f1bea5e3c8632c3e1fe0395618b0ba1b",
+  "request_hash": "8aab97d92bc91b3ca216e27dd3d63185ae7aa8ed7b8404e35809765c65b553b6",
+  "response": {
+    "codings": [
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_11",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an excerpt from spng.c."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_12",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "The command uses rg to search source contents for specified symbols and strings in spng.c."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_13",
+        "fit": "exact",
+        "message_role": "DIAGNOSIS",
+        "message_subject": "IMAGE_CHUNK_METADATA_PARSING",
+        "object": null,
+        "rationale": "Asserts an uninitialized-pointer causal mechanism in post-IDAT chunk parsing."
+      },
+      {
+        "action": "CONSTRUCT_TEST_INPUT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_14",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "INPUT_DATA",
+        "rationale": "Constructs a PNG PoC input and writes it as an artifact."
+      },
+      {
+        "action": "RUN_VALIDATOR",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_15",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "The command invokes the dedicated validate.py harness with a PoC and validation-stage options."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_16",
+        "fit": "exact",
+        "message_role": "PROGRESS_STATUS",
+        "message_subject": "VALIDATION_EXECUTION",
+        "object": null,
+        "rationale": "Reports that validation is in its compiling phase."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_17",
+        "fit": "exact",
+        "message_role": "PROGRESS_STATUS",
+        "message_subject": "VALIDATION_EXECUTION",
+        "object": null,
+        "rationale": "Reports the PoC is present and validation remains in build/run."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_18",
+        "fit": "exact",
+        "message_role": "STRATEGY_REVISION",
+        "message_subject": "IMAGE_CHUNK_METADATA_PARSING",
+        "object": null,
+        "rationale": "Redirects from the initial tIME trigger to broader chunk-reader auditing."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_19",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "The sed command displays an existing bounded region of implementation source."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_20",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "The sed command displays an existing bounded region of implementation source."
+      },
+      {
+        "action": "QUERY_REPOSITORY",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_21",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "REPOSITORY_METADATA",
+        "rationale": "Queries version-control history for spng.c."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_22",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an optimized filter implementation excerpt."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_23",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "BUILD_CONFIGURATION",
+        "rationale": "Displays Meson build configuration."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_24",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "BUILD_CONFIGURATION",
+        "rationale": "Displays test-subdirectory Meson configuration."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_25",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays an excerpt from spng.c."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_26",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "FUZZING_CORPUS_AND_REPLAY",
+        "object": null,
+        "rationale": "Announces checking the existing crasher corpus."
+      },
+      {
+        "action": "REPLAY_INPUT_SET",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_27",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "CORPUS",
+        "rationale": "Loops over existing crasher inputs and invokes the target for each."
+      },
+      {
+        "action": "RUN_FUZZER",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_28",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "CORPUS",
+        "rationale": "Attempts to launch a fuzzing session using a seed corpus."
+      },
+      {
+        "action": "RUN_FUZZER",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_29",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "CORPUS",
+        "rationale": "Runs the fuzzing engine against the corpus."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "libspng_arvo_14935:20260811_222152_e2e:attempt_1:item_30",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_TREE",
+        "rationale": "Searches source-tree contents for fuzzer entry-point symbols."
+      }
+    ]
+  }
+}

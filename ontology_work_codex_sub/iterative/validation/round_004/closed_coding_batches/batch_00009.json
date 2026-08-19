@@ -1,0 +1,247 @@
+{
+  "content_hash": "dac7e9b5f77e24739386e683a946c88beee7b7b4ada4aa1b0fdd626d5eb7155e",
+  "request_hash": "21a5c4c4adef07e5afb7ad83b22c131066ac03b8c688160a25fe5fb25244540b",
+  "response": {
+    "codings": [
+      {
+        "action": "LIST_PATHS",
+        "alternatives": [
+          "DUMP_BINARY"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_36",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "CORPUS",
+        "rationale": "Lists corpus entries and also emits hexadecimal bytes from several inputs."
+      },
+      {
+        "action": "RUN_FUZZER",
+        "alternatives": [
+          "PREPARE_TEST_ENVIRONMENT"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_37",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "CORPUS",
+        "rationale": "Creates a corpus directory and launches a parallel libFuzzer session; fuzzing is the primary operation."
+      },
+      {
+        "action": null,
+        "alternatives": [
+          "HYPOTHESIS",
+          "FUZZING_CORPUS_AND_REPLAY"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_38",
+        "fit": "ambiguous",
+        "message_role": "PROGRESS_STATUS",
+        "message_subject": "DECOMPRESSION_COPY_OUTPUT_BOUNDS",
+        "object": null,
+        "rationale": "Reports an active parallel fuzz run while proposing a tentative fast-copy/backreference explanation."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_39",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "LOG_RECORD",
+        "rationale": "Reads the tails of existing fuzz log files."
+      },
+      {
+        "action": "ENUMERATE_VALUES",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_40",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "INPUT_DATA",
+        "rationale": "Enumerates zlib header flag values satisfying a modulus constraint without invoking the target."
+      },
+      {
+        "action": "EXECUTE_INSTRUMENTED_TARGET",
+        "alternatives": [
+          "CONSTRUCT_TEST_INPUT",
+          "CREATE_FILE"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_41",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "Generates and writes a compressed input, then runs the ASan executable on it."
+      },
+      {
+        "action": "RUN_FUZZER",
+        "alternatives": [
+          "PREPARE_TEST_ENVIRONMENT",
+          "CONSTRUCT_TEST_INPUT",
+          "CREATE_FILE"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_42",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "CORPUS",
+        "rationale": "Generates seed files and then launches a libFuzzer session over the seed corpus."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_43",
+        "fit": "exact",
+        "message_role": "PROGRESS_STATUS",
+        "message_subject": "MEMORY_SAFETY_DIAGNOSTICS",
+        "object": null,
+        "rationale": "Reports that MSan testing of the decompressor is currently underway."
+      },
+      {
+        "action": "COMPILE_TARGET",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_44",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "Directly compiles an MSan-instrumented executable."
+      },
+      {
+        "action": "EXECUTE_INSTRUMENTED_TARGET",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_45",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "Runs the MSan-instrumented executable on one input."
+      },
+      {
+        "action": "RUN_TEST_MATRIX",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_46",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "Generates parameterized compressed cases and invokes the MSan target for each case."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_47",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "DECOMPRESSION_ENCODING_AND_STATE",
+        "object": null,
+        "rationale": "Announces hand-crafting a fixed-Huffman stream to exercise a specific encoded-data case."
+      },
+      {
+        "action": "CONSTRUCT_TEST_INPUT",
+        "alternatives": [
+          "CREATE_FILE",
+          "EXECUTE_INSTRUMENTED_TARGET"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_48",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "INPUT_DATA",
+        "rationale": "Constructs a minimal fixed-Huffman stream, writes it as an input artifact, and tests it under MSan."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_49",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "Displays the beginning of a header interface file."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_50",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "Searches source and header contents for Huffman-table symbols and macros."
+      },
+      {
+        "action": "COMPILE_TARGET",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_51",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "Directly compiles an executable with fuzzing and MSan instrumentation."
+      },
+      {
+        "action": "RUN_FUZZER",
+        "alternatives": [
+          "PREPARE_TEST_ENVIRONMENT"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_52",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "CORPUS",
+        "rationale": "Copies seed inputs into a corpus and launches the MSan fuzzing executable."
+      },
+      {
+        "action": "RUN_TEST_MATRIX",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_53",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "Systematically generates distance/length cases and runs the MSan target for each."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_54",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "Displays the beginning of a common header file."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_55",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Displays the beginning of an implementation source file."
+      }
+    ]
+  }
+}

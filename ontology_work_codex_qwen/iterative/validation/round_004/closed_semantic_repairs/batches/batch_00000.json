@@ -1,0 +1,18 @@
+{
+  "request_hash": "dc0649e83d7e6f8f59bf9ef395aee0d8860d6fc093bb59ec72ae245445e2d968",
+  "response": {
+    "codings": [
+      {
+        "action": "ACT_SEARCH_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "fribidi_arvo_34695:20260812_195314_e2e:attempt_1:item_91",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "OBJ_SOURCE_FILE",
+        "rationale": "grep searches the contents of the C source file for LOCAL_BRACKET_SIZE."
+      }
+    ]
+  }
+}

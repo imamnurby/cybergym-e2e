@@ -1,0 +1,252 @@
+{
+  "content_hash": "dac7e9b5f77e24739386e683a946c88beee7b7b4ada4aa1b0fdd626d5eb7155e",
+  "request_hash": "21a5c4c4adef07e5afb7ad83b22c131066ac03b8c688160a25fe5fb25244540b",
+  "response": {
+    "codings": [
+      {
+        "action": "DUMP_BINARY",
+        "alternatives": [
+          "LIST_PATHS",
+          "CORPUS"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_36",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "INPUT_DATA",
+        "rationale": "The command lists corpus entries and then renders several input files as hexadecimal bytes."
+      },
+      {
+        "action": "RUN_FUZZER",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_37",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "The command launches a parallel libFuzzer session with time, RSS, job, and worker limits against a corpus directory; the preceding mkdir is test-environment preparation."
+      },
+      {
+        "action": null,
+        "alternatives": [
+          "HYPOTHESIS",
+          "FUZZING_CORPUS_AND_REPLAY"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_38",
+        "fit": "ambiguous",
+        "message_role": "PROGRESS_STATUS",
+        "message_subject": "DECOMPRESSION_COPY_OUTPUT_BOUNDS",
+        "object": null,
+        "rationale": "The message reports an active parallel fuzz run while proposing a tentative fast-copy-path explanation and patch direction."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_39",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "LOG_RECORD",
+        "rationale": "It tails the latest lines of each available fuzz log."
+      },
+      {
+        "action": "ENUMERATE_VALUES",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_40",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "INPUT_DATA",
+        "rationale": "The script calculates valid compressed-header flag candidates without invoking the target."
+      },
+      {
+        "action": "EXECUTE_INSTRUMENTED_TARGET",
+        "alternatives": [
+          "CONSTRUCT_TEST_INPUT",
+          "INPUT_DATA"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_41",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "It constructs a compressed input, writes it, and runs the ASan target on it."
+      },
+      {
+        "action": "RUN_FUZZER",
+        "alternatives": [
+          "CONSTRUCT_TEST_INPUT",
+          "PREPARE_TEST_ENVIRONMENT"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_42",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "CORPUS",
+        "rationale": "The command generates seed inputs and prepares a seed directory before launching fuzzing."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_43",
+        "fit": "exact",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "MEMORY_SAFETY_DIAGNOSTICS",
+        "object": null,
+        "rationale": "It states the intended MSan testing approach and why sanitizer behavior is relevant."
+      },
+      {
+        "action": "COMPILE_TARGET",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_44",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "Clang directly compiles an MSan-instrumented executable."
+      },
+      {
+        "action": "EXECUTE_INSTRUMENTED_TARGET",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_45",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "It directly runs the MSan executable on a supplied input."
+      },
+      {
+        "action": "RUN_TEST_MATRIX",
+        "alternatives": [
+          "CONSTRUCT_TEST_INPUT",
+          "INPUT_DATA"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_46",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "It generates many compressed cases and invokes the MSan target for each case."
+      },
+      {
+        "action": null,
+        "alternatives": [
+          "DECOMPRESSION_ENCODING_AND_STATE"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_47",
+        "fit": "ambiguous",
+        "message_role": "PLAN_INTENT",
+        "message_subject": "DECOMPRESSION_COPY_OUTPUT_BOUNDS",
+        "object": null,
+        "rationale": "It announces construction of a fixed-Huffman stream to exercise a small-distance backreference copy path."
+      },
+      {
+        "action": "EXECUTE_INSTRUMENTED_TARGET",
+        "alternatives": [
+          "CONSTRUCT_TEST_INPUT",
+          "INPUT_DATA"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_48",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "The command hand-constructs and writes a stream, then executes the MSan target on it."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_49",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "It displays an excerpt from a header interface."
+      },
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [
+          "SOURCE_CODE"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_50",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SYMBOL_PATTERN",
+        "rationale": "It searches source files for Huffman-table symbols and related patterns."
+      },
+      {
+        "action": "COMPILE_TARGET",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_51",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "Clang directly builds a fuzzer executable with fuzzing and MSan instrumentation."
+      },
+      {
+        "action": "RUN_FUZZER",
+        "alternatives": [
+          "PREPARE_TEST_ENVIRONMENT"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_52",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "CORPUS",
+        "rationale": "It copies seed inputs into a corpus and launches an MSan fuzzing session."
+      },
+      {
+        "action": "RUN_TEST_MATRIX",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_53",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "EXECUTABLE_TARGET",
+        "rationale": "It systematically generates distance/length cases and invokes the decompressor for each."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_54",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "HEADER_INTERFACE",
+        "rationale": "It displays an excerpt from a common header interface."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_55",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "It displays an excerpt from the decompressor implementation source."
+      }
+    ]
+  }
+}

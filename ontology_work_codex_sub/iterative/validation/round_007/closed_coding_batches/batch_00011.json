@@ -1,0 +1,222 @@
+{
+  "content_hash": "bdd28e785bca332ce7ff7f9b1507e676e0c308370e1c065793b2115c960e6181",
+  "request_hash": "faa914ccfb50078e800c8f9289bc12ecbe846fb9589c03de6ab37ce3cdda2126",
+  "response": {
+    "codings": [
+      {
+        "action": "SEARCH_TEXT",
+        "alternatives": [
+          "SCRIPT"
+        ],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_76",
+        "fit": "ambiguous",
+        "message_role": null,
+        "message_subject": null,
+        "object": "BUILD_CONFIGURATION",
+        "rationale": "Searches contents of both a CMake build configuration and an amalgamation script."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_77",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SCRIPT",
+        "rationale": "Displays the contents of an orchestration script."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_78",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "BUILD_CONFIGURATION",
+        "rationale": "Displays the CMake build configuration."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_79",
+        "fit": "exact",
+        "message_role": "STRATEGY_REVISION",
+        "message_subject": "DECOMPRESSION_COPY_OUTPUT_BOUNDS",
+        "object": null,
+        "rationale": "Explicitly replaces a narrow copy fix with a broader fallback strategy."
+      },
+      {
+        "action": "READ_TEXT",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_80",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "PATCH_DIFF",
+        "rationale": "Displays an existing patch artifact."
+      },
+      {
+        "action": "DELETE_FILE",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_81",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "PATCH_DIFF",
+        "rationale": "Deletes the existing patch artifact."
+      },
+      {
+        "action": "CREATE_FILE",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_82",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "PATCH_DIFF",
+        "rationale": "Creates a new patch artifact."
+      },
+      {
+        "action": "RUN_VALIDATOR",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_83",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "ARTIFACT_SET",
+        "rationale": "Invokes the dedicated validator over the PoC and patch bundle."
+      },
+      {
+        "action": null,
+        "alternatives": [
+          "PLAN_INTENT",
+          "DIAGNOSIS"
+        ],
+        "confidence": "medium",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_84",
+        "fit": "ambiguous",
+        "message_role": "DEBUGGING_UPDATE",
+        "message_subject": "PATCH_CONSTRUCTION_AND_APPLICATION",
+        "object": null,
+        "rationale": "Reports a patch-formatting validation problem while describing the next corrective action."
+      },
+      {
+        "action": "GENERATE_DIFF",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_85",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "PATCH_DIFF",
+        "rationale": "Creates a unified diff from original and modified source copies."
+      },
+      {
+        "action": "MODIFY_FILE",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_86",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "PATCH_DIFF",
+        "rationale": "Updates the existing patch file and then displays it."
+      },
+      {
+        "action": "RUN_VALIDATOR",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_87",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "ARTIFACT_SET",
+        "rationale": "Runs the dedicated validator over the PoC and patch; validation outcome is not encoded as a category."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_88",
+        "fit": "exact",
+        "message_role": "DIAGNOSIS",
+        "message_subject": "DECOMPRESSION_COPY_OUTPUT_BOUNDS",
+        "object": null,
+        "rationale": "Asserts that the match source can reference bytes not yet materialized, explaining the uninitialized read."
+      },
+      {
+        "action": "INSTRUMENT_CODE",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_89",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "SOURCE_CODE",
+        "rationale": "Creates and edits a temporary source variant with tracing probes before compilation and execution."
+      },
+      {
+        "action": "INSTRUMENT_CODE",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_90",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "GENERATED_CODE_TABLE",
+        "rationale": "Adds tracing to a generated amalgamated source copy before compiling and running it."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_91",
+        "fit": "exact",
+        "message_role": "DIAGNOSIS",
+        "message_subject": "DECOMPRESSION_ENCODING_AND_STATE",
+        "object": null,
+        "rationale": "States the causal defect as acceptance of invalid deflate length and distance symbols."
+      },
+      {
+        "action": "GENERATE_DIFF",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_92",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "PATCH_DIFF",
+        "rationale": "Generates a replacement unified diff containing strict symbol validation."
+      },
+      {
+        "action": "RUN_VALIDATOR",
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_93",
+        "fit": "exact",
+        "message_role": null,
+        "message_subject": null,
+        "object": "ARTIFACT_SET",
+        "rationale": "Invokes the dedicated validator over the PoC and patch; reported pass results are not used as categories."
+      },
+      {
+        "action": null,
+        "alternatives": [],
+        "confidence": "high",
+        "event_uid": "miniz_arvo_26682:20260811_225944_e2e:attempt_1:item_94",
+        "fit": "exact",
+        "message_role": "FINDING_REPORT",
+        "message_subject": "DECOMPRESSION_ENCODING_AND_STATE",
+        "object": null,
+        "rationale": "Reports the identified invalid-symbol bug and associated PoC and patch artifacts."
+      }
+    ]
+  }
+}

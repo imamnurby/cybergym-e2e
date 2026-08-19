@@ -1,0 +1,11 @@
+--- a/src/UriFile.c
++++ b/src/UriFile.c
+@@ -196,7 +196,7 @@ static URI_INLINE int URI_FUNC(UriStringToFilename)(const URI_CHAR * uriString,
+ 		}
+ 
+ 		memcpy(unescape_target, uriString + charsToSkip, charsToCopy * sizeof(URI_CHAR));
+-		URI_FUNC(UnescapeInPlaceEx)(filename, URI_FALSE, URI_BR_DONT_TOUCH);
++		URI_FUNC(UnescapeInPlaceEx)(unescape_target, URI_FALSE, URI_BR_DONT_TOUCH);
+ 	}
+ 
+ 	/* Convert forward slashes to backslashes */
