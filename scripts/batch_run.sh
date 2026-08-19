@@ -110,14 +110,17 @@ if [[ -z "${PROMPT_STYLE:-}" ]]; then
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_VENV_PYTHON="$SCRIPT_DIR/../.venv/bin/python"
-if [[ -z "${PYTHON_BIN:-}" ]]; then
-    if [[ -x "$PROJECT_VENV_PYTHON" ]]; then
-        PYTHON_BIN="$PROJECT_VENV_PYTHON"
-    else
-        PYTHON_BIN="$(command -v python3)"
-    fi
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+if ! command -v uv >/dev/null 2>&1; then
+    echo "ERROR: uv is required; install it from https://docs.astral.sh/uv/getting-started/installation/" >&2
+    exit 1
 fi
+
+run_uv_python() {
+    (cd "$PROJECT_ROOT" && uv run --locked python "$@")
+}
+
+PYTHON_BIN="uv run --locked python"
 
 # Print all descendants of a process. Restricting cleanup to this process tree
 # prevents Ctrl-C in one batch from terminating other concurrent batches.
@@ -207,7 +210,7 @@ run_task() {
 
     # Run agent and redirect output directly to log file
     local log_file="$AGENT_OUTPUT_DIR/${task_safe}_run.log"
-    "$PYTHON_BIN" "$SCRIPT_DIR/run_agent.py" "$task" \
+    run_uv_python "$SCRIPT_DIR/run_agent.py" "$task" \
         --agent "$AGENT" \
         --prompt-style "$PROMPT_STYLE" \
         --mode "$MODE" \
@@ -247,8 +250,8 @@ run_task() {
     return $exit_code
 }
 
-export -f run_task
-export SCRIPT_DIR PYTHON_BIN AGENT_OUTPUT_DIR MODE MAX_ATTEMPTS AWS_PROFILE AWS_REGION LITELLM_MODEL_ID OPENAI_MODEL_ID CODEX_AUTH_MODE CODEX_AUTH_FILE CODEX_REASONING_EFFORT CODEX_SUPPORTS_REASONING_SUMMARIES PI_PROVIDER_ID PI_THINKING_LEVEL PI_CONTEXT_WINDOW PI_MAX_OUTPUT_TOKENS DEEPSEEK_MODEL_ID MAX_BUDGET_PER_TASK BEDROCK_MODEL_ID ANTHROPIC_MODEL_ID AGENT PROMPT_STYLE TIMEOUT MODEL_PROVIDER ANTHROPIC_API_KEY OPENAI_API_KEY OPENAI_BASE_URL DEEPSEEK_API_KEY DEEPSEEK_BASE_URL
+export -f run_task run_uv_python
+export SCRIPT_DIR PROJECT_ROOT PYTHON_BIN AGENT_OUTPUT_DIR MODE MAX_ATTEMPTS AWS_PROFILE AWS_REGION LITELLM_MODEL_ID OPENAI_MODEL_ID CODEX_AUTH_MODE CODEX_AUTH_FILE CODEX_REASONING_EFFORT CODEX_SUPPORTS_REASONING_SUMMARIES PI_PROVIDER_ID PI_THINKING_LEVEL PI_CONTEXT_WINDOW PI_MAX_OUTPUT_TOKENS DEEPSEEK_MODEL_ID MAX_BUDGET_PER_TASK BEDROCK_MODEL_ID ANTHROPIC_MODEL_ID AGENT PROMPT_STYLE TIMEOUT MODEL_PROVIDER ANTHROPIC_API_KEY OPENAI_API_KEY OPENAI_BASE_URL DEEPSEEK_API_KEY DEEPSEEK_BASE_URL
 
 # Run tasks in parallel
 echo "Starting parallel execution..."
@@ -267,7 +270,7 @@ echo "Batch complete! (${DURATION}s / $((DURATION/60))m)"
 echo "=========================================="
 
 # Summarize results
-"$PYTHON_BIN" -c "
+run_uv_python -c "
 import json
 import os
 

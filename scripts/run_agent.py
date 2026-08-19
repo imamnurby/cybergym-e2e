@@ -17,13 +17,13 @@ Prompt styles:
 
 Examples:
   # Claude Code with iterative testing (default)
-  python run_agent.py task --mode e2e
+  uv run python scripts/run_agent.py task --mode e2e
 
   # OpenHands with no-test prompt
-  python run_agent.py task --mode e2e --agent openhands --prompt-style no-test
+  uv run python scripts/run_agent.py task --mode e2e --agent openhands --prompt-style no-test
 
   # Claude Code with multiple attempts
-  python run_agent.py task --mode e2e --max-attempts 3
+  uv run python scripts/run_agent.py task --mode e2e --max-attempts 3
 """
 
 import argparse

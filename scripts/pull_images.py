@@ -6,6 +6,7 @@ from pathlib import Path
 
 import docker
 import tomli
+from docker.errors import APIError
 
 DEFAULT_BUILD_IMAGE = (
     "gcr.io/oss-fuzz-base/base-builder"
@@ -48,7 +49,7 @@ def pull_image(image):
             repo, tag = image.rsplit(":", 1)
             client.images.pull(repo, tag=tag)
         print(f"  OK: {image}")
-    except docker.errors.APIError as e:
+    except APIError as e:
         print(f"  FAILED: {image}: {e}")
 
 

@@ -41,6 +41,16 @@ TASKS_FILE="${1:-scripts/tasks_30.txt}"
 MAX_PARALLEL="${2:-${MAX_PARALLEL:-20}}"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+if ! command -v uv >/dev/null 2>&1; then
+    echo "ERROR: uv is required; install it from https://docs.astral.sh/uv/getting-started/installation/" >&2
+    exit 1
+fi
+
+run_uv_python() {
+    (cd "$PROJECT_ROOT" && uv run --locked python "$@")
+}
+
 LOG_DIR="dataset_validation_logs"
 
 # Create log directory
@@ -100,7 +110,7 @@ validate_task() {
     # Run validation
     local output
     local exit_code=0
-    output=$(python3 "$SCRIPT_DIR/dataset_validate.py" "$task" 2>&1 | tee "$log_file") || exit_code=$?
+    output=$(run_uv_python "$SCRIPT_DIR/dataset_validate.py" "$task" 2>&1 | tee "$log_file") || exit_code=$?
 
     # Check for success in output - check if all stages are 'passed'
     if grep -q "'stage1': 'passed'" "$log_file" && \
@@ -119,8 +129,8 @@ validate_task() {
     fi
 }
 
-export -f validate_task
-export SCRIPT_DIR LOG_DIR
+export -f validate_task run_uv_python
+export SCRIPT_DIR PROJECT_ROOT LOG_DIR
 
 # Run validations in parallel
 echo "Starting parallel validation..."
@@ -140,7 +150,7 @@ echo "Validation complete! (${DURATION}s / $((DURATION/60))m)"
 echo "=========================================="
 
 # Summarize results
-python3 -c "
+run_uv_python -c "
 import os
 import re
 

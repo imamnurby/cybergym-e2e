@@ -13,6 +13,7 @@ CyberGym-E2E is a large-scale benchmark built from real-world vulnerabilities in
 - **Patch-only (`patch-only`):** The agent receives source code along with a crash log and PoC, and must produce a patch.
 
 Validation runs in four stages:
+
 1. Agent PoC triggers a crash without the patch
 2. Agent PoC does not crash with the patch applied
 3. Project test suite passes with the patch applied
@@ -20,20 +21,23 @@ Validation runs in four stages:
 
 ## Setup
 
-Install Python dependencies:
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if needed, then create the locked project environment:
+
 ```bash
-pip install tomli tomli_w anthropic openai boto3 httpx huggingface_hub docker
+uv sync --locked
 ```
 
 Download the benchmark data from HuggingFace:
+
 ```bash
 export HF_TOKEN=...
-hf download sunblaze-ucb/cybergym-e2e --repo-type dataset --local-dir data/
+uv run hf download sunblaze-ucb/cybergym-e2e --repo-type dataset --local-dir data/
 ```
 
 Download the Docker images:
+
 ```bash
-python scripts/pull_images.py
+uv run python scripts/pull_images.py
 ```
 
 Set ASLR entropy for sanitizer compatibility:
@@ -47,10 +51,10 @@ sudo sysctl -w vm.mmap_rnd_bits=28
 
 ```bash
 # End-to-end mode
-python scripts/run_agent.py curl/arvo_66012 --mode e2e
+uv run python scripts/run_agent.py curl/arvo_66012 --mode e2e
 
 # Patch-only mode
-python scripts/run_agent.py curl/arvo_66012 --mode patch-only
+uv run python scripts/run_agent.py curl/arvo_66012 --mode patch-only
 ```
 
 ### Batch Run
@@ -124,7 +128,7 @@ The current report parser does not normalize Pi events yet, so use these raw fil
 Start the local browser application to inspect native PI session files under `results_pi`:
 
 ```bash
-python3 scripts/trajectory_viewer.py
+uv run python scripts/trajectory_viewer.py
 ```
 
 The viewer discovers `attempt_*.session.jsonl` files and groups them by task, model, run, and attempt.
@@ -134,7 +138,7 @@ You can also drag a session file into the browser or use **Open JSONL** to read 
 Use another results directory or port when needed:
 
 ```bash
-python3 scripts/trajectory_viewer.py \
+uv run python scripts/trajectory_viewer.py \
   --root /path/to/results_pi \
   --port 9000 \
   --no-browser

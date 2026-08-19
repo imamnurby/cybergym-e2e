@@ -1,0 +1,18 @@
+[project]
+name = "cybergym-e2e"
+version = "0.1.0"
+description = "Scalable end-to-end benchmark harness for AI agents"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "anthropic",
+    "boto3",
+    "docker",
+    "httpx",
+    "huggingface-hub",
+    "openai",
+    "tomli",
+    "tomli-w",
+]
+
+[tool.uv]
+package = false
